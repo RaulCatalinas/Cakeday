@@ -2,4 +2,9 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    prefer_single_quotes: true
+    - always_use_package_imports
+    - avoid_print
+    - prefer_single_quotes
+    - require_trailing_commas
+    - sort_child_properties_last
+    - use_super_parameters
