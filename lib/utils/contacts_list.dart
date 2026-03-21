@@ -1,0 +1,51 @@
+import 'package:cakeday/types/contacts.dart' show ContactInfo;
+import 'package:cakeday/utils/toast.dart' show showToast;
+import 'package:flutter_contacts/flutter_contacts.dart' show FlutterContacts;
+import 'package:permission_handler/permission_handler.dart'
+    show Permission, PermissionActions, PermissionStatus, openAppSettings;
+
+Future<ContactInfo> pickContact() async {
+  final contactId = await FlutterContacts.native.showPicker();
+
+  if (contactId == null) return null;
+
+  final contact = await FlutterContacts.get(contactId);
+
+  if (contact == null) return null;
+
+  final name = contact.displayName?.trim() ?? '';
+  final phone = contact.phones.firstOrNull?.number.trim() ?? '';
+  final photo = contact.photo?.fullSize;
+
+  return (name, int.tryParse(phone), photo);
+}
+
+Future<PermissionStatus> requestContactListPermission() async {
+  return await Permission.contacts
+      .onDeniedCallback(() {
+        showToast(
+          msg:
+              'To add birthdays quickly, allow Cakeday to access your contacts in Settings.',
+        );
+      })
+      .onPermanentlyDeniedCallback(() {
+        showToast(
+          msg:
+              'Contacts access is blocked. Enable it manually in your phone\'s Settings.',
+        );
+        openAppSettings();
+      })
+      .onLimitedCallback(() {
+        showToast(
+          msg: 'You\'ve granted limited access. Some contacts may not appear.',
+        );
+      })
+      .onRestrictedCallback(() {
+        showToast(
+          msg:
+              'Contacts access is restricted by your device. Check your parental or device settings.',
+        );
+        openAppSettings();
+      })
+      .request();
+}
