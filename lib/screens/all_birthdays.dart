@@ -1,4 +1,4 @@
-import 'package:cakeday/screens/add_birthday.dart';
+import 'package:cakeday/screens/add_birthday.dart' show AddBirthdayScreen;
 import 'package:flutter/material.dart'
     show
         BuildContext,
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart'
         MaterialPageRoute,
         Navigator,
         Padding,
+        SafeArea,
         Scaffold,
         StatelessWidget,
         Widget;
@@ -21,20 +22,22 @@ class AllBirthdaysScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(25.0),
-          child: Column(
-            mainAxisAlignment: .center,
-            children: [
-              FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AddBirthdayScreen()),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(25.0),
+            child: Column(
+              mainAxisAlignment: .center,
+              children: [
+                FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => AddBirthdayScreen()),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,6 @@
+import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
+import 'package:cakeday/screens/home.dart' show HomeScreen;
+import 'package:cakeday/screens/settings.dart' show SettingsScreen;
 import 'package:flutter/material.dart'
     show
         BottomNavigationBar,
@@ -12,15 +15,22 @@ import 'package:flutter/material.dart'
         StatefulWidget,
         StatelessWidget,
         Widget,
+        WidgetsFlutterBinding,
         runApp;
 import 'package:flutter_themed/themed_app.dart' show ThemedApp;
+import 'package:intl/date_symbol_data_local.dart' show initializeDateFormatting;
 
-import '/screens/all_birthdays.dart' show AllBirthdaysScreen;
-import '/screens/home.dart' show HomeScreen;
-import '/screens/settings.dart' show SettingsScreen;
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('en');
   runApp(const MyApp());
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class MyApp extends StatelessWidget {
@@ -32,13 +42,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
@@ -47,16 +50,6 @@ class _MainScreenState extends State<MainScreen> {
     AllBirthdaysScreen(),
     SettingsScreen(),
   ];
-
-  Future<bool> _onPopInvoked() async {
-    if (_currentIndex != 0) {
-      setState(() => _currentIndex = 0);
-
-      return false;
-    }
-
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,5 +83,15 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> _onPopInvoked() async {
+    if (_currentIndex != 0) {
+      setState(() => _currentIndex = 0);
+
+      return false;
+    }
+
+    return true;
   }
 }
