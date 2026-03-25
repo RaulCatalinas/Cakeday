@@ -30,11 +30,12 @@ class AllBirthdaysScreen extends StatelessWidget {
               mainAxisAlignment: .center,
               children: [
                 FloatingActionButton(
-                  child: Icon(Icons.add),
+                  enableFeedback: true,
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => AddBirthdayScreen()),
                   ),
+                  child: const Icon(Icons.add),
                 ),
               ],
             ),

@@ -1,44 +1,38 @@
 import 'dart:typed_data' show Uint8List;
 
+import 'package:cakeday/components/app_card.dart' show AppCard;
 import 'package:flutter/material.dart'
     show
         BuildContext,
-        Card,
+        CircleAvatar,
+        Column,
+        MemoryImage,
+        Padding,
         Row,
         StatelessWidget,
-        Widget,
-        Padding,
-        CircleAvatar,
-        MemoryImage,
         Text,
-        Column;
-import 'package:flutter/material.dart' show Localizations;
-import 'package:intl/intl.dart' show DateFormat;
+        Widget;
 
 class ReminderCard extends StatelessWidget {
   final String? name;
-  final DateTime? birthdayDate;
+  final int? phoneNumber;
   final Uint8List? photo;
 
   const ReminderCard({
     super.key,
     required this.name,
-    required this.birthdayDate,
+    required this.phoneNumber,
     required this.photo,
   });
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context).toString();
-    final formatted = birthdayDate != null
-        ? DateFormat.yMMMMd(locale).format(birthdayDate!)
-        : 'Unknown';
-
-    return Card(
+    return AppCard(
+      padding: 15.0,
       child: Row(
         mainAxisAlignment: .start,
         children: [
-          const Padding(padding: .symmetric(vertical: 16, horizontal: 8)),
+          const Padding(padding: .symmetric(horizontal: 8)),
           CircleAvatar(
             radius: 24,
             foregroundImage: photo != null ? MemoryImage(photo!) : null,
@@ -52,7 +46,7 @@ class ReminderCard extends StatelessWidget {
             children: [
               Text(name ?? 'Unknown'),
               const Padding(padding: .directional(top: 3, bottom: 3)),
-              Text(formatted),
+              Text(phoneNumber?.toString() ?? 'Unknown'),
             ],
           ),
         ],
