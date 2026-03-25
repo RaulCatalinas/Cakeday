@@ -4,7 +4,6 @@ import 'package:flutter/material.dart'
         BuildContext,
         Center,
         Column,
-        EdgeInsets,
         FloatingActionButton,
         Icon,
         Icons,
@@ -25,7 +24,7 @@ class AllBirthdaysScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(25.0),
+            padding: .all(25.0),
             child: Column(
               mainAxisAlignment: .center,
               children: [
