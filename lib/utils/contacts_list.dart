@@ -1,6 +1,7 @@
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:cakeday/utils/toast.dart' show showToast;
-import 'package:flutter_contacts/flutter_contacts.dart' show FlutterContacts;
+import 'package:flutter_contacts/flutter_contacts.dart'
+    show ContactProperty, FlutterContacts;
 import 'package:permission_handler/permission_handler.dart'
     show Permission, PermissionActions, PermissionStatus, openAppSettings;
 
@@ -9,7 +10,14 @@ Future<ContactInfo> pickContact() async {
 
   if (contactId == null) return null;
 
-  final contact = await FlutterContacts.get(contactId);
+  final contact = await FlutterContacts.get(
+    contactId,
+    properties: {
+      ContactProperty.name,
+      ContactProperty.phone,
+      ContactProperty.photoThumbnail,
+    },
+  );
 
   if (contact == null) return null;
 
@@ -17,7 +25,7 @@ Future<ContactInfo> pickContact() async {
   final phone = contact.phones.firstOrNull?.number.trim() ?? '';
   final photo = contact.photo?.fullSize;
 
-  return (name, int.tryParse(phone), photo);
+  return (name, phone, photo);
 }
 
 Future<PermissionStatus> requestContactListPermission() async {

@@ -107,11 +107,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 ),
               ),
               const Padding(padding: .directional(top: 8, bottom: 8)),
-              ReminderCard(
-                name: contactInfo?.$1,
-                phoneNumber: contactInfo?.$2,
-                photo: contactInfo?.$3,
-              ),
+              ReminderCard(contactInfo: contactInfo),
               const Padding(padding: .directional(top: 8, bottom: 8)),
               ClickableCard(
                 color: const Color(0xffffffff),
