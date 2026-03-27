@@ -240,6 +240,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   final birthdayData = BirthdayData(
                     contactInfo: contactInfo,
                     birthday: birthday,
+                    includeYear: includeYear,
                   );
 
                   await handleSaveBirthday(birthdayData: birthdayData);

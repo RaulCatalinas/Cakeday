@@ -1,12 +1,9 @@
-import 'package:cakeday/types/contacts.dart';
-import 'package:cakeday/utils/toast.dart';
+import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
+import 'package:cakeday/utils/toast.dart' show showToast;
 
-Future<void> handleSaveBirthday({
-  required ContactInfo? contactInfo,
-  required DateTime? birthday,
-}) async {
+Future<void> handleSaveBirthday({required BirthdayData birthdayData}) async {
   try {
-    if (contactInfo == null) {
+    if (birthdayData.contactInfo == null) {
       showToast(
         type: .error,
         msg: 'Please select a contact from your contact list ',
@@ -15,7 +12,7 @@ Future<void> handleSaveBirthday({
       return;
     }
 
-    if (contactInfo.$2 == null) {
+    if (birthdayData.contactInfo?.$2 == null) {
       showToast(
         type: .error,
         msg:
@@ -25,7 +22,7 @@ Future<void> handleSaveBirthday({
       return;
     }
 
-    if (birthday == null) {
+    if (birthdayData.birthday == null) {
       showToast(type: .error, msg: 'Please select the birthday');
 
       return;
