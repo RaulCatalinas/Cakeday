@@ -1,10 +1,13 @@
 import 'package:cakeday/components/app_card.dart' show AppCard;
+import 'package:cakeday/components/app_checkbox.dart' show AppCheckbox;
 import 'package:cakeday/components/clickable_card.dart' show ClickableCard;
 import 'package:cakeday/components/gradient_button.dart' show GradientButton;
 import 'package:cakeday/components/header.dart' show Header;
 import 'package:cakeday/components/input.dart' show Input;
 import 'package:cakeday/components/reminder_card.dart' show ReminderCard;
+import 'package:cakeday/components/section_title.dart' show SectionTitle;
 import 'package:cakeday/handlers/handle_save_birthday.dart';
+import 'package:cakeday/types/birthday_data.dart';
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:cakeday/utils/contacts_list.dart'
     show pickContact, requestContactListPermission;
@@ -31,7 +34,6 @@ import 'package:flutter/material.dart'
         Spacer,
         State,
         StatefulWidget,
-        Switch,
         Text,
         Visibility,
         Widget;
@@ -50,6 +52,8 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
   DateTime? birthday;
   bool usePersonalizedMessage = false;
   bool useNote = false;
+  bool includeYear = false;
+
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
   final scrollController = ScrollController();
@@ -83,6 +87,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   const Header(text: 'Add birthday', fontSize: 18.0),
                 ],
               ),
+              const SectionTitle(text: 'Information'),
               ClickableCard(
                 color: const Color(0x1AFF6B6B),
                 onTap: () async {
@@ -108,7 +113,8 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
               ),
               const Padding(padding: .directional(top: 8, bottom: 8)),
               ReminderCard(contactInfo: contactInfo),
-              const Padding(padding: .directional(top: 8, bottom: 8)),
+
+              const SectionTitle(text: 'Date'),
               ClickableCard(
                 color: const Color(0xffffffff),
                 borderRadius: .vertical(top: .circular(25.0)),
@@ -124,7 +130,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                     const Icon(Icons.cake),
                     const Padding(padding: .directional(start: 8, end: 8)),
                     const Text('Date'),
-                    const Padding(padding: .directional(start: 16, end: 16)),
+                    const Padding(padding: .symmetric(horizontal: 16)),
                     Text(formattedMonthAndDay),
                     const Spacer(),
                     const Icon(Icons.arrow_forward_ios_rounded, size: 16),
@@ -145,16 +151,18 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 child: Row(
                   children: [
                     const Icon(Icons.card_giftcard),
-                    const Padding(padding: .directional(start: 8, end: 8)),
+                    const Padding(padding: .symmetric(horizontal: 8)),
                     const Text('Year of birth'),
-                    const Padding(padding: .directional(start: 16, end: 16)),
-                    Text(formattedYear),
-                    const Spacer(),
-                    const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                    AppCheckbox(
+                      onChanged: (value) => setState(() => includeYear = value),
+                    ),
+                    const Padding(padding: .symmetric(horizontal: 16)),
+                    Text(includeYear ? formattedYear : 'Optional'),
                   ],
                 ),
               ),
-              const Padding(padding: .symmetric(vertical: 8)),
+
+              const SectionTitle(text: 'Message'),
               AppCard(
                 child: Column(
                   children: [
@@ -163,9 +171,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                         const Icon(Icons.chat_bubble_outline),
                         const Padding(padding: .symmetric(horizontal: 15)),
                         const Text('Personalized message'),
-                        const Padding(padding: .symmetric(horizontal: 15)),
-                        Switch(
-                          value: usePersonalizedMessage,
+                        AppCheckbox(
                           onChanged: (value) {
                             setState(() => usePersonalizedMessage = value);
 
@@ -190,7 +196,8 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   ],
                 ),
               ),
-              const Padding(padding: .symmetric(vertical: 8)),
+
+              const SectionTitle(text: 'Note'),
               AppCard(
                 child: Column(
                   children: [
@@ -199,9 +206,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                         const Icon(Icons.edit_note),
                         const Padding(padding: .symmetric(horizontal: 15)),
                         const Text('Note'),
-                        const Padding(padding: .symmetric(horizontal: 15)),
-                        Switch(
-                          value: useNote,
+                        AppCheckbox(
                           onChanged: (value) {
                             setState(() => useNote = value);
 
@@ -226,14 +231,19 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   ],
                 ),
               ),
+
               const Padding(padding: .symmetric(vertical: 15)),
               GradientButton(
                 label: 'Save birthday',
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
-                onTap: () async => await handleSaveBirthday(
-                  contactInfo: contactInfo,
-                  birthday: birthday,
-                ),
+                onTap: () async {
+                  final birthdayData = BirthdayData(
+                    contactInfo: contactInfo,
+                    birthday: birthday,
+                  );
+
+                  await handleSaveBirthday(birthdayData: birthdayData);
+                },
               ),
             ],
           ),
