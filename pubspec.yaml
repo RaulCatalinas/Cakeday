@@ -23,6 +23,7 @@ dependencies:
   flutter_contacts: ^2.0.0
   calendar_date_picker2: ^2.0.1
   intl: ^0.20.2
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:

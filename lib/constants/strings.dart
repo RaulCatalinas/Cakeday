@@ -1,0 +1,2 @@
+const accents = 'ÁÉÍÓÚáéíóúÀÈÌÒÙàèìòùÄËÏÖÜäëïöü';
+const normalized = 'AEIOUaeiouAEIOUaeiouAEIOUaeiou';
