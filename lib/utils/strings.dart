@@ -1,9 +1,11 @@
 import 'package:cakeday/constants/strings.dart'
     show charsWithAccents, charsWithoutAccents;
 
-String normalizeInitial(String name) {
-  final char = name[0].toUpperCase();
-  final index = charsWithAccents.indexOf(char);
+String normalizeInitial(String name) => normalizeName(name)[0];
 
-  return index != -1 ? charsWithoutAccents[index].toUpperCase() : char;
+String normalizeName(String name) {
+  return name.toUpperCase().split('').map((char) {
+    final index = charsWithAccents.indexOf(char);
+    return index != -1 ? charsWithoutAccents[index].toUpperCase() : char;
+  }).join();
 }

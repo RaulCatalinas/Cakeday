@@ -1,20 +1,34 @@
+import 'dart:async' show Timer;
+
+import 'package:cakeday/components/app_search_bar.dart' show AppSearchBar;
 import 'package:cakeday/components/header.dart' show Header;
 import 'package:cakeday/components/render_all_birthdays.dart'
     show RenderAllBirthdays;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
+import 'package:cakeday/utils/search.dart' show filterBirthdays;
 import 'package:flutter/material.dart'
     show
         BuildContext,
         Column,
+        Localizations,
         Padding,
         SafeArea,
         Scaffold,
-        StatelessWidget,
+        State,
+        StatefulWidget,
         Text,
         Widget;
 
-class AllBirthdaysScreen extends StatelessWidget {
+class AllBirthdaysScreen extends StatefulWidget {
   const AllBirthdaysScreen({super.key});
+
+  @override
+  State<AllBirthdaysScreen> createState() => _AllBirthdaysScreenState();
+}
+
+class _AllBirthdaysScreenState extends State<AllBirthdaysScreen> {
+  String searchQuery = '';
+  Timer? debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +120,12 @@ class AllBirthdaysScreen extends StatelessWidget {
       ),
     ];
 
+    final filteredBirthdays = filterBirthdays(
+      birthdays: allBirthdays,
+      query: searchQuery,
+      locale: Localizations.localeOf(context).toString(),
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -115,14 +135,33 @@ class AllBirthdaysScreen extends StatelessWidget {
             children: [
               const Header(text: 'All birthdays'),
               const Padding(padding: .symmetric(vertical: 16)),
-
-              allBirthdays.isEmpty
-                  ? Text('There are no birthday reminders; please add some')
-                  : RenderAllBirthdays(allBirthdays: allBirthdays),
+              AppSearchBar(
+                hintText: 'Search for reminders',
+                onChanged: _onSearchChanged,
+              ),
+              const Padding(padding: .symmetric(vertical: 16)),
+              filteredBirthdays.isEmpty
+                  ? const Text('No results found')
+                  : RenderAllBirthdays(allBirthdays: filteredBirthdays),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    debounce?.cancel();
+
+    debounce = Timer(
+      const Duration(milliseconds: 300),
+      () => setState(() => searchQuery = value),
     );
   }
 }
