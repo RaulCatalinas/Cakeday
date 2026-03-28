@@ -25,7 +25,7 @@ Future<ContactInfo> pickContact() async {
   final phone = contact.phones.firstOrNull?.number.trim() ?? '';
   final photo = contact.photo?.fullSize;
 
-  return (name, phone, photo);
+  return (name, phone, photo, null);
 }
 
 Future<PermissionStatus> requestContactListPermission() async {
