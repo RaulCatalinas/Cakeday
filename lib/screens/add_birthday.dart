@@ -6,11 +6,13 @@ import 'package:cakeday/components/header.dart' show Header;
 import 'package:cakeday/components/input.dart' show Input;
 import 'package:cakeday/components/reminder_card.dart' show ReminderCard;
 import 'package:cakeday/components/section_title.dart' show SectionTitle;
-import 'package:cakeday/handlers/handle_save_birthday.dart';
-import 'package:cakeday/types/birthday_data.dart';
+import 'package:cakeday/handlers/handle_save_birthday.dart'
+    show handleSaveBirthday;
+import 'package:cakeday/permissions/contacts.dart'
+    show requestContactListPermission;
+import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
-import 'package:cakeday/utils/contacts_list.dart'
-    show pickContact, requestContactListPermission;
+import 'package:cakeday/utils/contacts_list.dart' show pickContact;
 import 'package:cakeday/utils/date.dart' show selectDate;
 import 'package:flutter/material.dart'
     show
@@ -87,6 +89,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   const Header(text: 'Add birthday', fontSize: 18.0),
                 ],
               ),
+              const Padding(padding: .symmetric(vertical: 16)),
               const SectionTitle(text: 'Information'),
               ClickableCard(
                 color: const Color(0x1AFF6B6B),
@@ -114,6 +117,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
               const Padding(padding: .directional(top: 8, bottom: 8)),
               ReminderCard(contactInfo: contactInfo),
 
+              const Padding(padding: .symmetric(vertical: 16)),
               const SectionTitle(text: 'Date'),
               ClickableCard(
                 color: const Color(0xffffffff),
@@ -162,6 +166,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 ),
               ),
 
+              const Padding(padding: .symmetric(vertical: 16)),
               const SectionTitle(text: 'Message'),
               AppCard(
                 child: Column(
@@ -197,6 +202,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 ),
               ),
 
+              const Padding(padding: .symmetric(vertical: 16)),
               const SectionTitle(text: 'Note'),
               AppCard(
                 child: Column(
