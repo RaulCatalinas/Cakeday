@@ -33,12 +33,12 @@ import 'package:flutter/material.dart'
         ScrollController,
         SingleChildScrollView,
         SizedBox,
-        Spacer,
         State,
         StatefulWidget,
         Text,
         Visibility,
-        Widget;
+        Widget,
+        Expanded;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -81,62 +81,52 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 children: [
                   IconButton(
                     enableFeedback: true,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: () => Navigator.of(context).pop(),
                     icon: Icon(Icons.arrow_circle_left, size: 28),
                   ),
                   const Header(text: 'Add birthday', fontSize: 18.0),
                 ],
               ),
               const Padding(padding: .symmetric(vertical: 16)),
+
               const SectionTitle(text: 'Information'),
               ClickableCard(
                 color: const Color(0x1AFF6B6B),
                 onTap: () async {
                   final status = await requestContactListPermission();
-
                   if (!status.isGranted && !status.isLimited) return;
-
                   final result = await pickContact();
-
-                  print('Phone number: ${result?.$2}');
-
                   setState(() => contactInfo = result);
                 },
                 child: const Row(
                   children: [
                     Icon(Icons.person),
-                    Padding(padding: .directional(start: 8, end: 8)),
-                    Text('Select from the contacts list'),
-                    Spacer(),
+                    Padding(padding: .symmetric(horizontal: 8)),
+                    Expanded(child: Text('Select from the contacts list')),
                     Icon(Icons.arrow_forward_ios_rounded, size: 16),
                   ],
                 ),
               ),
-              const Padding(padding: .directional(top: 8, bottom: 8)),
+              const Padding(padding: .symmetric(horizontal: 8)),
               ReminderCard(contactInfo: contactInfo),
 
               const Padding(padding: .symmetric(vertical: 16)),
+
               const SectionTitle(text: 'Date'),
               ClickableCard(
                 color: const Color(0xffffffff),
                 borderRadius: .vertical(top: .circular(25.0)),
                 onTap: () async {
                   final date = await selectDate(context: context);
-
-                  setState(() {
-                    birthday = date;
-                  });
+                  setState(() => birthday = date);
                 },
                 child: Row(
                   children: [
                     const Icon(Icons.cake),
-                    const Padding(padding: .directional(start: 8, end: 8)),
-                    const Text('Date'),
-                    const Padding(padding: .symmetric(horizontal: 16)),
+                    const Padding(padding: .symmetric(horizontal: 8)),
+                    const Expanded(child: Text('Date')),
                     Text(formattedMonthAndDay),
-                    const Spacer(),
+                    const Padding(padding: .symmetric(horizontal: 8)),
                     const Icon(Icons.arrow_forward_ios_rounded, size: 16),
                   ],
                 ),
@@ -147,26 +137,23 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 borderRadius: .vertical(bottom: .circular(25.0)),
                 onTap: () async {
                   final date = await selectDate(context: context);
-
-                  setState(() {
-                    birthday = date;
-                  });
+                  setState(() => birthday = date);
                 },
                 child: Row(
                   children: [
                     const Icon(Icons.card_giftcard),
                     const Padding(padding: .symmetric(horizontal: 8)),
-                    const Text('Year of birth'),
+                    const Expanded(child: Text('Year of birth')),
+                    Text(includeYear ? formattedYear : 'Optional'),
                     AppCheckbox(
                       onChanged: (value) => setState(() => includeYear = value),
                     ),
-                    const Padding(padding: .symmetric(horizontal: 16)),
-                    Text(includeYear ? formattedYear : 'Optional'),
                   ],
                 ),
               ),
 
               const Padding(padding: .symmetric(vertical: 16)),
+
               const SectionTitle(text: 'Message'),
               AppCard(
                 child: Column(
@@ -174,28 +161,31 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                     Row(
                       children: [
                         const Icon(Icons.chat_bubble_outline),
-                        const Padding(padding: .symmetric(horizontal: 15)),
-                        const Text('Personalized message'),
+                        const Padding(padding: .symmetric(horizontal: 8)),
+                        const Expanded(child: Text('Personalized message')),
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => usePersonalizedMessage = value);
-
                             if (value) messageFocusNode.requestFocus();
                           },
                         ),
                       ],
                     ),
-                    const Padding(padding: .symmetric(vertical: 8)),
                     Visibility(
                       visible: usePersonalizedMessage,
-                      child: SizedBox(
-                        height: 100,
-                        child: Input(
-                          focusNode: messageFocusNode,
-                          hintText: 'Personalized birthday message',
-                          maxLines: 3,
-                          keyboardType: .multiline,
-                        ),
+                      child: Column(
+                        children: [
+                          const Padding(padding: .symmetric(vertical: 8)),
+                          SizedBox(
+                            height: 100,
+                            child: Input(
+                              focusNode: messageFocusNode,
+                              hintText: 'Personalized birthday message',
+                              maxLines: 3,
+                              keyboardType: .multiline,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -203,6 +193,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
               ),
 
               const Padding(padding: .symmetric(vertical: 16)),
+
               const SectionTitle(text: 'Note'),
               AppCard(
                 child: Column(
@@ -210,28 +201,31 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                     Row(
                       children: [
                         const Icon(Icons.edit_note),
-                        const Padding(padding: .symmetric(horizontal: 15)),
-                        const Text('Note'),
+                        const Padding(padding: .symmetric(horizontal: 8)),
+                        const Expanded(child: Text('Note')),
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => useNote = value);
-
                             if (value) noteFocusNode.requestFocus();
                           },
                         ),
                       ],
                     ),
-                    const Padding(padding: .symmetric(vertical: 8)),
                     Visibility(
                       visible: useNote,
-                      child: SizedBox(
-                        height: 100,
-                        child: Input(
-                          focusNode: noteFocusNode,
-                          hintText: 'E.g.: He likes coffee',
-                          maxLines: 3,
-                          keyboardType: .multiline,
-                        ),
+                      child: Column(
+                        children: [
+                          const Padding(padding: .symmetric(vertical: 8)),
+                          SizedBox(
+                            height: 100,
+                            child: Input(
+                              focusNode: noteFocusNode,
+                              hintText: 'E.g.: He likes coffee',
+                              maxLines: 3,
+                              keyboardType: .multiline,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -239,6 +233,7 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
               ),
 
               const Padding(padding: .symmetric(vertical: 15)),
+
               GradientButton(
                 label: 'Save birthday',
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
@@ -248,7 +243,6 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                     birthday: birthday,
                     includeYear: includeYear,
                   );
-
                   await handleSaveBirthday(birthdayData: birthdayData);
                 },
               ),
