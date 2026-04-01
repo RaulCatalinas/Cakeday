@@ -114,6 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: const Icon(Icons.arrow_forward_ios, size: 20),
                       onPressed: () async {
                         final selectedHour = await selectHour(context: context);
+
                         setState(() => hour = selectedHour);
                       },
                     ),
