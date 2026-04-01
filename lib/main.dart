@@ -1,6 +1,8 @@
 import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
 import 'package:cakeday/screens/settings.dart' show SettingsScreen;
+import 'package:cakeday/utils/notifications.dart'
+    show initializeNotifications, setupNotificationListeners;
 import 'package:flutter/material.dart'
     show
         BottomNavigationBar,
@@ -22,7 +24,12 @@ import 'package:intl/date_symbol_data_local.dart' show initializeDateFormatting;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await initializeDateFormatting('en');
+  await initializeNotifications();
+
+  setupNotificationListeners();
+
   runApp(const MyApp());
 }
 
