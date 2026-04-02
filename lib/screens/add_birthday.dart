@@ -143,6 +143,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 borderRadius: .vertical(bottom: .circular(25.0)),
                 onTap: () async {
                   final date = await selectDate(context: context);
+
                   setState(() => birthday = date);
                 },
                 child: Row(
@@ -172,6 +173,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => usePersonalizedMessage = value);
+
                             if (value) messageFocusNode.requestFocus();
                           },
                         ),
@@ -212,6 +214,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => useNote = value);
+
                             if (value) noteFocusNode.requestFocus();
                           },
                         ),
