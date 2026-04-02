@@ -19,6 +19,7 @@ import 'package:flutter/material.dart'
         Widget,
         WidgetsFlutterBinding,
         runApp;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:flutter_themed/themed_app.dart' show ThemedApp;
 import 'package:intl/date_symbol_data_local.dart' show initializeDateFormatting;
 
@@ -30,7 +31,7 @@ void main() async {
 
   setupNotificationListeners();
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MainScreen extends StatefulWidget {

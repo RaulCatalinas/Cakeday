@@ -10,6 +10,8 @@ import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;
+import 'package:cakeday/providers/settings_provider.dart'
+    show appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:cakeday/utils/contacts_list.dart' show pickContact;
@@ -20,6 +22,7 @@ import 'package:flutter/material.dart'
         Color,
         Column,
         Divider,
+        Expanded,
         FocusNode,
         Icon,
         IconButton,
@@ -33,23 +36,23 @@ import 'package:flutter/material.dart'
         ScrollController,
         SingleChildScrollView,
         SizedBox,
-        State,
-        StatefulWidget,
         Text,
+        Theme,
         Visibility,
-        Widget,
-        Expanded;
+        Widget;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerStatefulWidget, ConsumerState;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:permission_handler/permission_handler.dart';
 
-class AddBirthdayScreen extends StatefulWidget {
+class AddBirthdayScreen extends ConsumerStatefulWidget {
   const AddBirthdayScreen({super.key});
 
   @override
-  State<AddBirthdayScreen> createState() => _AddBirthdayScreenState();
+  ConsumerState<AddBirthdayScreen> createState() => _AddBirthdayScreenState();
 }
 
-class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
+class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   ContactInfo contactInfo;
   DateTime? birthday;
   bool usePersonalizedMessage = false;
@@ -91,11 +94,14 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
 
               const SectionTitle(text: 'Information'),
               ClickableCard(
-                color: const Color(0x1AFF6B6B),
+                color: const Color(0x33FF6B6B),
                 onTap: () async {
                   final status = await requestContactListPermission();
+
                   if (!status.isGranted && !status.isLimited) return;
+
                   final result = await pickContact();
+
                   setState(() => contactInfo = result);
                 },
                 child: const Row(
@@ -107,14 +113,14 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   ],
                 ),
               ),
-              const Padding(padding: .symmetric(horizontal: 8)),
+              const Padding(padding: .symmetric(vertical: 8)),
               ReminderCard(contactInfo: contactInfo),
 
               const Padding(padding: .symmetric(vertical: 16)),
 
               const SectionTitle(text: 'Date'),
               ClickableCard(
-                color: const Color(0xffffffff),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: .vertical(top: .circular(25.0)),
                 onTap: () async {
                   final date = await selectDate(context: context);
@@ -131,9 +137,9 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                   ],
                 ),
               ),
-              const Divider(thickness: 1, height: 1, color: Color(0xFFE5E5EA)),
+              const Divider(thickness: 1, height: 1),
               ClickableCard(
-                color: const Color(0xffffffff),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: .vertical(bottom: .circular(25.0)),
                 onTap: () async {
                   final date = await selectDate(context: context);
@@ -238,12 +244,20 @@ class _AddBirthdayScreenState extends State<AddBirthdayScreen> {
                 label: 'Save birthday',
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
                 onTap: () async {
+                  final settings = ref.read(appSettingsProvider);
+
                   final birthdayData = BirthdayData(
                     contactInfo: contactInfo,
                     birthday: birthday,
                     includeYear: includeYear,
                   );
-                  await handleSaveBirthday(birthdayData: birthdayData);
+
+                  await handleSaveBirthday(
+                    birthdayData: birthdayData,
+                    notificationTime: settings.notificationTime,
+                    globalMessage: settings.globalMessage,
+                    enableNotifications: settings.enableNotifications,
+                  );
                 },
               ),
             ],
