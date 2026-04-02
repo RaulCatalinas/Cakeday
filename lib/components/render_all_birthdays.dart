@@ -1,7 +1,7 @@
 import 'package:cakeday/components/reminder_card.dart' show ReminderCard;
 import 'package:cakeday/components/section_title.dart' show SectionTitle;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
-import 'package:cakeday/utils/strings.dart' show normalizeInitial;
+import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:collection/collection.dart' show groupBy;
 import 'package:flutter/material.dart'
     show BuildContext, Expanded, ListView, Padding, StatelessWidget, Widget;
@@ -38,15 +38,15 @@ class RenderAllBirthdays extends StatelessWidget {
 
   List<Object> _prepareItemsToRender({required List<BirthdayData> items}) {
     items.sort((a, b) {
-      final nameA = normalizeInitial(a.contactInfo!.$1);
-      final nameB = normalizeInitial(b.contactInfo!.$1);
+      final nameA = a.contactInfo!.$1.normalizedInitial;
+      final nameB = b.contactInfo!.$1.normalizedInitial;
 
       return nameA.toLowerCase().compareTo(nameB.toLowerCase());
     });
 
     final itemsGrouped = groupBy(
       items,
-      (birthdayData) => normalizeInitial(birthdayData.contactInfo!.$1),
+      (birthdayData) => birthdayData.contactInfo!.$1.normalizedInitial,
     );
 
     final List<Object> flatItems = [];

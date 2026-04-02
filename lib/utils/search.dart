@@ -1,5 +1,5 @@
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
-import 'package:cakeday/utils/strings.dart' show normalizeName;
+import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:intl/intl.dart' show DateFormat;
 
 List<BirthdayData> filterBirthdays({
@@ -9,12 +9,12 @@ List<BirthdayData> filterBirthdays({
 }) {
   if (query.isEmpty) return birthdays;
 
-  final normalizedQuery = normalizeName(query).toLowerCase();
+  final normalizedQuery = query.normalized.toLowerCase();
 
   return birthdays.where((b) {
-    final nameMatch = normalizeName(
-      b.contactInfo!.$1,
-    ).toLowerCase().contains(normalizedQuery);
+    final nameMatch = b.contactInfo!.$1.normalized.toLowerCase().contains(
+      normalizedQuery,
+    );
 
     final formattedDate = b.birthday != null
         ? DateFormat.MMMMd(locale).format(b.birthday!).toLowerCase()
