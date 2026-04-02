@@ -7,6 +7,7 @@ import 'package:cakeday/permissions/notifications.dart'
     show requestNotificationsPermission;
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
+import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:cakeday/utils/time.dart' show selectHour;
 import 'package:flutter/material.dart'
     show
@@ -92,7 +93,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ],
                 ),
               ),
-              const Divider(height: 0),
+              const Divider(thickness: 1, height: 1),
               AppCard(
                 borderRadius: .zero,
                 child: Row(
@@ -122,7 +123,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ],
                 ),
               ),
-              const Divider(height: 0),
+              const Divider(thickness: 1, height: 1),
               AppCard(
                 borderRadius: .vertical(bottom: .circular(25)),
                 child: Row(
@@ -163,9 +164,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     AppSwitch(
-                      defaultValue: settings.darkMode,
+                      defaultValue: Preferences.getDarkMode() ?? false,
                       onChanged: (value) {
-                        notifier.setDarkMode(value);
+                        Preferences.saveDarkMode(value);
                         Themed.toggleTheme();
                       },
                     ),
