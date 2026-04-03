@@ -5,14 +5,14 @@ import 'package:flutter/material.dart'
         BuildContext,
         CircleAvatar,
         Column,
-        Localizations,
         MemoryImage,
         Padding,
         Row,
         StatelessWidget,
         Text,
+        TextOverflow,
+        Theme,
         Widget;
-import 'package:intl/intl.dart';
 
 class ReminderCard extends StatelessWidget {
   final ContactInfo? contactInfo;
@@ -21,13 +21,8 @@ class ReminderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (name, phone, photo, birthday) =
+    final (name, phone, photo, _) =
         contactInfo ?? ('Unknown', 'Unknown', null, null);
-
-    final locale = Localizations.localeOf(context).toString();
-    final formatted = birthday != null
-        ? DateFormat.MMMMd(locale).format(birthday)
-        : 'Unknown';
 
     return AppCard(
       padding: 15.0,
@@ -46,9 +41,21 @@ class ReminderCard extends StatelessWidget {
           Column(
             mainAxisAlignment: .center,
             children: [
-              Text(name),
+              Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const Padding(padding: .directional(top: 3, bottom: 3)),
-              Text(formatted),
+              Text(
+                phone?.trim() ?? 'Unknown',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ],
