@@ -10,6 +10,8 @@ import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;
+import 'package:cakeday/providers/birthdays_provider.dart'
+    show birthdaysListProvider;
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
@@ -268,12 +270,14 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     ),
                   );
 
-                  await handleSaveBirthday(
+                  final saved = await handleSaveBirthday(
                     birthdayData: birthdayData,
                     notificationTime: settings.notificationTime,
                     globalMessage: settings.globalMessage,
                     enableNotifications: settings.enableNotifications,
                   );
+
+                  if (saved) ref.invalidate(birthdaysListProvider);
                 },
               ),
             ],

@@ -4,7 +4,8 @@ import 'package:cakeday/utils/notifications.dart';
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show TimeOfDay;
 
-Future<void> handleSaveBirthday({
+/// Returns `true` if the birthday was stored successfully (even if scheduling the notification failed).
+Future<bool> handleSaveBirthday({
   required BirthdayData birthdayData,
   required TimeOfDay notificationTime,
   required String globalMessage,
@@ -17,7 +18,7 @@ Future<void> handleSaveBirthday({
         msg: 'Please select a contact from your contact list',
       );
 
-      return;
+      return false;
     }
 
     if (birthdayData.contactInfo?.$2 == null) {
@@ -27,13 +28,13 @@ Future<void> handleSaveBirthday({
             'We were unable to retrieve the number for the selected contact. Please try again later.',
       );
 
-      return;
+      return false;
     }
 
     if (birthdayData.birthday == null) {
       showToast(type: .error, msg: 'Please select the birthday');
 
-      return;
+      return false;
     }
 
     final birthdayId = await DbManager.saveBirthday(
@@ -52,7 +53,7 @@ Future<void> handleSaveBirthday({
         msg: 'We were unable to save the birthday; please try again later',
       );
 
-      return;
+      return false;
     }
 
     final personalized = birthdayData.customMessage?.trim();
@@ -77,7 +78,7 @@ Future<void> handleSaveBirthday({
               'Birthday saved, but the reminder could not be scheduled. Check notification permissions.',
         );
 
-        return;
+        return true;
       }
     }
 
@@ -87,11 +88,15 @@ Future<void> handleSaveBirthday({
           ? 'Birthday saved and reminder scheduled'
           : 'Birthday saved successfully',
     );
+
+    return true;
   } catch (e) {
     print(e);
     showToast(
       type: .error,
       msg: 'We were unable to save the birthday; please try again later',
     );
+
+    return false;
   }
 }

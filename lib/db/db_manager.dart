@@ -12,9 +12,12 @@ class DbManager {
 
   DbManager._internal();
 
-  Future<int> deleteBirthday(int id) => _db.birthdayDao.deleteBirthday(id);
-  Future<List<Birthday>> getAllBirthdays() => _db.birthdayDao.getAll();
-  Future<Birthday?> getBirthdayById(int id) => _db.birthdayDao.getById(id);
+  static Future<int> deleteBirthday(int id) =>
+      _instance._db.birthdayDao.deleteBirthday(id);
+  static Future<List<Birthday>> getAllBirthdays() =>
+      _instance._db.birthdayDao.getAll();
+  static Future<Birthday?> getBirthdayById(int id) =>
+      _instance._db.birthdayDao.getById(id);
 
   static Future<void> init() async {
     _instance._db = AppDatabase();

@@ -4,7 +4,7 @@ import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:collection/collection.dart' show groupBy;
 import 'package:flutter/material.dart'
-    show BuildContext, Expanded, ListView, Padding, StatelessWidget, Widget;
+    show BuildContext, ListView, Padding, StatelessWidget, Widget;
 
 class RenderAllBirthdays extends StatelessWidget {
   final List<BirthdayData> allBirthdays;
@@ -15,24 +15,22 @@ class RenderAllBirthdays extends StatelessWidget {
   Widget build(BuildContext context) {
     final flatItems = _prepareItemsToRender(items: allBirthdays);
 
-    return Expanded(
-      child: ListView.builder(
-        itemCount: flatItems.length,
-        itemBuilder: (context, index) {
-          final item = flatItems[index];
+    return ListView.builder(
+      itemCount: flatItems.length,
+      itemBuilder: (context, index) {
+        final item = flatItems[index];
 
-          if (item is String) {
-            return Padding(
-              padding: .only(top: 16, bottom: 8),
-              child: SectionTitle(text: item),
-            );
-          }
+        if (item is String) {
+          return Padding(
+            padding: .only(top: 16, bottom: 8),
+            child: SectionTitle(text: item),
+          );
+        }
 
-          final birthdayData = item as BirthdayData;
+        final birthdayData = item as BirthdayData;
 
-          return ReminderCard(contactInfo: birthdayData.contactInfo);
-        },
-      ),
+        return ReminderCard(contactInfo: birthdayData.contactInfo);
+      },
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:cakeday/db/db.dart' show Birthday;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 
 class BirthdayData {
@@ -14,4 +15,16 @@ class BirthdayData {
     this.customMessage,
     this.note,
   });
+
+  factory BirthdayData.fromBirthday(Birthday row) {
+    return BirthdayData(
+      contactInfo: (row.name, row.phone, row.photo, null),
+      birthday: row.year != null
+          ? DateTime(row.year!, row.month, row.day)
+          : DateTime(0, row.month, row.day),
+      includeYear: row.year != null,
+      customMessage: row.customMessage,
+      note: row.note,
+    );
+  }
 }

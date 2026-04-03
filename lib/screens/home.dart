@@ -1,15 +1,13 @@
-import 'package:cakeday/screens/add_birthday.dart';
+import 'package:cakeday/components/create_birthday_button.dart'
+    show CreateBirthdayButton;
 import 'package:flutter/material.dart'
     show
         BuildContext,
         Center,
         Column,
         EdgeInsets,
-        FloatingActionButton,
         Icon,
         Icons,
-        MaterialPageRoute,
-        Navigator,
         Padding,
         Scaffold,
         StatelessWidget,
@@ -26,20 +24,11 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(25.0),
           child: Column(
             mainAxisAlignment: .center,
-            children: [
-              const Icon(Icons.cake),
-              FloatingActionButton(
-                enableFeedback: true,
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => AddBirthdayScreen()),
-                ),
-                child: const Icon(Icons.add),
-              ),
-            ],
+            children: [const Icon(Icons.cake)],
           ),
         ),
       ),
+      floatingActionButton: const CreateBirthdayButton(),
     );
   }
 }
