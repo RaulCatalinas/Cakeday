@@ -8,7 +8,7 @@ import 'package:cakeday/components/render_all_birthdays.dart'
     show RenderAllBirthdays;
 import 'package:cakeday/providers/birthdays_provider.dart'
     show birthdaysListProvider;
-import 'package:cakeday/utils/search.dart' show filterBirthdays;
+import 'package:cakeday/utils/search.dart' show BirthdayDataListSearch;
 import 'package:flutter/material.dart'
     show
         BuildContext,
@@ -84,8 +84,7 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
                           );
                         }
 
-                        final filteredBirthdays = filterBirthdays(
-                          birthdays: data,
+                        final filteredBirthdays = data.filtered(
                           query: searchQuery,
                           locale: Localizations.localeOf(context).toString(),
                         );
