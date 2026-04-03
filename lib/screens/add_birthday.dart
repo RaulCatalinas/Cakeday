@@ -37,6 +37,7 @@ import 'package:flutter/material.dart'
         SingleChildScrollView,
         SizedBox,
         Text,
+        TextEditingController,
         Theme,
         Visibility,
         Widget;
@@ -62,6 +63,8 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
   final scrollController = ScrollController();
+  final messageController = TextEditingController();
+  final noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -187,6 +190,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           SizedBox(
                             height: 100,
                             child: Input(
+                              controller: messageController,
                               focusNode: messageFocusNode,
                               hintText: 'Personalized birthday message',
                               maxLines: 3,
@@ -228,6 +232,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           SizedBox(
                             height: 100,
                             child: Input(
+                              controller: noteController,
                               focusNode: noteFocusNode,
                               hintText: 'E.g.: He likes coffee',
                               maxLines: 3,
@@ -253,6 +258,14 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     contactInfo: contactInfo,
                     birthday: birthday,
                     includeYear: includeYear,
+                    customMessage: _trimmedOrNull(
+                      enabled: usePersonalizedMessage,
+                      text: messageController.text,
+                    ),
+                    note: _trimmedOrNull(
+                      enabled: useNote,
+                      text: noteController.text,
+                    ),
                   );
 
                   await handleSaveBirthday(
@@ -272,8 +285,18 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
   @override
   void dispose() {
+    messageController.dispose();
+    noteController.dispose();
     messageFocusNode.dispose();
     noteFocusNode.dispose();
     super.dispose();
+  }
+
+  String? _trimmedOrNull({required bool enabled, required String text}) {
+    if (!enabled) return null;
+
+    final trimmed = text.trim();
+
+    return trimmed.isEmpty ? null : trimmed;
   }
 }

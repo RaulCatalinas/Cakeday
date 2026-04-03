@@ -1,3 +1,4 @@
+import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
 import 'package:cakeday/screens/settings.dart' show SettingsScreen;
@@ -31,6 +32,7 @@ void main() async {
 
   await Preferences.init();
   await Future.wait([
+    DbManager.init(),
     Themed.initialize(storageAdapter: AppThemeStorageAdapter()),
     initializeDateFormatting('en'),
     initializeNotifications(),
