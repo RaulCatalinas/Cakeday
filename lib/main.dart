@@ -1,3 +1,4 @@
+import 'package:cakeday/components/main_tab_scaffold.dart' show MainTabScaffold;
 import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
@@ -6,21 +7,7 @@ import 'package:cakeday/utils/notifications.dart'
     show initializeNotifications, setupNotificationListeners;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:flutter/material.dart'
-    show
-        BottomNavigationBar,
-        BottomNavigationBarItem,
-        BuildContext,
-        Icon,
-        Icons,
-        Navigator,
-        PopScope,
-        Scaffold,
-        State,
-        StatefulWidget,
-        StatelessWidget,
-        Widget,
-        WidgetsFlutterBinding,
-        runApp;
+    show BuildContext, StatelessWidget, Widget, WidgetsFlutterBinding, runApp;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:flutter_themed/flutter_themed.dart'
     show ThemeStorageAdapter, Themed;
@@ -58,11 +45,15 @@ class AppThemeStorageAdapter implements ThemeStorageAdapter {
       Preferences.saveDarkMode(themeName == 'dark');
 }
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  Widget build(BuildContext context) {
+    return const MainTabScaffold(
+      tabs: [HomeScreen(), AllBirthdaysScreen(), SettingsScreen()],
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -70,60 +61,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedApp(title: 'Cakeday', home: MainScreen());
-  }
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    AllBirthdaysScreen(),
-    SettingsScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) return;
-
-        final shouldPop = await _onPopInvoked();
-
-        if (shouldPop && context.mounted) {
-          Navigator.of(context).pop();
-        }
-      },
-      child: Scaffold(
-        body: _screens[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.cake), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'All birthdays',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<bool> _onPopInvoked() async {
-    if (_currentIndex != 0) {
-      setState(() => _currentIndex = 0);
-
-      return false;
-    }
-
-    return true;
+    return const ThemedApp(title: 'Cakeday', home: MainScreen());
   }
 }
