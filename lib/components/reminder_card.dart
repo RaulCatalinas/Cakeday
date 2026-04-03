@@ -1,4 +1,5 @@
 import 'package:cakeday/components/app_card.dart' show AppCard;
+import 'package:cakeday/components/days_remaining.dart' show DaysRemaining;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:flutter/material.dart'
     show
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart'
         Row,
         StatelessWidget,
         Text,
-        TextOverflow,
         Theme,
         Widget;
 
@@ -21,7 +21,7 @@ class ReminderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (name, phone, photo, _) =
+    final (name, phone, photo, birthday) =
         contactInfo ?? ('Unknown', 'Unknown', null, null);
 
     return AppCard(
@@ -44,20 +44,22 @@ class ReminderCard extends StatelessWidget {
               Text(
                 name,
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                overflow: .ellipsis,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const Padding(padding: .directional(top: 3, bottom: 3)),
               Text(
                 phone?.trim() ?? 'Unknown',
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                overflow: .ellipsis,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
           ),
+
+          if (birthday != null) DaysRemaining(birthday: birthday),
         ],
       ),
     );
