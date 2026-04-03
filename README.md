@@ -1,17 +1,65 @@
-# cakeday
+# Cakeday
 
-A new Flutter project.
+Flutter app to save birthdays from your contacts, keep notes and custom messages, and get **local reminders** so you do not miss a cake day.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Pick a contact from the device address book (with permission handling)
+- Store name, phone, date (optional year), photo, custom message, and note in a **local SQLite** database ([Drift](https://pub.dev/packages/drift))
+- **Scheduled notifications** ([awesome_notifications](https://pub.dev/packages/awesome_notifications)) with app-wide defaults and per-birthday message when set
+- **Light / dark** theme ([flutter_themed](https://pub.dev/packages/flutter_themed))
+- Search and grouped list of all birthdays
+- State and cache refresh with [Riverpod](https://pub.dev/packages/flutter_riverpod)
 
-A few resources to get you started if this is your first Flutter project:
+## Requirements
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- [Flutter](https://docs.flutter.dev/get-started/install) (SDK **^3.11**)
+- Android / iOS device or emulator (primary targets; desktop may work for local DB debugging)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Getting started
+
+```bash
+git clone <https://github.com/RaulCatalinas/Cakeday>
+cd cakeday
+flutter pub get
+```
+
+### Drift code generation
+
+If you change `lib/db/db.dart` (tables or queries), regenerate:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+## Run
+
+```bash
+flutter run
+```
+
+Pick a device with `flutter devices`.
+
+## Tech stack
+
+| Area        | Packages / notes        |
+|------------|-------------------------|
+| UI         | Material 3, Flutter     |
+| Persistence | Drift + `sqlite3_flutter_libs` |
+| DI / state | flutter_riverpod        |
+| Contacts   | flutter_contacts        |
+| Notifications | awesome_notifications |
+| Preferences | shared_preferences     |
+
+## Project layout (high level)
+
+- `lib/main.dart` — app entry, theme bootstrap
+- `lib/screens/` — screens (home, all birthdays, add birthday, settings)
+- `lib/components/` — reusable widgets
+- `lib/db/` — database and Drift-generated `db.g.dart`
+- `lib/providers/` — Riverpod providers
+- `lib/handlers/` — save flows and side effects
+
+---
+
+Contributions and issues are welcome.
