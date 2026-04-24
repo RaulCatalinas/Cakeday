@@ -1,10 +1,10 @@
 import 'package:cakeday/db/db_manager.dart' show DbManager;
+import 'package:cakeday/handlers/handle_schedule_notification.dart'
+    show handleScheduleNotification;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
-import 'package:cakeday/utils/notifications.dart';
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show TimeOfDay;
 
-/// Returns `true` if the birthday was stored successfully (even if scheduling the notification failed).
 Future<bool> handleSaveBirthday({
   required BirthdayData birthdayData,
   required TimeOfDay notificationTime,
@@ -56,29 +56,20 @@ Future<bool> handleSaveBirthday({
       return false;
     }
 
-    final personalized = birthdayData.customMessage?.trim();
-    final notificationBody = (personalized != null && personalized.isNotEmpty)
-        ? personalized
-        : globalMessage;
-
     if (enableNotifications) {
-      try {
-        await scheduleNotification(
-          id: birthdayId,
-          title: 'Birthday reminder',
-          msg: notificationBody,
-          date: birthdayData.birthday!,
-          time: notificationTime,
-        );
-      } catch (e) {
-        print(e);
+      final scheduledNotification = await handleScheduleNotification(
+        birthdayId: birthdayId,
+        birthdayData: birthdayData,
+        notificationTime: notificationTime,
+        globalMessage: globalMessage,
+      );
+
+      if (!scheduledNotification) {
         showToast(
           type: .warning,
           msg:
               'Birthday saved, but the reminder could not be scheduled. Check notification permissions.',
         );
-
-        return true;
       }
     }
 

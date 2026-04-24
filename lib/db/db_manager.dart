@@ -18,6 +18,11 @@ class DbManager {
       _instance._db.birthdayDao.getAll();
   static Future<Birthday?> getBirthdayById(int id) =>
       _instance._db.birthdayDao.getById(id);
+  static Future<int> setNotificationScheduled(int id, bool value) =>
+      _instance._db.birthdayDao.patchBirthday(
+        id,
+        BirthdaysCompanion(notificationScheduled: Value(value)),
+      );
 
   static Future<void> init() async {
     _instance._db = AppDatabase();
