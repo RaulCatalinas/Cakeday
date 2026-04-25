@@ -9,16 +9,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get add_birthday => 'Add birthday';
+  String get add_birthday_header => 'Add birthday';
 
   @override
-  String get information => 'Information';
+  String get information_section_title => 'Information';
 
   @override
   String get select_contact => 'Select from the contacts list';
 
   @override
-  String get date => 'Date';
+  String get date_section_title => 'Date';
 
   @override
   String get year_of_birth => 'Year of birth';
@@ -34,8 +34,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Personalized birthday message';
 
   @override
-  String get note => 'Note';
+  String get note_section_title => 'Note';
 
   @override
   String get note_input_hint_text => 'E.g.: He likes coffee';
+
+  @override
+  String get not_include_year_text => 'Optional';
 }

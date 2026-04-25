@@ -98,17 +98,17 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
-  /// No description provided for @add_birthday.
+  /// No description provided for @add_birthday_header.
   ///
   /// In en, this message translates to:
   /// **'Add birthday'**
-  String get add_birthday;
+  String get add_birthday_header;
 
-  /// No description provided for @information.
+  /// No description provided for @information_section_title.
   ///
   /// In en, this message translates to:
   /// **'Information'**
-  String get information;
+  String get information_section_title;
 
   /// No description provided for @select_contact.
   ///
@@ -116,11 +116,11 @@ abstract class AppLocalizations {
   /// **'Select from the contacts list'**
   String get select_contact;
 
-  /// No description provided for @date.
+  /// No description provided for @date_section_title.
   ///
   /// In en, this message translates to:
   /// **'Date'**
-  String get date;
+  String get date_section_title;
 
   /// No description provided for @year_of_birth.
   ///
@@ -146,17 +146,23 @@ abstract class AppLocalizations {
   /// **'Personalized birthday message'**
   String get personalized_message_input_hint_text;
 
-  /// No description provided for @note.
+  /// No description provided for @note_section_title.
   ///
   /// In en, this message translates to:
   /// **'Note'**
-  String get note;
+  String get note_section_title;
 
   /// No description provided for @note_input_hint_text.
   ///
   /// In en, this message translates to:
   /// **'E.g.: He likes coffee'**
   String get note_input_hint_text;
+
+  /// No description provided for @not_include_year_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get not_include_year_text;
 }
 
 class _AppLocalizationsDelegate

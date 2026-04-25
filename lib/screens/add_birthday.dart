@@ -97,14 +97,16 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     icon: Icon(Icons.arrow_circle_left, size: 28),
                   ),
                   Header(
-                    text: AppLocalizations.of(context)!.add_birthday,
+                    text: AppLocalizations.of(context)!.add_birthday_header,
                     fontSize: 18.0,
                   ),
                 ],
               ),
               const Padding(padding: .symmetric(vertical: 16)),
 
-              SectionTitle(text: AppLocalizations.of(context)!.information),
+              SectionTitle(
+                text: AppLocalizations.of(context)!.information_section_title,
+              ),
               ClickableCard(
                 color: const Color(0x33FF6B6B),
                 onTap: () async {
@@ -132,7 +134,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
               const Padding(padding: .symmetric(vertical: 16)),
 
-              const SectionTitle(text: 'Date'),
+              SectionTitle(
+                text: AppLocalizations.of(context)!.date_section_title,
+              ),
               ClickableCard(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: .vertical(top: .circular(25.0)),
@@ -144,7 +148,11 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                   children: [
                     const Icon(Icons.cake),
                     const Padding(padding: .symmetric(horizontal: 8)),
-                    Expanded(child: Text(AppLocalizations.of(context)!.date)),
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context)!.date_section_title,
+                      ),
+                    ),
                     Text(formattedMonthAndDay),
                     const Padding(padding: .symmetric(horizontal: 8)),
                     const Icon(Icons.arrow_forward_ios_rounded, size: 16),
@@ -167,7 +175,11 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     Expanded(
                       child: Text(AppLocalizations.of(context)!.year_of_birth),
                     ),
-                    Text(includeYear ? formattedYear : 'Optional'),
+                    Text(
+                      includeYear
+                          ? formattedYear
+                          : AppLocalizations.of(context)!.not_include_year_text,
+                    ),
                     AppCheckbox(
                       onChanged: (value) => setState(() => includeYear = value),
                     ),
@@ -225,7 +237,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
               const Padding(padding: .symmetric(vertical: 16)),
 
-              SectionTitle(text: AppLocalizations.of(context)!.note),
+              SectionTitle(
+                text: AppLocalizations.of(context)!.note_section_title,
+              ),
               AppCard(
                 child: Column(
                   children: [
@@ -234,7 +248,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                         const Icon(Icons.edit_note),
                         const Padding(padding: .symmetric(horizontal: 8)),
                         Expanded(
-                          child: Text(AppLocalizations.of(context)!.note),
+                          child: Text(
+                            AppLocalizations.of(context)!.note_section_title,
+                          ),
                         ),
                         AppCheckbox(
                           onChanged: (value) {
