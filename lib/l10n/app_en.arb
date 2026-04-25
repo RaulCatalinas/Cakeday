@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "add_birthday": "Add birthday",
+  "information": "Information",
+  "select_contact": "Select from the contacts list",
+  "date": "Date",
+  "year_of_birth": "Year of birth",
+  "message": "Message",
+  "personalized_message": "Personalized message",
+  "personalized_message_input_hint_text": "Personalized birthday message",
+  "note": "Note",
+  "note_input_hint_text": "E.g.: He likes coffee",
+  "@add_birthday": {},
+  "@information": {},
+  "@select_contact": {},
+  "@date": {},
+  "@year_of_birth": {},
+  "@message": {},
+  "@personalized_message": {},
+  "@personalized_message_input_hint_text": {},
+  "@note": {},
+  "@note_input_hint_text": {}
+}

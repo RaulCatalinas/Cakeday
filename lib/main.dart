@@ -1,6 +1,7 @@
 import 'package:cakeday/components/layout/main_tab_scaffold.dart'
     show MainTabScaffold;
 import 'package:cakeday/db/db_manager.dart';
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
 import 'package:cakeday/screens/settings.dart' show SettingsScreen;
@@ -23,6 +24,7 @@ void main() async {
     DbManager.init(),
     Themed.initialize(storageAdapter: AppThemeStorageAdapter()),
     initializeDateFormatting('en'),
+    initializeDateFormatting('es'),
     initializeNotifications(),
   ]);
 
@@ -62,6 +64,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ThemedApp(title: 'Cakeday', home: MainScreen());
+    return const ThemedApp(
+      title: 'Cakeday',
+      home: MainScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+    );
   }
 }

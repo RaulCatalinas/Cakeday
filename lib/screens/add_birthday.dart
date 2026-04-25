@@ -11,6 +11,7 @@ import 'package:cakeday/components/layout/clickable_card.dart'
     show ClickableCard;
 import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;
 import 'package:cakeday/providers/birthdays_provider.dart'
@@ -95,12 +96,15 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     onPressed: () => Navigator.of(context).pop(),
                     icon: Icon(Icons.arrow_circle_left, size: 28),
                   ),
-                  const Header(text: 'Add birthday', fontSize: 18.0),
+                  Header(
+                    text: AppLocalizations.of(context)!.add_birthday,
+                    fontSize: 18.0,
+                  ),
                 ],
               ),
               const Padding(padding: .symmetric(vertical: 16)),
 
-              const SectionTitle(text: 'Information'),
+              SectionTitle(text: AppLocalizations.of(context)!.information),
               ClickableCard(
                 color: const Color(0x33FF6B6B),
                 onTap: () async {
@@ -112,12 +116,14 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
                   setState(() => contactInfo = result);
                 },
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.person),
-                    Padding(padding: .symmetric(horizontal: 8)),
-                    Expanded(child: Text('Select from the contacts list')),
-                    Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                    const Icon(Icons.person),
+                    const Padding(padding: .symmetric(horizontal: 8)),
+                    Expanded(
+                      child: Text(AppLocalizations.of(context)!.select_contact),
+                    ),
+                    const Icon(Icons.arrow_forward_ios_rounded, size: 16),
                   ],
                 ),
               ),
@@ -138,7 +144,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                   children: [
                     const Icon(Icons.cake),
                     const Padding(padding: .symmetric(horizontal: 8)),
-                    const Expanded(child: Text('Date')),
+                    Expanded(child: Text(AppLocalizations.of(context)!.date)),
                     Text(formattedMonthAndDay),
                     const Padding(padding: .symmetric(horizontal: 8)),
                     const Icon(Icons.arrow_forward_ios_rounded, size: 16),
@@ -158,7 +164,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                   children: [
                     const Icon(Icons.card_giftcard),
                     const Padding(padding: .symmetric(horizontal: 8)),
-                    const Expanded(child: Text('Year of birth')),
+                    Expanded(
+                      child: Text(AppLocalizations.of(context)!.year_of_birth),
+                    ),
                     Text(includeYear ? formattedYear : 'Optional'),
                     AppCheckbox(
                       onChanged: (value) => setState(() => includeYear = value),
@@ -169,7 +177,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
               const Padding(padding: .symmetric(vertical: 16)),
 
-              const SectionTitle(text: 'Message'),
+              SectionTitle(text: AppLocalizations.of(context)!.message),
               AppCard(
                 child: Column(
                   children: [
@@ -177,7 +185,11 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       children: [
                         const Icon(Icons.chat_bubble_outline),
                         const Padding(padding: .symmetric(horizontal: 8)),
-                        const Expanded(child: Text('Personalized message')),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.personalized_message,
+                          ),
+                        ),
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => usePersonalizedMessage = value);
@@ -197,7 +209,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             child: Input(
                               controller: messageController,
                               focusNode: messageFocusNode,
-                              hintText: 'Personalized birthday message',
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.personalized_message_input_hint_text,
                               maxLines: 3,
                               keyboardType: .multiline,
                             ),
@@ -211,7 +225,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
               const Padding(padding: .symmetric(vertical: 16)),
 
-              const SectionTitle(text: 'Note'),
+              SectionTitle(text: AppLocalizations.of(context)!.note),
               AppCard(
                 child: Column(
                   children: [
@@ -219,7 +233,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       children: [
                         const Icon(Icons.edit_note),
                         const Padding(padding: .symmetric(horizontal: 8)),
-                        const Expanded(child: Text('Note')),
+                        Expanded(
+                          child: Text(AppLocalizations.of(context)!.note),
+                        ),
                         AppCheckbox(
                           onChanged: (value) {
                             setState(() => useNote = value);
@@ -239,7 +255,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             child: Input(
                               controller: noteController,
                               focusNode: noteFocusNode,
-                              hintText: 'E.g.: He likes coffee',
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.note_input_hint_text,
                               maxLines: 3,
                               keyboardType: .multiline,
                             ),

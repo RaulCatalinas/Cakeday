@@ -1,0 +1,23 @@
+{
+  "@@locale": "es",
+  "add_birthday": "Añadir cumpleaños",
+  "information": "Información",
+  "select_contact": "Selecciona de la lista de contactos",
+  "date": "Fecha",
+  "year_of_birth": "Año de nacimiento",
+  "message": "Mensaje",
+  "personalized_message": "Mensaje personalizado",
+  "personalized_message_input_hint_text": "Mensaje de cumpleaños personalizado",
+  "note": "Nota",
+  "note_input_hint_text": "Por ejemplo: Le gusta el café",
+  "@add_birthday": {},
+  "@information": {},
+  "@select_contact": {},
+  "@date": {},
+  "@year_of_birth": {},
+  "@message": {},
+  "@personalized_message": {},
+  "@personalized_message_input_hint_text": {},
+  "@note": {},
+  "@note_input_hint_text": {}
+}
