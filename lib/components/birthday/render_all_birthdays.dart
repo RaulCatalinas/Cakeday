@@ -1,5 +1,6 @@
-import 'package:cakeday/components/reminder_card.dart' show ReminderCard;
-import 'package:cakeday/components/section_title.dart' show SectionTitle;
+import 'package:cakeday/components/birthday/reminder_card.dart'
+    show ReminderCard;
+import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/handlers/handle_schedule_notification.dart'
     show handleScheduleNotification;
 import 'package:cakeday/providers/settings_provider.dart'

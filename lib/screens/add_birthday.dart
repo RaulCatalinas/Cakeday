@@ -1,11 +1,14 @@
-import 'package:cakeday/components/app_card.dart' show AppCard;
-import 'package:cakeday/components/app_checkbox.dart' show AppCheckbox;
-import 'package:cakeday/components/clickable_card.dart' show ClickableCard;
-import 'package:cakeday/components/gradient_button.dart' show GradientButton;
-import 'package:cakeday/components/header.dart' show Header;
-import 'package:cakeday/components/input.dart' show Input;
-import 'package:cakeday/components/reminder_card.dart' show ReminderCard;
-import 'package:cakeday/components/section_title.dart' show SectionTitle;
+import 'package:cakeday/components/birthday/reminder_card.dart'
+    show ReminderCard;
+import 'package:cakeday/components/common/app_card.dart' show AppCard;
+import 'package:cakeday/components/common/app_checkbox.dart' show AppCheckbox;
+import 'package:cakeday/components/common/gradient_button.dart'
+    show GradientButton;
+import 'package:cakeday/components/common/header.dart' show Header;
+import 'package:cakeday/components/common/input.dart' show Input;
+import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
+import 'package:cakeday/components/layout/clickable_card.dart'
+    show ClickableCard;
 import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/permissions/contacts.dart'

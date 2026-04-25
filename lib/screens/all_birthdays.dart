@@ -1,11 +1,11 @@
 import 'dart:async' show Timer;
 
-import 'package:cakeday/components/app_search_bar.dart';
-import 'package:cakeday/components/create_birthday_button.dart'
+import 'package:cakeday/components/birthday/create_birthday_button.dart'
     show CreateBirthdayButton;
-import 'package:cakeday/components/header.dart';
-import 'package:cakeday/components/render_all_birthdays.dart'
+import 'package:cakeday/components/birthday/render_all_birthdays.dart'
     show RenderAllBirthdays;
+import 'package:cakeday/components/common/app_search_bar.dart';
+import 'package:cakeday/components/common/header.dart';
 import 'package:cakeday/providers/birthdays_provider.dart'
     show birthdaysListProvider;
 import 'package:cakeday/utils/search.dart' show BirthdayDataListSearch;

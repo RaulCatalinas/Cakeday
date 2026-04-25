@@ -1,4 +1,4 @@
-import 'package:cakeday/components/create_birthday_button.dart'
+import 'package:cakeday/components/birthday/create_birthday_button.dart'
     show CreateBirthdayButton;
 import 'package:flutter/material.dart'
     show

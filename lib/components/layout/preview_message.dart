@@ -1,4 +1,4 @@
-import 'package:cakeday/components/input.dart' show Input;
+import 'package:cakeday/components/common/input.dart' show Input;
 import 'package:cakeday/utils/toast.dart';
 import 'package:flutter/material.dart'
     show

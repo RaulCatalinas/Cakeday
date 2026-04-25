@@ -1,8 +1,9 @@
-import 'package:cakeday/components/app_card.dart' show AppCard;
-import 'package:cakeday/components/app_switch.dart' show AppSwitch;
-import 'package:cakeday/components/preview_message.dart' show PreviewMessage;
-import 'package:cakeday/components/section_title.dart' show SectionTitle;
-import 'package:cakeday/components/subtitle.dart' show Subtitle;
+import 'package:cakeday/components/common/app_card.dart' show AppCard;
+import 'package:cakeday/components/common/app_switch.dart' show AppSwitch;
+import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
+import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
+import 'package:cakeday/components/layout/preview_message.dart'
+    show PreviewMessage;
 import 'package:cakeday/permissions/notifications.dart'
     show requestNotificationsPermission;
 import 'package:cakeday/providers/settings_provider.dart'

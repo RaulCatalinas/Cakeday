@@ -1,4 +1,5 @@
-import 'package:cakeday/components/main_tab_scaffold.dart' show MainTabScaffold;
+import 'package:cakeday/components/layout/main_tab_scaffold.dart'
+    show MainTabScaffold;
 import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
