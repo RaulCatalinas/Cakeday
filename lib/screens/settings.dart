@@ -4,6 +4,7 @@ import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
 import 'package:cakeday/components/layout/preview_message.dart'
     show PreviewMessage;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/permissions/notifications.dart'
     show requestNotificationsPermission;
 import 'package:cakeday/providers/settings_provider.dart'
@@ -56,7 +57,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              const SectionTitle(text: 'General message'),
+              SectionTitle(
+                text: AppLocalizations.of(
+                  context,
+                )!.general_message_section_title,
+              ),
               AppCard(
                 child: PreviewMessage(
                   onChanged: (value) => notifier.setGlobalMessage(value),
@@ -64,20 +69,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
 
               const SizedBox(height: 16),
-              const SectionTitle(text: 'Notifications'),
+              SectionTitle(
+                text: AppLocalizations.of(context)!.notifications_section_title,
+              ),
               AppCard(
                 borderRadius: .vertical(top: .circular(25)),
                 child: Row(
                   children: [
                     const Icon(Icons.notifications),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
-                          Text('Enable notifications'),
+                          Text(
+                            AppLocalizations.of(context)!.enable_notifications,
+                          ),
                           Subtitle(
-                            text: 'Alerts you on the day of the birthday',
+                            text: AppLocalizations.of(
+                              context,
+                            )!.enable_notifications_subtitle,
                           ),
                         ],
                       ),
@@ -101,12 +112,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: [
                     const Icon(Icons.alarm),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
-                          Text('Notification time'),
-                          Subtitle(text: 'Repeats every year'),
+                          Text(AppLocalizations.of(context)!.notification_time),
+                          Subtitle(
+                            text: AppLocalizations.of(
+                              context,
+                            )!.notification_time_subtitle,
+                          ),
                         ],
                       ),
                     ),
@@ -131,12 +146,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: [
                     const Icon(Icons.calendar_month),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
-                          Text('Advance notice'),
-                          Subtitle(text: 'Also notify the day before'),
+                          Text(AppLocalizations.of(context)!.advance_notice),
+                          Subtitle(
+                            text: AppLocalizations.of(
+                              context,
+                            )!.advance_notice_subtitle,
+                          ),
                         ],
                       ),
                     ),
@@ -149,18 +168,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
 
               const SizedBox(height: 16),
-              const SectionTitle(text: 'Appearance'),
+              SectionTitle(
+                text: AppLocalizations.of(context)!.appearance_section_title,
+              ),
               AppCard(
                 child: Row(
                   children: [
                     const Icon(Icons.dark_mode_outlined),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: .start,
                         children: [
-                          Text('Dark mode'),
-                          Subtitle(text: 'Switch between light and dark theme'),
+                          Text(AppLocalizations.of(context)!.dark_mode),
+                          Subtitle(
+                            text: AppLocalizations.of(
+                              context,
+                            )!.dark_mode_subtitle,
+                          ),
                         ],
                       ),
                     ),

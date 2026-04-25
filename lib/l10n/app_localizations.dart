@@ -193,6 +193,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No reminders match your search.\nTry another name or date.'**
   String get no_search_matches_error;
+
+  /// No description provided for @general_message_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'General message'**
+  String get general_message_section_title;
+
+  /// No description provided for @notifications_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications_section_title;
+
+  /// No description provided for @enable_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications'**
+  String get enable_notifications;
+
+  /// No description provided for @enable_notifications_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts you on the day of the birthday'**
+  String get enable_notifications_subtitle;
+
+  /// No description provided for @notification_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification time'**
+  String get notification_time;
+
+  /// No description provided for @notification_time_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeats every year'**
+  String get notification_time_subtitle;
+
+  /// No description provided for @advance_notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance notice'**
+  String get advance_notice;
+
+  /// No description provided for @advance_notice_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Also notify the day before'**
+  String get advance_notice_subtitle;
+
+  /// No description provided for @appearance_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance_section_title;
+
+  /// No description provided for @dark_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get dark_mode;
+
+  /// No description provided for @dark_mode_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between light and dark theme'**
+  String get dark_mode_subtitle;
 }
 
 class _AppLocalizationsDelegate

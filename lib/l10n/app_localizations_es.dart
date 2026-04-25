@@ -59,4 +59,37 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get no_search_matches_error =>
       'No reminders match your search.\nTry another name or date.';
+
+  @override
+  String get general_message_section_title => 'Mensaje general';
+
+  @override
+  String get notifications_section_title => 'Notificaciones';
+
+  @override
+  String get enable_notifications => 'Activar notificaciones';
+
+  @override
+  String get enable_notifications_subtitle => 'Te avisa el día del cumpleaños';
+
+  @override
+  String get notification_time => 'Hora de notificación';
+
+  @override
+  String get notification_time_subtitle => 'Se repite cada año';
+
+  @override
+  String get advance_notice => 'Aviso previo';
+
+  @override
+  String get advance_notice_subtitle => 'Avisa también el día anterior';
+
+  @override
+  String get appearance_section_title => 'Apariencia';
+
+  @override
+  String get dark_mode => 'Modo oscuro';
+
+  @override
+  String get dark_mode_subtitle => 'Cambiar entre el tema claro y el oscuro';
 }
