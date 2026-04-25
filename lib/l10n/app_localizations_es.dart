@@ -41,4 +41,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get not_include_year_text => 'Opcional';
+
+  @override
+  String get all_birthdays_header => 'Todos los cumpleaños';
+
+  @override
+  String get app_search_bar_hint_text => 'Buscar recordatorios';
+
+  @override
+  String get could_not_load_birthdays_error =>
+      'No hemos podido cargar tus cumpleaños. Inténtalo de nuevo dentro de un momento.';
+
+  @override
+  String get not_birthdays_yet_information =>
+      'No birthdays yet.\nAdd someone using the add screen.';
+
+  @override
+  String get no_search_matches_error =>
+      'No reminders match your search.\nTry another name or date.';
 }

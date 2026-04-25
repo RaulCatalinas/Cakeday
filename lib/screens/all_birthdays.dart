@@ -4,8 +4,10 @@ import 'package:cakeday/components/birthday/create_birthday_button.dart'
     show CreateBirthdayButton;
 import 'package:cakeday/components/birthday/render_all_birthdays.dart'
     show RenderAllBirthdays;
-import 'package:cakeday/components/common/app_search_bar.dart';
-import 'package:cakeday/components/common/header.dart';
+import 'package:cakeday/components/common/app_search_bar.dart'
+    show AppSearchBar;
+import 'package:cakeday/components/common/header.dart' show Header;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/providers/birthdays_provider.dart'
     show birthdaysListProvider;
 import 'package:cakeday/utils/search.dart' show BirthdayDataListSearch;
@@ -15,10 +17,8 @@ import 'package:flutter/material.dart'
         Center,
         CircularProgressIndicator,
         Column,
-        CrossAxisAlignment,
         Expanded,
         Localizations,
-        MainAxisAlignment,
         Padding,
         SafeArea,
         Scaffold,
@@ -46,13 +46,15 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
         child: Padding(
           padding: const .directional(start: 25, end: 25, top: 0, bottom: 25),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: .stretch,
+            mainAxisAlignment: .start,
             children: [
-              const Header(text: 'All birthdays'),
+              Header(text: AppLocalizations.of(context)!.all_birthdays_header),
               const Padding(padding: .symmetric(vertical: 16)),
               AppSearchBar(
-                hintText: 'Search for reminders',
+                hintText: AppLocalizations.of(
+                  context,
+                )!.app_search_bar_hint_text,
                 onChanged: _onSearchChanged,
               ),
               const Padding(padding: .symmetric(vertical: 8)),
@@ -62,22 +64,26 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
                     .when(
                       loading: () =>
                           const Center(child: CircularProgressIndicator()),
-                      error: (_, _) => const Center(
+                      error: (_, _) => Center(
                         child: Padding(
-                          padding: .symmetric(horizontal: 16),
+                          padding: const .symmetric(horizontal: 16),
                           child: Text(
-                            "We couldn't load your birthdays. Please try again in a moment.",
+                            AppLocalizations.of(
+                              context,
+                            )!.could_not_load_birthdays_error,
                             textAlign: .center,
                           ),
                         ),
                       ),
                       data: (data) {
                         if (data.isEmpty) {
-                          return const Center(
+                          return Center(
                             child: Padding(
-                              padding: .symmetric(horizontal: 16),
+                              padding: const .symmetric(horizontal: 16),
                               child: Text(
-                                'No birthdays yet.\nAdd someone using the add screen.',
+                                AppLocalizations.of(
+                                  context,
+                                )!.not_birthdays_yet_information,
                                 textAlign: .center,
                               ),
                             ),
@@ -90,11 +96,13 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
                         );
 
                         if (filteredBirthdays.isEmpty) {
-                          return const Center(
+                          return Center(
                             child: Padding(
-                              padding: .symmetric(horizontal: 16),
+                              padding: const .symmetric(horizontal: 16),
                               child: Text(
-                                'No reminders match your search.\nTry another name or date.',
+                                AppLocalizations.of(
+                                  context,
+                                )!.no_search_matches_error,
                                 textAlign: .center,
                               ),
                             ),

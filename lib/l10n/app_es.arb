@@ -11,6 +11,11 @@
   "note_section_title": "Nota",
   "note_input_hint_text": "Por ejemplo: Le gusta el café",
   "not_include_year_text": "Opcional",
+  "all_birthdays_header": "Todos los cumpleaños",
+  "app_search_bar_hint_text": "Buscar recordatorios",
+  "could_not_load_birthdays_error": "No hemos podido cargar tus cumpleaños. Inténtalo de nuevo dentro de un momento.",
+  "not_birthdays_yet_information": "No birthdays yet.\nAdd someone using the add screen.",
+  "no_search_matches_error": "No reminders match your search.\nTry another name or date.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -21,5 +26,10 @@
   "@personalized_message_input_hint_text": {},
   "@note_section_title": {},
   "@note_input_hint_text": {},
-  "@not_include_year_text": {}
+  "@not_include_year_text": {},
+  "@all_birthdays_header": {},
+  "@app_search_bar_hint_text": {},
+  "@could_not_load_birthdays_error": {},
+  "@not_birthdays_yet_information": {},
+  "@no_search_matches_error": {}
 }

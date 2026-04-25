@@ -163,6 +163,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Optional'**
   String get not_include_year_text;
+
+  /// No description provided for @all_birthdays_header.
+  ///
+  /// In en, this message translates to:
+  /// **'All birthdays'**
+  String get all_birthdays_header;
+
+  /// No description provided for @app_search_bar_hint_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for reminders'**
+  String get app_search_bar_hint_text;
+
+  /// No description provided for @could_not_load_birthdays_error.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your birthdays. Please try again in a moment.'**
+  String get could_not_load_birthdays_error;
+
+  /// No description provided for @not_birthdays_yet_information.
+  ///
+  /// In en, this message translates to:
+  /// **'No birthdays yet.\nAdd someone using the add screen.'**
+  String get not_birthdays_yet_information;
+
+  /// No description provided for @no_search_matches_error.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders match your search.\nTry another name or date.'**
+  String get no_search_matches_error;
 }
 
 class _AppLocalizationsDelegate
