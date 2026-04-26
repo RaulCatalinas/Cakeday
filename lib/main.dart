@@ -2,6 +2,7 @@ import 'package:cakeday/components/layout/main_tab_scaffold.dart'
     show MainTabScaffold;
 import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/managers/language_manager.dart';
 import 'package:cakeday/screens/all_birthdays.dart';
 import 'package:cakeday/screens/home.dart' show HomeScreen;
 import 'package:cakeday/screens/settings.dart';
@@ -13,8 +14,12 @@ import 'package:flutter/material.dart'
     show
         BuildContext,
         Icons,
+        Locale,
+        State,
+        StatefulWidget,
         StatelessWidget,
         Widget,
+        WidgetsBindingObserver,
         WidgetsFlutterBinding,
         runApp;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
@@ -82,16 +87,38 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  late Locale _locale;
+
+  @override
   Widget build(BuildContext context) {
-    return const ThemedApp(
+    return ThemedApp(
       title: 'Cakeday',
-      home: MainScreen(),
+      home: const MainScreen(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _locale = LanguageManager.getLocale();
+    LanguageManager.setLanguageChangeCallback(_onLanguageChanged);
+  }
+
+  void _onLanguageChanged() {
+    setState(() {
+      _locale = LanguageManager.getLocale();
+    });
   }
 }

@@ -41,6 +41,12 @@
   "settings_tab_label": "Settings",
   "all_birthdays_tab_label": "Birthdays",
   "unknown_text": "Unknown",
+  "change_language": "App language",
+  "spanish_language": "Spanish",
+  "english_language": "English",
+  "change_language_subtitle": "Choose your preferred language",
+  "change_language_hint_text": "Select a language",
+  "os_language": "System default",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -88,5 +94,11 @@
   "@home_tab_label": {},
   "@settings_tab_label": {},
   "@all_birthdays_tab_label": {},
-  "@unknown_text": {}
+  "@unknown_text": {},
+  "@change_language": {},
+  "@spanish_language": {},
+  "@english_language": {},
+  "@change_language_subtitle": {},
+  "@change_language_hint_text": {},
+  "@os_language": {}
 }

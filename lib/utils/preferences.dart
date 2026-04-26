@@ -10,11 +10,13 @@ class Preferences {
   static const enableNotifications = 'enable_notifications';
   static const advanceNotice = 'advance_notice';
   static const darkMode = 'dark_mode';
+  static const language = 'language';
 
   static bool? getAdvanceNotice() => _prefs.getBool(advanceNotice);
   static bool? getDarkMode() => _prefs.getBool(darkMode);
   static bool? getEnableNotifications() => _prefs.getBool(enableNotifications);
   static String? getGlobalMessage() => _prefs.getString(globalMessage);
+  static String? getLanguage() => _prefs.getString(language);
 
   static TimeOfDay? getNotificationTime() {
     final hour = _prefs.getInt(notificationHour);
@@ -40,6 +42,10 @@ class Preferences {
 
   static Future<void> saveGlobalMessage(String message) =>
       _prefs.setString(globalMessage, message);
+
+  static Future<void> saveLanguage(String newLanguage) async {
+    await _prefs.setString(language, newLanguage);
+  }
 
   static Future<void> saveNotificationTime(TimeOfDay time) async {
     await _prefs.setInt(notificationHour, time.hour);

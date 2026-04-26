@@ -139,4 +139,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get unknown_text => 'Desconocido';
+
+  @override
+  String get change_language => 'Idioma de la aplicación';
+
+  @override
+  String get spanish_language => 'Español';
+
+  @override
+  String get english_language => 'Ingles';
+
+  @override
+  String get change_language_subtitle => 'Elige tu idioma preferido';
+
+  @override
+  String get change_language_hint_text => 'Selecciona un idioma';
+
+  @override
+  String get os_language => 'Predeterminado del sistema';
 }

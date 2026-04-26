@@ -140,4 +140,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown_text => 'Unknown';
+
+  @override
+  String get change_language => 'App language';
+
+  @override
+  String get spanish_language => 'Spanish';
+
+  @override
+  String get english_language => 'English';
+
+  @override
+  String get change_language_subtitle => 'Choose your preferred language';
+
+  @override
+  String get change_language_hint_text => 'Select a language';
+
+  @override
+  String get os_language => 'System default';
 }

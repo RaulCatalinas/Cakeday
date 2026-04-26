@@ -1,10 +1,12 @@
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
+import 'package:cakeday/components/common/app_dropdown.dart';
 import 'package:cakeday/components/common/app_switch.dart' show AppSwitch;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
 import 'package:cakeday/components/layout/preview_message.dart'
     show PreviewMessage;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/managers/language_manager.dart';
 import 'package:cakeday/permissions/notifications.dart'
     show requestNotificationsPermission;
 import 'package:cakeday/providers/settings_provider.dart'
@@ -16,10 +18,12 @@ import 'package:flutter/material.dart'
         BuildContext,
         Column,
         Divider,
+        DropdownMenuEntry,
         Expanded,
         Icon,
         IconButton,
         Icons,
+        LayoutBuilder,
         MaterialLocalizations,
         Row,
         SafeArea,
@@ -172,6 +176,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 text: AppLocalizations.of(context)!.appearance_section_title,
               ),
               AppCard(
+                borderRadius: .vertical(top: .circular(25)),
                 child: Row(
                   children: [
                     const Icon(Icons.dark_mode_outlined),
@@ -197,6 +202,69 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       },
                     ),
                   ],
+                ),
+              ),
+              const Divider(thickness: 1, height: 1),
+              AppCard(
+                borderRadius: .vertical(bottom: .circular(25)),
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.language),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.change_language,
+                                ),
+                                Subtitle(
+                                  text: AppLocalizations.of(
+                                    context,
+                                  )!.change_language_subtitle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      AppDropdown(
+                        initialValue: LanguageManager.getRawLocale(),
+                        width: constraints.maxWidth,
+                        hintText: AppLocalizations.of(
+                          context,
+                        )!.change_language_hint_text,
+                        dropdownMenuEntries: [
+                          DropdownMenuEntry(
+                            value: 'en',
+                            label: AppLocalizations.of(
+                              context,
+                            )!.english_language,
+                          ),
+                          DropdownMenuEntry(
+                            value: 'es',
+                            label: AppLocalizations.of(
+                              context,
+                            )!.spanish_language,
+                          ),
+                          DropdownMenuEntry(
+                            value: 'os',
+                            label: AppLocalizations.of(context)!.os_language,
+                          ),
+                        ],
+                        onSelected: (value) {
+                          if (value == null) return;
+
+                          LanguageManager.changeLanguage(value);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

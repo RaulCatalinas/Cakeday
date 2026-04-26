@@ -343,6 +343,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknown_text;
+
+  /// No description provided for @change_language.
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get change_language;
+
+  /// No description provided for @spanish_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get spanish_language;
+
+  /// No description provided for @english_language.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english_language;
+
+  /// No description provided for @change_language_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred language'**
+  String get change_language_subtitle;
+
+  /// No description provided for @change_language_hint_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a language'**
+  String get change_language_hint_text;
+
+  /// No description provided for @os_language.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get os_language;
 }
 
 class _AppLocalizationsDelegate
