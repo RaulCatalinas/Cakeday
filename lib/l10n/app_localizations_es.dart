@@ -133,4 +133,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settings_tab_label => 'Configuración';
+
+  @override
+  String get all_birthdays_tab_label => 'Cumpleaños';
 }

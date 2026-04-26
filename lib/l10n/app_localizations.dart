@@ -331,6 +331,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings_tab_label;
+
+  /// No description provided for @all_birthdays_tab_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays'**
+  String get all_birthdays_tab_label;
 }
 
 class _AppLocalizationsDelegate

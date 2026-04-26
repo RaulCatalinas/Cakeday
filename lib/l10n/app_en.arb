@@ -39,6 +39,7 @@
   "preview_whatsapp_text": "PREVIEW · WHATSAPP",
   "home_tab_label": "Home",
   "settings_tab_label": "Settings",
+  "all_birthdays_tab_label": "Birthdays",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -84,5 +85,6 @@
   "@edit_message_button_text": {},
   "@preview_whatsapp_text": {},
   "@home_tab_label": {},
-  "@settings_tab_label": {}
+  "@settings_tab_label": {},
+  "@all_birthdays_tab_label": {}
 }

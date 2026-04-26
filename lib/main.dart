@@ -69,7 +69,7 @@ class MainScreen extends StatelessWidget {
         ),
         NavItem(
           screen: const AllBirthdaysScreen(),
-          label: AppLocalizations.of(context)!.all_birthdays_header,
+          label: AppLocalizations.of(context)!.all_birthdays_tab_label,
           icon: Icons.people,
         ),
         NavItem(
