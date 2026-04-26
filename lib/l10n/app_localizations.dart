@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @could_not_load_birthdays_error.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'t load your birthdays. Please try again in a moment.'**
+  /// **'We couldn\'\'t load your birthdays. Please try again in a moment.'**
   String get could_not_load_birthdays_error;
 
   /// No description provided for @not_birthdays_yet_information.
@@ -259,6 +259,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Switch between light and dark theme'**
   String get dark_mode_subtitle;
+
+  /// No description provided for @global_birthday_input_hint_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday message'**
+  String get global_birthday_input_hint_text;
+
+  /// No description provided for @default_global_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy birthday, \'{name}\'! 🎂🎉 Hope you\'\'re having an incredible day!'**
+  String get default_global_message;
+
+  /// No description provided for @count_birthday_message_chars.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} characters · minimum 10'**
+  String count_birthday_message_chars(int count);
+
+  /// No description provided for @name_placeholder_info.
+  ///
+  /// In en, this message translates to:
+  /// **'will be replaced with the contact\'\'s name when opening WhatsApp'**
+  String get name_placeholder_info;
+
+  /// No description provided for @cancel_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_button_text;
+
+  /// No description provided for @empty_birthday_message_error.
+  ///
+  /// In en, this message translates to:
+  /// **'A birthday greeting shouldn\'\'t be empty'**
+  String get empty_birthday_message_error;
+
+  /// No description provided for @too_short_birthday_error.
+  ///
+  /// In en, this message translates to:
+  /// **'The message is too short'**
+  String get too_short_birthday_error;
+
+  /// No description provided for @save_birthday_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Save message'**
+  String get save_birthday_button_text;
+
+  /// No description provided for @edit_message_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit message'**
+  String get edit_message_button_text;
+
+  /// No description provided for @preview_whatsapp_text.
+  ///
+  /// In en, this message translates to:
+  /// **'PREVIEW · WHATSAPP'**
+  String get preview_whatsapp_text;
 }
 
 class _AppLocalizationsDelegate

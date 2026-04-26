@@ -1,9 +1,9 @@
 import 'package:cakeday/components/common/input.dart' show Input;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/toast.dart';
 import 'package:flutter/material.dart'
     show
         Align,
-        Alignment,
         BoxDecoration,
         BuildContext,
         ButtonStyle,
@@ -25,7 +25,7 @@ import 'package:flutter/material.dart'
         TextStyle,
         ValueListenableBuilder,
         Widget;
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 
 class PreviewMessage extends StatefulWidget {
   final void Function(String) onChanged;
@@ -38,22 +38,32 @@ class PreviewMessage extends StatefulWidget {
 
 class _PreviewMessageState extends State<PreviewMessage> {
   final controller = TextEditingController();
+
   bool editing = false;
-  String message =
-      "Happy birthday, {name}! 🎂🎉 Hope you're having an incredible day!";
+  String message = '';
+  bool messageInitialized = false;
 
   @override
   Widget build(BuildContext context) {
+    if (!messageInitialized) {
+      message = AppLocalizations.of(context)!.default_global_message;
+      messageInitialized = true;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'PREVIEW · WHATSAPP',
-          style: TextStyle(fontSize: 10, fontWeight: .w800, letterSpacing: 1),
+        Text(
+          AppLocalizations.of(context)!.preview_whatsapp_text,
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: .w800,
+            letterSpacing: 1,
+          ),
         ),
         const SizedBox(height: 8),
         Container(
-          padding: .all(12),
+          padding: const .all(12),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
@@ -76,7 +86,9 @@ class _PreviewMessageState extends State<PreviewMessage> {
             children: [
               Input(
                 controller: controller,
-                hintText: 'Birthday message',
+                hintText: AppLocalizations.of(
+                  context,
+                )!.global_birthday_input_hint_text,
                 maxLines: 3,
               ),
               const SizedBox(height: 6),
@@ -92,12 +104,14 @@ class _PreviewMessageState extends State<PreviewMessage> {
                     crossAxisAlignment: .start,
                     children: [
                       Text(
-                        '$count characters · minimum 10',
+                        AppLocalizations.of(
+                          context,
+                        )!.count_birthday_message_chars(count),
                         style: TextStyle(fontSize: 11, color: color),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        '💡 {name} will be replaced with the contact\'s name when opening WhatsApp',
+                      Text(
+                        '💡 {name} ${AppLocalizations.of(context)!.name_placeholder_info}',
                         style: TextStyle(
                           fontSize: 11,
                           color: Color(0xFF6E6E73),
@@ -113,12 +127,10 @@ class _PreviewMessageState extends State<PreviewMessage> {
                 children: [
                   TextButton(
                     style: const ButtonStyle(enableFeedback: true),
-                    onPressed: () {
-                      setState(() => editing = false);
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
+                    onPressed: () => setState(() => editing = false),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel_button_text,
+                      style: const TextStyle(
                         color: Color(0xFF6E6E73),
                         fontWeight: .w700,
                         fontSize: 13,
@@ -134,7 +146,9 @@ class _PreviewMessageState extends State<PreviewMessage> {
                       if (value.isEmpty) {
                         showToast(
                           type: .error,
-                          msg: "A birthday greeting shouldn't be empty",
+                          msg: AppLocalizations.of(
+                            context,
+                          )!.empty_birthday_message_error,
                         );
 
                         return;
@@ -143,7 +157,9 @@ class _PreviewMessageState extends State<PreviewMessage> {
                       if (value.length < 10) {
                         showToast(
                           type: .error,
-                          msg: 'The message is too short',
+                          msg: AppLocalizations.of(
+                            context,
+                          )!.too_short_birthday_error,
                         );
 
                         return;
@@ -156,9 +172,9 @@ class _PreviewMessageState extends State<PreviewMessage> {
                       widget.onChanged(value);
                       HapticFeedback.mediumImpact();
                     },
-                    child: const Text(
-                      '💾 Save message',
-                      style: TextStyle(
+                    child: Text(
+                      '💾 ${AppLocalizations.of(context)!.save_birthday_button_text}',
+                      style: const TextStyle(
                         color: Color(0xFFFF6B6B),
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
@@ -171,15 +187,15 @@ class _PreviewMessageState extends State<PreviewMessage> {
           )
         else
           Align(
-            alignment: Alignment.centerRight,
+            alignment: .centerRight,
             child: GestureDetector(
               onTap: () {
                 setState(() => editing = true);
                 HapticFeedback.lightImpact();
               },
-              child: const Text(
-                '✏️ Edit message',
-                style: TextStyle(
+              child: Text(
+                '✏️ ${AppLocalizations.of(context)!.edit_message_button_text}',
+                style: const TextStyle(
                   color: Color(0xFFFF6B6B),
                   fontWeight: FontWeight.w700,
                   fontSize: 13,

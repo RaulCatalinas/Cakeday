@@ -27,6 +27,16 @@
   "appearance_section_title": "Apariencia",
   "dark_mode": "Modo oscuro",
   "dark_mode_subtitle": "Cambiar entre el tema claro y el oscuro",
+  "global_birthday_input_hint_text": "Mensaje de cumpleaños",
+  "default_global_message": "¡Feliz cumpleaños, '{name}'! 🎂🎉 ¡Espero que estés pasando un día increíble!",
+  "count_birthday_message_chars": "{count} caracteres · mínimo 10",
+  "name_placeholder_info": "se sustituirá por el nombre del contacto al abrir WhatsApp",
+  "cancel_button_text": "Cancelar",
+  "empty_birthday_message_error": "El mensaje de cumpleaños no debe estar vacio",
+  "too_short_birthday_error": "El mensaje es demasiado corto",
+  "save_birthday_button_text": "Guardar mensaje",
+  "edit_message_button_text": "Edit message",
+  "preview_whatsapp_text": "VISTA PREVIA · WHATSAPP",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -53,5 +63,23 @@
   "@advance_notice_subtitle": {},
   "@appearance_section_title": {},
   "@dark_mode": {},
-  "@dark_mode_subtitle": {}
+  "@dark_mode_subtitle": {},
+  "@global_birthday_input_hint_text": {},
+  "@default_global_message": {},
+  "@count_birthday_message_chars": {
+    "placeholders": {
+      "count":{
+        "description": "Caracteres del mensaje de cumpleaños",
+        "type": "int"
+      }
+    }
+  },
+
+  "@name_placeholder_info": {},
+  "@cancel_button_text": {},
+  "@empty_birthday_message_error": {},
+  "@too_short_birthday_error": {},
+  "@save_birthday_button_text": {},
+  "@edit_message_button_text": {},
+  "@preview_whatsapp_text": {}
 }

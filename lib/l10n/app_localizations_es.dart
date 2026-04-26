@@ -92,4 +92,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dark_mode_subtitle => 'Cambiar entre el tema claro y el oscuro';
+
+  @override
+  String get global_birthday_input_hint_text => 'Mensaje de cumpleaños';
+
+  @override
+  String get default_global_message =>
+      '¡Feliz cumpleaños, {name}! 🎂🎉 ¡Espero que estés pasando un día increíble!';
+
+  @override
+  String count_birthday_message_chars(int count) {
+    return '$count caracteres · mínimo 10';
+  }
+
+  @override
+  String get name_placeholder_info =>
+      'se sustituirá por el nombre del contacto al abrir WhatsApp';
+
+  @override
+  String get cancel_button_text => 'Cancelar';
+
+  @override
+  String get empty_birthday_message_error =>
+      'El mensaje de cumpleaños no debe estar vacio';
+
+  @override
+  String get too_short_birthday_error => 'El mensaje es demasiado corto';
+
+  @override
+  String get save_birthday_button_text => 'Guardar mensaje';
+
+  @override
+  String get edit_message_button_text => 'Edit message';
+
+  @override
+  String get preview_whatsapp_text => 'VISTA PREVIA · WHATSAPP';
 }

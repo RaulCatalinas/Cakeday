@@ -93,4 +93,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dark_mode_subtitle => 'Switch between light and dark theme';
+
+  @override
+  String get global_birthday_input_hint_text => 'Birthday message';
+
+  @override
+  String get default_global_message =>
+      'Happy birthday, {name}! 🎂🎉 Hope you\'re having an incredible day!';
+
+  @override
+  String count_birthday_message_chars(int count) {
+    return '$count characters · minimum 10';
+  }
+
+  @override
+  String get name_placeholder_info =>
+      'will be replaced with the contact\'s name when opening WhatsApp';
+
+  @override
+  String get cancel_button_text => 'Cancel';
+
+  @override
+  String get empty_birthday_message_error =>
+      'A birthday greeting shouldn\'t be empty';
+
+  @override
+  String get too_short_birthday_error => 'The message is too short';
+
+  @override
+  String get save_birthday_button_text => 'Save message';
+
+  @override
+  String get edit_message_button_text => 'Edit message';
+
+  @override
+  String get preview_whatsapp_text => 'PREVIEW · WHATSAPP';
 }
