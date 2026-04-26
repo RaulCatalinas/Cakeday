@@ -54,11 +54,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get not_birthdays_yet_information =>
-      'No birthdays yet.\nAdd someone using the add screen.';
+      'Aún no hay cumpleaños.\nAñade alguno desde la pantalla de añadir.';
 
   @override
   String get no_search_matches_error =>
-      'No reminders match your search.\nTry another name or date.';
+      'No se han encontrado resultados que coincidan con tu búsqueda.\nPrueba con otro nombre o fecha.';
 
   @override
   String get general_message_section_title => 'Mensaje general';
