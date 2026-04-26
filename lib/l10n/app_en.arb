@@ -10,7 +10,7 @@
   "personalized_message_input_hint_text": "Personalized birthday message",
   "note_section_title": "Note",
   "note_input_hint_text": "E.g.: He likes coffee",
-  "not_include_year_text": "Optional",
+  "optional_text": "Optional",
   "all_birthdays_header": "All birthdays",
   "app_search_bar_hint_text": "Search for reminders",
   "could_not_load_birthdays_error": "We couldn''t load your birthdays. Please try again in a moment.",
@@ -40,6 +40,7 @@
   "home_tab_label": "Home",
   "settings_tab_label": "Settings",
   "all_birthdays_tab_label": "Birthdays",
+  "unknown_text": "Unknown",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -50,7 +51,7 @@
   "@personalized_message_input_hint_text": {},
   "@note_section_title": {},
   "@note_input_hint_text": {},
-  "@not_include_year_text": {},
+  "@optional_text": {},
   "@all_birthdays_header": {},
   "@app_search_bar_hint_text": {},
   "@could_not_load_birthdays_error": {},
@@ -86,5 +87,6 @@
   "@preview_whatsapp_text": {},
   "@home_tab_label": {},
   "@settings_tab_label": {},
-  "@all_birthdays_tab_label": {}
+  "@all_birthdays_tab_label": {},
+  "@unknown_text": {}
 }

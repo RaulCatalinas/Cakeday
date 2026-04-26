@@ -2,6 +2,7 @@ import 'package:cakeday/components/birthday/days_remaining.dart'
     show DaysRemaining;
 import 'package:cakeday/components/birthday/schedule_birthday_notification.dart';
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:flutter/material.dart'
     show
@@ -33,7 +34,13 @@ class ReminderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (name, phone, photo, birthday) =
-        contactInfo ?? ('Unknown', 'Unknown', null, null);
+        contactInfo ??
+        (
+          AppLocalizations.of(context)!.unknown_text,
+          AppLocalizations.of(context)!.unknown_text,
+          null,
+          null,
+        );
 
     return AppCard(
       padding: 15.0,

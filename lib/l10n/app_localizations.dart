@@ -158,11 +158,11 @@ abstract class AppLocalizations {
   /// **'E.g.: He likes coffee'**
   String get note_input_hint_text;
 
-  /// No description provided for @not_include_year_text.
+  /// No description provided for @optional_text.
   ///
   /// In en, this message translates to:
   /// **'Optional'**
-  String get not_include_year_text;
+  String get optional_text;
 
   /// No description provided for @all_birthdays_header.
   ///
@@ -337,6 +337,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Birthdays'**
   String get all_birthdays_tab_label;
+
+  /// No description provided for @unknown_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown_text;
 }
 
 class _AppLocalizationsDelegate

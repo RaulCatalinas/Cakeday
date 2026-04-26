@@ -40,7 +40,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get note_input_hint_text => 'E.g.: He likes coffee';
 
   @override
-  String get not_include_year_text => 'Optional';
+  String get optional_text => 'Optional';
 
   @override
   String get all_birthdays_header => 'All birthdays';
@@ -137,4 +137,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get all_birthdays_tab_label => 'Birthdays';
+
+  @override
+  String get unknown_text => 'Unknown';
 }

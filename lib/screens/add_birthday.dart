@@ -77,10 +77,10 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
     final locale = Localizations.localeOf(context).toString();
     final formattedMonthAndDay = birthday != null
         ? DateFormat.MMMMd(locale).format(birthday!)
-        : 'Unknown';
+        : AppLocalizations.of(context)!.unknown_text;
     final formattedYear = birthday != null
         ? DateFormat.y(locale).format(birthday!)
-        : 'Optional';
+        : AppLocalizations.of(context)!.optional_text;
 
     return Scaffold(
       body: SafeArea(
@@ -178,7 +178,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     Text(
                       includeYear
                           ? formattedYear
-                          : AppLocalizations.of(context)!.not_include_year_text,
+                          : AppLocalizations.of(context)!.optional_text,
                     ),
                     AppCheckbox(
                       onChanged: (value) => setState(() => includeYear = value),
