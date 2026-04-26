@@ -35,7 +35,7 @@
   "empty_birthday_message_error": "El mensaje de cumpleaños no debe estar vacio",
   "too_short_birthday_error": "El mensaje es demasiado corto",
   "save_birthday_button_text": "Guardar mensaje",
-  "edit_message_button_text": "Edit message",
+  "edit_message_button_text": "Editar mensaje",
   "preview_whatsapp_text": "VISTA PREVIA · WHATSAPP",
   "home_tab_label": "Inicio",
   "settings_tab_label": "Configuración",

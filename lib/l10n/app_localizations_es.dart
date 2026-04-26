@@ -123,7 +123,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get save_birthday_button_text => 'Guardar mensaje';
 
   @override
-  String get edit_message_button_text => 'Edit message';
+  String get edit_message_button_text => 'Editar mensaje';
 
   @override
   String get preview_whatsapp_text => 'VISTA PREVIA · WHATSAPP';
