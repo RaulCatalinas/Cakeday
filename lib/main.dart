@@ -2,14 +2,21 @@ import 'package:cakeday/components/layout/main_tab_scaffold.dart'
     show MainTabScaffold;
 import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
-import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
+import 'package:cakeday/screens/all_birthdays.dart';
 import 'package:cakeday/screens/home.dart' show HomeScreen;
-import 'package:cakeday/screens/settings.dart' show SettingsScreen;
+import 'package:cakeday/screens/settings.dart';
+import 'package:cakeday/types/nav_item.dart' show NavItem;
 import 'package:cakeday/utils/notifications.dart'
     show initializeNotifications, setupNotificationListeners;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:flutter/material.dart'
-    show BuildContext, StatelessWidget, Widget, WidgetsFlutterBinding, runApp;
+    show
+        BuildContext,
+        Icons,
+        StatelessWidget,
+        Widget,
+        WidgetsFlutterBinding,
+        runApp;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:flutter_themed/flutter_themed.dart'
     show ThemeStorageAdapter, Themed;
@@ -53,8 +60,24 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MainTabScaffold(
-      tabs: [HomeScreen(), AllBirthdaysScreen(), SettingsScreen()],
+    return MainTabScaffold(
+      tabs: [
+        NavItem(
+          screen: const HomeScreen(),
+          label: AppLocalizations.of(context)!.home_tab_label,
+          icon: Icons.cake,
+        ),
+        NavItem(
+          screen: const AllBirthdaysScreen(),
+          label: AppLocalizations.of(context)!.all_birthdays_header,
+          icon: Icons.people,
+        ),
+        NavItem(
+          screen: const SettingsScreen(),
+          label: AppLocalizations.of(context)!.settings_tab_label,
+          icon: Icons.settings,
+        ),
+      ],
     );
   }
 }

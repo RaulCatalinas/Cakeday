@@ -319,6 +319,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PREVIEW · WHATSAPP'**
   String get preview_whatsapp_text;
+
+  /// No description provided for @home_tab_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home_tab_label;
+
+  /// No description provided for @settings_tab_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings_tab_label;
 }
 
 class _AppLocalizationsDelegate

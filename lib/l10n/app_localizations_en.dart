@@ -128,4 +128,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get preview_whatsapp_text => 'PREVIEW · WHATSAPP';
+
+  @override
+  String get home_tab_label => 'Home';
+
+  @override
+  String get settings_tab_label => 'Settings';
 }

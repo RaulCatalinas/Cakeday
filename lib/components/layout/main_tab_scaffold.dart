@@ -1,10 +1,10 @@
+import 'package:cakeday/types/nav_item.dart' show NavItem;
 import 'package:flutter/material.dart'
     show
         BottomNavigationBar,
         BottomNavigationBarItem,
         BuildContext,
         Icon,
-        Icons,
         Navigator,
         PopScope,
         Scaffold,
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart'
         Widget;
 
 class MainTabScaffold extends StatefulWidget {
-  final List<Widget> tabs;
+  final List<NavItem> tabs;
 
   const MainTabScaffold({super.key, required this.tabs});
 
@@ -39,23 +39,20 @@ class _MainTabScaffoldState extends State<MainTabScaffold> {
         }
       },
       child: Scaffold(
-        body: widget.tabs[_currentIndex],
+        body: widget.tabs[_currentIndex].screen,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.cake), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'All birthdays',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+          items: widget.tabs
+              .map(
+                (tab) => BottomNavigationBarItem(
+                  icon: Icon(tab.icon),
+                  label: tab.label,
+                ),
+              )
+              .toList(),
         ),
       ),
     );

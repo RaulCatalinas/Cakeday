@@ -127,4 +127,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get preview_whatsapp_text => 'VISTA PREVIA · WHATSAPP';
+
+  @override
+  String get home_tab_label => 'Inicio';
+
+  @override
+  String get settings_tab_label => 'Configuración';
 }

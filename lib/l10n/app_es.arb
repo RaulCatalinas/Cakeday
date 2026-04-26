@@ -37,6 +37,8 @@
   "save_birthday_button_text": "Guardar mensaje",
   "edit_message_button_text": "Edit message",
   "preview_whatsapp_text": "VISTA PREVIA · WHATSAPP",
+  "home_tab_label": "Inicio",
+  "settings_tab_label": "Configuración",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -81,5 +83,7 @@
   "@too_short_birthday_error": {},
   "@save_birthday_button_text": {},
   "@edit_message_button_text": {},
-  "@preview_whatsapp_text": {}
+  "@preview_whatsapp_text": {},
+  "@home_tab_label": {},
+  "@settings_tab_label": {}
 }
