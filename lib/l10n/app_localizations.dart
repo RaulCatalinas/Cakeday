@@ -379,6 +379,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System default'**
   String get os_language;
+
+  /// No description provided for @getting_birthdays_error.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'\'t load the birthdays. Please try again.'**
+  String get getting_birthdays_error;
+
+  /// No description provided for @empty_birthdays_error.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'\'t have any birthdays saved yet.'**
+  String get empty_birthdays_error;
 }
 
 class _AppLocalizationsDelegate

@@ -47,6 +47,8 @@
   "change_language_subtitle": "Elige tu idioma preferido",
   "change_language_hint_text": "Selecciona un idioma",
   "os_language": "Predeterminado del sistema",
+  "getting_birthdays_error": "No se han podido cargar los cumpleaños. Inténtalo de nuevo.",
+  "empty_birthdays_error": "Aún no tienes cumpleaños guardados.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -101,5 +103,7 @@
   "@english_language": {},
   "@change_language_subtitle": {},
   "@change_language_hint_text": {},
-  "@os_language": {}
+  "@os_language": {},
+  "@getting_birthdays_error": {},
+  "@empty_birthdays_error": {}
 }

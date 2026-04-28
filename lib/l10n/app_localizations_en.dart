@@ -158,4 +158,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get os_language => 'System default';
+
+  @override
+  String get getting_birthdays_error =>
+      'We couldn\'t load the birthdays. Please try again.';
+
+  @override
+  String get empty_birthdays_error =>
+      'You don\'t have any birthdays saved yet.';
 }

@@ -1,3 +1,4 @@
+import 'package:cakeday/utils/birthday_utils.dart' show daysUntilBirthday;
 import 'package:flutter/material.dart'
     show BuildContext, Color, StatelessWidget, Text, TextStyle, Widget, Theme;
 
@@ -8,7 +9,7 @@ class DaysRemaining extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final days = _daysRemaining();
+    final days = daysUntilBirthday(month: birthday.month, day: birthday.day);
     final age = _age();
 
     final ageText = age != null ? ' · Turns $age' : '';
@@ -46,18 +47,5 @@ class DaysRemaining extends StatelessWidget {
       <= 7 => const Color(0xFFFF9F0A),
       _ => Theme.of(context).colorScheme.onSurfaceVariant,
     };
-  }
-
-  int _daysRemaining() {
-    final now = DateTime.now();
-    var nextBirthday = DateTime(now.year, birthday.month, birthday.day);
-
-    if (nextBirthday.isBefore(now)) {
-      nextBirthday = DateTime(now.year + 1, birthday.month, birthday.day);
-    }
-
-    return nextBirthday
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
   }
 }

@@ -1,20 +1,17 @@
+import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
 import 'package:cakeday/components/common/input.dart' show Input;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/toast.dart';
 import 'package:flutter/material.dart'
     show
         Align,
-        BoxDecoration,
         BuildContext,
         ButtonStyle,
         Color,
         Colors,
         Column,
-        Container,
-        CrossAxisAlignment,
         FontWeight,
         GestureDetector,
-        LinearGradient,
         Row,
         SizedBox,
         State,
@@ -51,7 +48,7 @@ class _PreviewMessageState extends State<PreviewMessage> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Text(
           AppLocalizations.of(context)!.preview_whatsapp_text,
@@ -62,19 +59,7 @@ class _PreviewMessageState extends State<PreviewMessage> {
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          padding: const .all(12),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
-            ),
-            borderRadius: .only(
-              topLeft: .circular(14),
-              topRight: .circular(14),
-              bottomRight: .circular(4),
-              bottomLeft: .circular(14),
-            ),
-          ),
+        GradientCard(
           child: Text(
             message,
             style: const TextStyle(color: Colors.white, fontSize: 13),

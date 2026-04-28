@@ -157,4 +157,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get os_language => 'Predeterminado del sistema';
+
+  @override
+  String get getting_birthdays_error =>
+      'No se han podido cargar los cumpleaños. Inténtalo de nuevo.';
+
+  @override
+  String get empty_birthdays_error => 'Aún no tienes cumpleaños guardados.';
 }

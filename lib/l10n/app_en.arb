@@ -47,6 +47,8 @@
   "change_language_subtitle": "Choose your preferred language",
   "change_language_hint_text": "Select a language",
   "os_language": "System default",
+  "getting_birthdays_error": "We couldn''t load the birthdays. Please try again.",
+  "empty_birthdays_error": "You don''t have any birthdays saved yet.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -100,5 +102,7 @@
   "@english_language": {},
   "@change_language_subtitle": {},
   "@change_language_hint_text": {},
-  "@os_language": {}
+  "@os_language": {},
+  "@getting_birthdays_error": {},
+  "@empty_birthdays_error": {}
 }
