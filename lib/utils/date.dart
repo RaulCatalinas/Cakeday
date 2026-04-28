@@ -11,9 +11,10 @@ Future<DateTime?> selectDate({required BuildContext context}) async {
     config: CalendarDatePicker2WithActionButtonsConfig(
       calendarType: .single,
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year, 12, 31),
       selectedDayHighlightColor: const Color(0xFFFF6B6B),
       todayTextStyle: const TextStyle(color: Color(0xFFFF6B6B)),
+      useAbbrLabelForMonthModePicker: true,
     ),
     dialogSize: const Size(325, 400),
     value: [DateTime.now()],
