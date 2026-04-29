@@ -34,7 +34,7 @@ class ReminderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (name, phone, photo, birthday) =
-        contactInfo ??
+        contactInfo?.asRecord ??
         (
           AppLocalizations.of(context)!.unknown_text,
           AppLocalizations.of(context)!.unknown_text,

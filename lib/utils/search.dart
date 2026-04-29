@@ -9,7 +9,7 @@ extension BirthdayDataListSearch on List<BirthdayData> {
     final normalizedQuery = query.normalized.toLowerCase();
 
     return where((b) {
-      final nameMatch = b.contactInfo!.$1.normalized.toLowerCase().contains(
+      final nameMatch = b.contactInfo!.name.normalized.toLowerCase().contains(
         normalizedQuery,
       );
 

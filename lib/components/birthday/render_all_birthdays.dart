@@ -55,14 +55,14 @@ class RenderAllBirthdays extends ConsumerWidget {
 
   List<Object> _prepareItemsToRender({required List<BirthdayData> items}) {
     items.sort((a, b) {
-      final nameA = a.contactInfo!.$1.normalizedInitial;
-      final nameB = b.contactInfo!.$1.normalizedInitial;
+      final nameA = a.contactInfo!.name.normalizedInitial;
+      final nameB = b.contactInfo!.name.normalizedInitial;
       return nameA.toLowerCase().compareTo(nameB.toLowerCase());
     });
 
     final itemsGrouped = groupBy(
       items,
-      (birthdayData) => birthdayData.contactInfo!.$1.normalizedInitial,
+      (birthdayData) => birthdayData.contactInfo!.name.normalizedInitial,
     );
 
     final List<Object> flatItems = [];

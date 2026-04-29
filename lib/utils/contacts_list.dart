@@ -2,7 +2,7 @@ import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:flutter_contacts/flutter_contacts.dart'
     show ContactProperty, FlutterContacts;
 
-Future<ContactInfo> pickContact() async {
+Future<ContactInfo?> pickContact() async {
   final contactId = await FlutterContacts.native.showPicker();
 
   if (contactId == null) return null;
@@ -22,5 +22,5 @@ Future<ContactInfo> pickContact() async {
   final phone = contact.phones.firstOrNull?.number.trim() ?? '';
   final photo = contact.photo?.fullSize;
 
-  return (name, phone, photo, null);
+  return ContactInfo(name: name, phone: phone, photo: photo);
 }

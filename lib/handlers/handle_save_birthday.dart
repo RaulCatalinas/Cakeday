@@ -21,7 +21,7 @@ Future<bool> handleSaveBirthday({
       return false;
     }
 
-    if (birthdayData.contactInfo?.$2 == null) {
+    if (birthdayData.contactInfo?.phone == null) {
       showToast(
         type: .error,
         msg:
@@ -38,8 +38,8 @@ Future<bool> handleSaveBirthday({
     }
 
     final birthdayId = await DbManager.saveBirthday(
-      name: birthdayData.contactInfo!.$1,
-      phone: birthdayData.contactInfo!.$2!,
+      name: birthdayData.contactInfo!.name,
+      phone: birthdayData.contactInfo!.phone!,
       day: birthdayData.birthday!.day,
       month: birthdayData.birthday!.month,
       year: birthdayData.includeYear ? birthdayData.birthday!.year : null,

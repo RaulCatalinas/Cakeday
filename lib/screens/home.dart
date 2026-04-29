@@ -1,9 +1,11 @@
 import 'package:cakeday/components/birthday/create_birthday_button.dart'
     show CreateBirthdayButton;
-import 'package:cakeday/components/birthday/reminder_card.dart';
-import 'package:cakeday/components/common/gradient_card.dart';
+import 'package:cakeday/components/birthday/reminder_card.dart'
+    show ReminderCard;
+import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:cakeday/utils/birthday_utils.dart'
     show filterTodayBirthdays, filterUpcomingBirthdays;
 import 'package:flutter/material.dart'
@@ -82,11 +84,10 @@ class HomeScreen extends StatelessWidget {
                   ...todayBirthdays.map((todayBirthday) {
                     return GradientCard(
                       child: ReminderCard(
-                        contactInfo: (
-                          todayBirthday.name,
-                          todayBirthday.phone,
-                          todayBirthday.photo,
-                          null,
+                        contactInfo: ContactInfo(
+                          name: todayBirthday.name,
+                          phone: todayBirthday.phone,
+                          photo: todayBirthday.photo,
                         ),
                       ),
                     );
@@ -99,11 +100,11 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       for (int i = 0; i < upcomingBirthdays.length; i++) ...[
                         ReminderCard(
-                          contactInfo: (
-                            upcomingBirthdays[i].name,
-                            upcomingBirthdays[i].phone,
-                            upcomingBirthdays[i].photo,
-                            DateTime(
+                          contactInfo: ContactInfo(
+                            name: upcomingBirthdays[i].name,
+                            phone: upcomingBirthdays[i].phone,
+                            photo: upcomingBirthdays[i].photo,
+                            birthday: DateTime(
                               upcomingBirthdays[i].year ?? 0,
                               upcomingBirthdays[i].month,
                               upcomingBirthdays[i].day,

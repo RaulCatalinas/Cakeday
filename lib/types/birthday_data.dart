@@ -3,7 +3,7 @@ import 'package:cakeday/types/contacts.dart' show ContactInfo;
 
 class BirthdayData {
   final int? id;
-  final ContactInfo contactInfo;
+  final ContactInfo? contactInfo;
   final DateTime? birthday;
   final bool includeYear;
   final String? customMessage;
@@ -22,7 +22,11 @@ class BirthdayData {
 
   factory BirthdayData.fromBirthday(Birthday row) {
     return BirthdayData(
-      contactInfo: (row.name, row.phone, row.photo, null),
+      contactInfo: ContactInfo(
+        name: row.name,
+        phone: row.phone,
+        photo: row.photo,
+      ),
       birthday: row.year != null
           ? DateTime(row.year!, row.month, row.day)
           : DateTime(0, row.month, row.day),
