@@ -8,6 +8,15 @@ import 'package:awesome_notifications/awesome_notifications.dart'
 import 'package:cakeday/utils/urls.dart' show openWhatsApp;
 import 'package:flutter/material.dart' show TimeOfDay;
 
+Future<void> deleteReminder({required int id}) async {
+  try {
+    await AwesomeNotifications().cancel(id);
+  } catch (e, stackTrace) {
+    print('Error deleting reminder: $e');
+    print('StackTrace: $stackTrace');
+  }
+}
+
 Future<void> initializeNotifications() async {
   await AwesomeNotifications().initialize(null, [
     NotificationChannel(

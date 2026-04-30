@@ -164,4 +164,43 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get empty_birthdays_error => 'Aún no tienes cumpleaños guardados.';
+
+  @override
+  String get save_birthday_reminder_button_text => 'Guardar cumpleaños';
+
+  @override
+  String get no_contact_selected_error =>
+      'Por favor, selecciona un contacto antes de guardar.';
+
+  @override
+  String get no_contact_phone_error =>
+      'No hemos podido obtener el número de teléfono de este contacto. Inténtalo de nuevo.';
+
+  @override
+  String get no_birthday_date_error =>
+      'Por favor, selecciona una fecha de cumpleaños.';
+
+  @override
+  String get birthday_save_error =>
+      'Algo ha ido mal al guardar. Inténtalo de nuevo.';
+
+  @override
+  String get birthday_saved_with_reminder =>
+      '¡Cumpleaños guardado y recordatorio programado! 🎂';
+
+  @override
+  String get birthday_saved_no_reminder =>
+      '¡Cumpleaños guardado correctamente! 🎂';
+
+  @override
+  String get birthday_saved_reminder_failed =>
+      'Cumpleaños guardado, pero no hemos podido programar el recordatorio. Revisa los permisos de notificación.';
+
+  @override
+  String get birthday_deleted_success =>
+      'Recordatorio eliminado correctamente.';
+
+  @override
+  String get birthday_deleted_error =>
+      'Algo ha ido mal al eliminar. Inténtalo de nuevo.';
 }

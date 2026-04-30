@@ -38,6 +38,7 @@ class RenderAllBirthdays extends ConsumerWidget {
         final birthdayData = item as BirthdayData;
 
         return ReminderCard(
+          id: birthdayData.id,
           contactInfo: birthdayData.contactInfo,
           notificationScheduled: birthdayData.notificationScheduled,
           onRetryNotification: birthdayData.id != null

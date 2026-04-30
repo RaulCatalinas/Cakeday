@@ -391,6 +391,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You don\'\'t have any birthdays saved yet.'**
   String get empty_birthdays_error;
+
+  /// No description provided for @save_birthday_reminder_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Save birthday'**
+  String get save_birthday_reminder_button_text;
+
+  /// No description provided for @no_contact_selected_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a contact before saving.'**
+  String get no_contact_selected_error;
+
+  /// No description provided for @no_contact_phone_error.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'\'t get the phone number for this contact. Please try again.'**
+  String get no_contact_phone_error;
+
+  /// No description provided for @no_birthday_date_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a birthday date.'**
+  String get no_birthday_date_error;
+
+  /// No description provided for @birthday_save_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while saving. Please try again.'**
+  String get birthday_save_error;
+
+  /// No description provided for @birthday_saved_with_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday saved and reminder set! 🎂'**
+  String get birthday_saved_with_reminder;
+
+  /// No description provided for @birthday_saved_no_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday saved successfully! 🎂'**
+  String get birthday_saved_no_reminder;
+
+  /// No description provided for @birthday_saved_reminder_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday saved, but we couldn\'\'t set the reminder. Check your notification permissions.'**
+  String get birthday_saved_reminder_failed;
+
+  /// No description provided for @birthday_deleted_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder deleted successfully.'**
+  String get birthday_deleted_success;
+
+  /// No description provided for @birthday_deleted_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while deleting. Please try again.'**
+  String get birthday_deleted_error;
 }
 
 class _AppLocalizationsDelegate

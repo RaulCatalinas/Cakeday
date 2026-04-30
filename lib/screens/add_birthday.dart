@@ -9,6 +9,7 @@ import 'package:cakeday/components/common/input.dart' show Input;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/layout/clickable_card.dart'
     show ClickableCard;
+import 'package:cakeday/db/db.dart' show Birthday;
 import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
@@ -53,14 +54,16 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:permission_handler/permission_handler.dart';
 
 class AddBirthdayScreen extends ConsumerStatefulWidget {
-  const AddBirthdayScreen({super.key});
+  final Birthday? birthdayToEdit;
+
+  const AddBirthdayScreen({super.key, this.birthdayToEdit});
 
   @override
   ConsumerState<AddBirthdayScreen> createState() => _AddBirthdayScreenState();
 }
 
 class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
-  ContactInfo contactInfo;
+  ContactInfo? contactInfo;
   DateTime? birthday;
   bool usePersonalizedMessage = false;
   bool useNote = false;
@@ -288,7 +291,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               const Padding(padding: .symmetric(vertical: 15)),
 
               GradientButton(
-                label: 'Save birthday',
+                label: AppLocalizations.of(
+                  context,
+                )!.save_birthday_reminder_button_text,
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
                 onTap: () async {
                   final settings = ref.read(appSettingsProvider);
@@ -312,6 +317,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     notificationTime: settings.notificationTime,
                     globalMessage: settings.globalMessage,
                     enableNotifications: settings.enableNotifications,
+                    context: context,
                   );
 
                   if (saved) ref.invalidate(birthdaysListProvider);
@@ -331,6 +337,41 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
     messageFocusNode.dispose();
     noteFocusNode.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.birthdayToEdit == null) return;
+
+    final birthdayDateTime = DateTime(
+      widget.birthdayToEdit!.year ?? 0,
+      widget.birthdayToEdit!.month,
+      widget.birthdayToEdit!.day,
+    );
+
+    birthday = birthdayDateTime;
+
+    usePersonalizedMessage = widget.birthdayToEdit!.customMessage != null;
+    useNote = widget.birthdayToEdit!.note != null;
+    includeYear =
+        widget.birthdayToEdit!.year != null && widget.birthdayToEdit!.year != 0;
+
+    contactInfo = ContactInfo(
+      name: widget.birthdayToEdit!.name,
+      phone: widget.birthdayToEdit!.phone,
+      photo: widget.birthdayToEdit!.photo,
+      birthday: birthdayDateTime,
+    );
+
+    if (widget.birthdayToEdit!.note != null) {
+      noteController.text = widget.birthdayToEdit!.note!;
+    }
+
+    if (widget.birthdayToEdit!.customMessage != null) {
+      messageController.text = widget.birthdayToEdit!.customMessage!;
+    }
   }
 
   String? _trimmedOrNull({required bool enabled, required String text}) {

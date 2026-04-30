@@ -1,7 +1,9 @@
 import 'package:cakeday/components/birthday/days_remaining.dart'
     show DaysRemaining;
-import 'package:cakeday/components/birthday/schedule_birthday_notification.dart';
+import 'package:cakeday/components/birthday/schedule_birthday_notification.dart'
+    show ScheduleBirthdayNotification;
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
+import 'package:cakeday/handlers/handle_delete_birthday.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:flutter/material.dart'
@@ -10,6 +12,7 @@ import 'package:flutter/material.dart'
         CircleAvatar,
         Column,
         Expanded,
+        IconButton,
         MemoryImage,
         Padding,
         Row,
@@ -17,16 +20,23 @@ import 'package:flutter/material.dart'
         Text,
         Theme,
         VoidCallback,
-        Widget;
+        Widget,
+        ButtonStyle,
+        Icon,
+        Icons;
 
 class ReminderCard extends StatelessWidget {
+  static const _buttonStyles = ButtonStyle(enableFeedback: true);
   final ContactInfo? contactInfo;
   final bool notificationScheduled;
+  final int? id;
+
   final VoidCallback? onRetryNotification;
 
   const ReminderCard({
     super.key,
     required this.contactInfo,
+    this.id,
     this.notificationScheduled = true,
     this.onRetryNotification,
   });
@@ -83,6 +93,19 @@ class ReminderCard extends StatelessWidget {
               if (birthday != null) DaysRemaining(birthday: birthday),
             ],
           ),
+          if (id != null)
+            Row(
+              mainAxisAlignment: .center,
+              children: [
+                IconButton(
+                  onPressed: () async =>
+                      await handleDeleteBirthday(id: id!, context: context),
+                  icon: const Icon(Icons.delete_forever),
+                  style: _buttonStyles,
+                ),
+              ],
+            ),
+
           if (!notificationScheduled)
             ScheduleBirthdayNotification(
               onRetryNotification: onRetryNotification,

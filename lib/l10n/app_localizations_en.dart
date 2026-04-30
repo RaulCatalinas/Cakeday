@@ -166,4 +166,40 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get empty_birthdays_error =>
       'You don\'t have any birthdays saved yet.';
+
+  @override
+  String get save_birthday_reminder_button_text => 'Save birthday';
+
+  @override
+  String get no_contact_selected_error =>
+      'Please select a contact before saving.';
+
+  @override
+  String get no_contact_phone_error =>
+      'We couldn\'t get the phone number for this contact. Please try again.';
+
+  @override
+  String get no_birthday_date_error => 'Please select a birthday date.';
+
+  @override
+  String get birthday_save_error =>
+      'Something went wrong while saving. Please try again.';
+
+  @override
+  String get birthday_saved_with_reminder =>
+      'Birthday saved and reminder set! 🎂';
+
+  @override
+  String get birthday_saved_no_reminder => 'Birthday saved successfully! 🎂';
+
+  @override
+  String get birthday_saved_reminder_failed =>
+      'Birthday saved, but we couldn\'t set the reminder. Check your notification permissions.';
+
+  @override
+  String get birthday_deleted_success => 'Reminder deleted successfully.';
+
+  @override
+  String get birthday_deleted_error =>
+      'Something went wrong while deleting. Please try again.';
 }
