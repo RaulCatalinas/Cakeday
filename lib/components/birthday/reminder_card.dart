@@ -67,7 +67,9 @@ class ReminderCard extends StatelessWidget {
                     ? Text(
                         name.isNotEmpty
                             ? name[0].toUpperCase()
-                            : AppLocalizations.of(context)!.unknown_text[0],
+                            : AppLocalizations.of(
+                                context,
+                              )!.unknown_text[0].toUpperCase(),
                       )
                     : null,
               ),
