@@ -1,4 +1,5 @@
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
@@ -17,10 +18,6 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     defaultConfig {
         applicationId = "com.raulcatalinas.cakeday"
         minSdk = flutter.minSdkVersion
@@ -31,6 +28,11 @@ android {
 
     signingConfigs {
         create("release") {
+            val keyPropertiesFile = rootProject.file("key.properties")
+            val keyProperties = Properties()
+
+            keyProperties.load(keyPropertiesFile.inputStream())
+
             storeFile = file(keyProperties["storeFile"] as String)
             storePassword = keyProperties["storePassword"] as String
             keyAlias = keyProperties["keyAlias"] as String
@@ -59,6 +61,12 @@ android {
             include("arm64-v8a", "armeabi-v7a")
             isUniversalApk = false
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
