@@ -80,7 +80,8 @@ class ReminderCard extends StatelessWidget {
                     ),
                     const Padding(padding: .directional(top: 3, bottom: 3)),
                     Text(
-                      phone?.trim() ?? 'Unknown',
+                      phone?.trim() ??
+                          AppLocalizations.of(context)!.unknown_text,
                       maxLines: 1,
                       overflow: .ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
