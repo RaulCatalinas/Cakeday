@@ -64,7 +64,11 @@ class ReminderCard extends StatelessWidget {
                 radius: 24,
                 foregroundImage: photo != null ? MemoryImage(photo) : null,
                 child: photo == null
-                    ? Text(name.isNotEmpty ? name[0].toUpperCase() : 'U')
+                    ? Text(
+                        name.isNotEmpty
+                            ? name[0].toUpperCase()
+                            : AppLocalizations.of(context)!.unknown_text[0],
+                      )
                     : null,
               ),
               const Padding(padding: .directional(start: 8, end: 8)),
