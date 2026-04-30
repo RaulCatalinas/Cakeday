@@ -26,11 +26,12 @@ class BirthdayData {
         name: row.name,
         phone: row.phone,
         photo: row.photo,
+        birthday: DateTime(row.year ?? 0, row.month, row.day),
       ),
       birthday: row.year != null
           ? DateTime(row.year!, row.month, row.day)
           : DateTime(0, row.month, row.day),
-      includeYear: row.year != null,
+      includeYear: row.year != null && row.year != 0,
       customMessage: row.customMessage,
       note: row.note,
     );
