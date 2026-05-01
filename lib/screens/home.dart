@@ -20,11 +20,12 @@ import 'package:flutter/material.dart'
         Icons,
         Padding,
         Scaffold,
+        SizedBox,
         StatelessWidget,
         Text,
         TextStyle,
-        Widget,
-        SizedBox;
+        Theme,
+        Widget;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -77,6 +78,40 @@ class HomeScreen extends StatelessWidget {
 
               final todayBirthdays = filterTodayBirthdays(snapshot.data!);
               final upcomingBirthdays = filterUpcomingBirthdays(snapshot.data!);
+
+              if (todayBirthdays.isEmpty || upcomingBirthdays.isEmpty) {
+                return Column(
+                  mainAxisAlignment: .center,
+                  children: [
+                    const Icon(
+                      Icons.cake_outlined,
+                      color: Colors.grey,
+                      size: 36,
+                    ),
+                    const SizedBox(height: 8),
+
+                    if (todayBirthdays.isEmpty)
+                      Text(
+                        AppLocalizations.of(context)!.no_birthdays_today,
+                        textAlign: .center,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+
+                    const SizedBox(height: 8),
+
+                    if (upcomingBirthdays.isEmpty)
+                      Text(
+                        AppLocalizations.of(context)!.no_upcoming_birthdays,
+                        textAlign: .center,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                  ],
+                );
+              }
 
               return Column(
                 mainAxisAlignment: .center,

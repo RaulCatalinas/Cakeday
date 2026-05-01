@@ -72,6 +72,8 @@
   "months_remaining": "In {months} months",
   "years_remaining": "In {years} years",
   "years_and_months_remaining": "In {years} years and {months} months",
+  "no_birthdays_today": "No birthdays today 🎂",
+  "no_upcoming_birthdays": "No upcoming birthdays in the next 30 days.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -196,5 +198,7 @@
         "description": "Number of months until the birthday"
       }
     }
-  }
+  },
+  "@no_birthdays_today": {},
+  "@no_upcoming_birthdays": {}
 }

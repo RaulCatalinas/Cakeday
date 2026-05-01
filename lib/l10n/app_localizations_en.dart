@@ -254,4 +254,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String years_and_months_remaining(int years, int months) {
     return 'In $years years and $months months';
   }
+
+  @override
+  String get no_birthdays_today => 'No birthdays today 🎂';
+
+  @override
+  String get no_upcoming_birthdays =>
+      'No upcoming birthdays in the next 30 days.';
 }

@@ -529,6 +529,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In {years} years and {months} months'**
   String years_and_months_remaining(int years, int months);
+
+  /// No description provided for @no_birthdays_today.
+  ///
+  /// In en, this message translates to:
+  /// **'No birthdays today 🎂'**
+  String get no_birthdays_today;
+
+  /// No description provided for @no_upcoming_birthdays.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming birthdays in the next 30 days.'**
+  String get no_upcoming_birthdays;
 }
 
 class _AppLocalizationsDelegate
