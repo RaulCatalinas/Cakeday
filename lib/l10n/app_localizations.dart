@@ -422,23 +422,23 @@ abstract class AppLocalizations {
   /// **'Something went wrong while saving. Please try again.'**
   String get birthday_save_error;
 
-  /// No description provided for @birthday_saved_with_reminder.
+  /// No description provided for @reminder_configured_successfully.
   ///
   /// In en, this message translates to:
-  /// **'Birthday saved and reminder set! 🎂'**
-  String get birthday_saved_with_reminder;
+  /// **'Reminder set! 🎂'**
+  String get reminder_configured_successfully;
 
-  /// No description provided for @birthday_saved_no_reminder.
+  /// No description provided for @birthday_saved.
   ///
   /// In en, this message translates to:
   /// **'Birthday saved successfully! 🎂'**
-  String get birthday_saved_no_reminder;
+  String get birthday_saved;
 
-  /// No description provided for @birthday_saved_reminder_failed.
+  /// No description provided for @reminder_configuration_failed.
   ///
   /// In en, this message translates to:
-  /// **'Birthday saved, but we couldn\'\'t set the reminder. Check your notification permissions.'**
-  String get birthday_saved_reminder_failed;
+  /// **'We couldn\'\'t set the reminder. Check your notification permissions.'**
+  String get reminder_configuration_failed;
 
   /// No description provided for @birthday_deleted_success.
   ///
@@ -451,6 +451,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong while deleting. Please try again.'**
   String get birthday_deleted_error;
+
+  /// No description provided for @notification_could_not_be_scheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification could\'\'t be scheduled'**
+  String get notification_could_not_be_scheduled;
+
+  /// No description provided for @retry_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry_text;
+
+  /// No description provided for @delete_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete_text;
+
+  /// No description provided for @confirm_delete_birthday_dialog_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you\'\'d like to delete this reminder?'**
+  String get confirm_delete_birthday_dialog_content;
+
+  /// No description provided for @cancel_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_text;
+
+  /// No description provided for @today_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today_text;
+
+  /// No description provided for @tomorrow_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow_text;
+
+  /// No description provided for @turns_age.
+  ///
+  /// In en, this message translates to:
+  /// **'Turns {age}'**
+  String turns_age(int age);
+
+  /// No description provided for @days_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In {days} days'**
+  String days_remaining(int days);
+
+  /// No description provided for @weeks_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In {weeks} weeks'**
+  String weeks_remaining(int weeks);
+
+  /// No description provided for @months_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In {months} months'**
+  String months_remaining(int months);
+
+  /// No description provided for @years_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In {years} years'**
+  String years_remaining(int years);
+
+  /// No description provided for @years_and_months_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'In {years} years and {months} months'**
+  String years_and_months_remaining(int years, int months);
 }
 
 class _AppLocalizationsDelegate

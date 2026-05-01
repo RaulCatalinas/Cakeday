@@ -1,15 +1,17 @@
 import 'package:cakeday/components/birthday/reminder_card.dart'
     show ReminderCard;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
+import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/handlers/handle_schedule_notification.dart'
     show handleScheduleNotification;
+import 'package:cakeday/providers/birthdays_provider.dart';
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:collection/collection.dart' show groupBy;
 import 'package:flutter/material.dart'
-    show BuildContext, ListView, Padding, Widget;
+    show BuildContext, ListView, Padding, TimeOfDay, Widget;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerWidget, WidgetRef;
 
@@ -41,16 +43,45 @@ class RenderAllBirthdays extends ConsumerWidget {
           id: birthdayData.id,
           contactInfo: birthdayData.contactInfo,
           notificationScheduled: birthdayData.notificationScheduled,
-          onRetryNotification: birthdayData.id != null
-              ? () => handleScheduleNotification(
-                  birthdayData: birthdayData,
-                  notificationTime: settings.notificationTime,
-                  birthdayId: birthdayData.id!,
-                  globalMessage: settings.globalMessage,
-                )
-              : null,
+          onRetryNotification: () async {
+            await _onRetryNotification(
+              birthdayData: birthdayData,
+              notificationTime: settings.notificationTime,
+              globalMessage: settings.globalMessage,
+              context: context,
+            );
+
+            ref.invalidate(birthdaysListProvider);
+          },
         );
       },
+    );
+  }
+
+  Future<void> _onRetryNotification({
+    required BirthdayData birthdayData,
+    required TimeOfDay notificationTime,
+    required String globalMessage,
+    required BuildContext context,
+  }) async {
+    int? id = birthdayData.id;
+
+    if (id == null) {
+      final birthdayId = await DbManager.getIdByName(
+        birthdayData.contactInfo!.name,
+      );
+
+      if (birthdayId == null) return;
+
+      id = birthdayId;
+    }
+
+    await handleScheduleNotification(
+      birthdayData: birthdayData,
+      notificationTime: notificationTime,
+      birthdayId: id,
+      globalMessage: globalMessage,
+      context: context,
     );
   }
 

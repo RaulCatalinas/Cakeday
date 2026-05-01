@@ -1,3 +1,4 @@
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:flutter/material.dart'
     show
         BuildContext,
@@ -16,11 +17,11 @@ import 'package:flutter/material.dart'
         Widget;
 
 class ScheduleBirthdayNotification extends StatelessWidget {
+  static const _buttonStyles = ButtonStyle(enableFeedback: true);
+
   final VoidCallback? onRetryNotification;
 
   const ScheduleBirthdayNotification({super.key, this.onRetryNotification});
-
-  static const _buttonStyles = ButtonStyle(enableFeedback: true);
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +29,16 @@ class ScheduleBirthdayNotification extends StatelessWidget {
       children: [
         const Icon(Icons.warning_amber, color: Color(0xFFFF9F0A), size: 16),
         const Padding(padding: .symmetric(horizontal: 4)),
-        const Expanded(
+        Expanded(
           child: Text(
-            'Notification could not be scheduled',
-            style: TextStyle(fontSize: 12, color: Color(0xFFFF9F0A)),
+            AppLocalizations.of(context)!.notification_could_not_be_scheduled,
+            style: const TextStyle(fontSize: 12, color: Color(0xFFFF9F0A)),
           ),
         ),
         TextButton(
           onPressed: onRetryNotification,
           style: _buttonStyles,
-          child: const Text('Retry'),
+          child: Text(AppLocalizations.of(context)!.retry_text),
         ),
       ],
     );

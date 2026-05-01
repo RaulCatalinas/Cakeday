@@ -54,11 +54,24 @@
   "no_contact_phone_error": "We couldn''t get the phone number for this contact. Please try again.",
   "no_birthday_date_error": "Please select a birthday date.",
   "birthday_save_error": "Something went wrong while saving. Please try again.",
-  "birthday_saved_with_reminder": "Birthday saved and reminder set! 🎂",
-  "birthday_saved_no_reminder": "Birthday saved successfully! 🎂",
-  "birthday_saved_reminder_failed": "Birthday saved, but we couldn''t set the reminder. Check your notification permissions.",
+  "reminder_configured_successfully": "Reminder set! 🎂",
+  "birthday_saved": "Birthday saved successfully! 🎂",
+  "reminder_configuration_failed": "We couldn''t set the reminder. Check your notification permissions.",
   "birthday_deleted_success": "Reminder deleted successfully.",
   "birthday_deleted_error": "Something went wrong while deleting. Please try again.",
+  "notification_could_not_be_scheduled": "Notification could''t be scheduled",
+  "retry_text": "Retry",
+  "delete_text": "Delete",
+  "confirm_delete_birthday_dialog_content": "Are you sure you''d like to delete this reminder?",
+  "cancel_text": "Cancel",
+  "today_text": "Today",
+  "tomorrow_text": "Tomorrow",
+  "turns_age": "Turns {age}",
+  "days_remaining": "In {days} days",
+  "weeks_remaining": "In {weeks} weeks",
+  "months_remaining": "In {months} months",
+  "years_remaining": "In {years} years",
+  "years_and_months_remaining": "In {years} years and {months} months",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -120,9 +133,68 @@
   "@no_contact_phone_error": {},
   "@no_birthday_date_error": {},
   "@birthday_save_error": {},
-  "@birthday_saved_with_reminder": {},
-  "@birthday_saved_no_reminder": {},
-  "@birthday_saved_reminder_failed": {},
+  "@reminder_configured_successfully": {},
+  "@birthday_saved": {},
+  "@reminder_configuration_failed": {},
   "@birthday_deleted_success": {},
-  "@birthday_deleted_error": {}
+  "@birthday_deleted_error": {},
+  "@notification_could_not_be_scheduled": {},
+  "@retry_text": {},
+  "@delete_text": {},
+  "@confirm_delete_birthday_dialog_content": {},
+  "@cancel_text": {},
+  "@today_text": {},
+  "@tomorrow_text": {},
+  "@turns_age": {
+    "placeholders": {
+      "age": {
+        "type": "int",
+        "description": "Age he/she will be turning"
+      }
+    }
+  },
+  "@days_remaining": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "description": "Number of days until the birthday"
+      }
+    }
+  },
+  "@weeks_remaining": {
+    "placeholders": {
+      "weeks": {
+        "type": "int",
+        "description": "Number of weeks until the birthday"
+      }
+    }
+  },
+  "@months_remaining": {
+    "placeholders": {
+      "months": {
+        "type": "int",
+        "description": "Number of months until the birthday"
+      }
+    }
+  },
+  "@years_remaining": {
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "description": "Number of years until the birthday"
+      }
+    }
+  },
+  "@years_and_months_remaining": {
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "description": "Number of years until the birthday"
+      },
+      "months": {
+        "type": "int",
+        "description": "Number of months until the birthday"
+      }
+    }
+  }
 }

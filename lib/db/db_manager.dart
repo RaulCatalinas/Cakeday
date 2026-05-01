@@ -18,12 +18,8 @@ class DbManager {
       _instance._db.birthdayDao.getAll();
   static Future<Birthday?> getBirthdayById(int id) =>
       _instance._db.birthdayDao.getById(id);
-  static Future<int> setNotificationScheduled(int id, bool value) =>
-      _instance._db.birthdayDao.patchBirthday(
-        id,
-        BirthdaysCompanion(notificationScheduled: Value(value)),
-      );
-
+  static Future<int?> getIdByName(String name) =>
+      _instance._db.birthdayDao.getIdByName(name);
   static Future<void> init() async {
     _instance._db = AppDatabase();
   }
@@ -53,6 +49,12 @@ class DbManager {
       note: Value(note),
     ),
   );
+
+  static Future<int> setNotificationScheduled(int id, bool value) =>
+      _instance._db.birthdayDao.patchBirthday(
+        id,
+        BirthdaysCompanion(notificationScheduled: Value(value)),
+      );
 
   /// Full row replace (all main fields) for [id]. Same persistence as patch with every column set.
   static Future<bool> updateBirthday({

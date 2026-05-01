@@ -36,14 +36,14 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
   );
 }
 
-Future<void> scheduleNotification({
+Future<bool> scheduleNotification({
   required int id,
   required String title,
   required String msg,
   required DateTime date,
   required TimeOfDay time,
 }) async {
-  await AwesomeNotifications().createNotification(
+  return await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: id,
       channelKey: 'birthdays',

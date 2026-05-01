@@ -1,4 +1,6 @@
-import 'package:cakeday/utils/birthday_utils.dart' show daysUntilBirthday;
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/utils/birthday_utils.dart'
+    show daysUntilBirthday, formatTimeUntilBirthday;
 import 'package:flutter/material.dart'
     show BuildContext, Color, StatelessWidget, Text, TextStyle, Widget, Theme;
 
@@ -12,15 +14,17 @@ class DaysRemaining extends StatelessWidget {
     final days = daysUntilBirthday(month: birthday.month, day: birthday.day);
     final age = _age();
 
-    final ageText = age != null ? ' · Turns $age' : '';
-    final daysText = switch (days) {
-      0 => '🎉 Today!',
-      1 => 'Tomorrow',
-      _ => 'In $days days',
+    final ageText = age != null
+        ? ' · ${AppLocalizations.of(context)!.turns_age(age)}'
+        : '';
+    final text = switch (days) {
+      0 => '🎉 ${AppLocalizations.of(context)!.today_text}!',
+      1 => AppLocalizations.of(context)!.tomorrow_text,
+      _ => formatTimeUntilBirthday(days: days, context: context),
     };
 
     return Text(
-      '$daysText$ageText',
+      '$text$ageText',
       style: TextStyle(
         color: _color(days: days, context: context),
       ),

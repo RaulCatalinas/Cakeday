@@ -185,16 +185,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Algo ha ido mal al guardar. Inténtalo de nuevo.';
 
   @override
-  String get birthday_saved_with_reminder =>
-      '¡Cumpleaños guardado y recordatorio programado! 🎂';
+  String get reminder_configured_successfully => '¡Recordatorio programado! 🎂';
 
   @override
-  String get birthday_saved_no_reminder =>
-      '¡Cumpleaños guardado correctamente! 🎂';
+  String get birthday_saved => '¡Cumpleaños guardado correctamente! 🎂';
 
   @override
-  String get birthday_saved_reminder_failed =>
-      'Cumpleaños guardado, pero no hemos podido programar el recordatorio. Revisa los permisos de notificación.';
+  String get reminder_configuration_failed =>
+      'No hemos podido programar el recordatorio. Revisa los permisos de notificación.';
 
   @override
   String get birthday_deleted_success =>
@@ -203,4 +201,57 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get birthday_deleted_error =>
       'Algo ha ido mal al eliminar. Inténtalo de nuevo.';
+
+  @override
+  String get notification_could_not_be_scheduled =>
+      'No se ha podido programar la notificación';
+
+  @override
+  String get retry_text => 'Reintentar';
+
+  @override
+  String get delete_text => 'Eliminar';
+
+  @override
+  String get confirm_delete_birthday_dialog_content =>
+      '¿Seguro que quieres borrar este recordatorio?';
+
+  @override
+  String get cancel_text => 'Cancelar';
+
+  @override
+  String get today_text => 'Hoy';
+
+  @override
+  String get tomorrow_text => 'Mañana';
+
+  @override
+  String turns_age(int age) {
+    return 'Cumple $age';
+  }
+
+  @override
+  String days_remaining(int days) {
+    return 'En $days dias';
+  }
+
+  @override
+  String weeks_remaining(int weeks) {
+    return 'En $weeks semanas';
+  }
+
+  @override
+  String months_remaining(int months) {
+    return 'En $months meses';
+  }
+
+  @override
+  String years_remaining(int years) {
+    return 'En $years años';
+  }
+
+  @override
+  String years_and_months_remaining(int years, int months) {
+    return 'En $years años and $months meses';
+  }
 }

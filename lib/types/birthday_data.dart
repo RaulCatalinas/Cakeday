@@ -34,6 +34,7 @@ class BirthdayData {
       includeYear: row.year != null && row.year != 0,
       customMessage: row.customMessage,
       note: row.note,
+      notificationScheduled: row.notificationScheduled,
     );
   }
 }

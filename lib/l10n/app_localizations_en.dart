@@ -186,15 +186,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong while saving. Please try again.';
 
   @override
-  String get birthday_saved_with_reminder =>
-      'Birthday saved and reminder set! 🎂';
+  String get reminder_configured_successfully => 'Reminder set! 🎂';
 
   @override
-  String get birthday_saved_no_reminder => 'Birthday saved successfully! 🎂';
+  String get birthday_saved => 'Birthday saved successfully! 🎂';
 
   @override
-  String get birthday_saved_reminder_failed =>
-      'Birthday saved, but we couldn\'t set the reminder. Check your notification permissions.';
+  String get reminder_configuration_failed =>
+      'We couldn\'t set the reminder. Check your notification permissions.';
 
   @override
   String get birthday_deleted_success => 'Reminder deleted successfully.';
@@ -202,4 +201,57 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get birthday_deleted_error =>
       'Something went wrong while deleting. Please try again.';
+
+  @override
+  String get notification_could_not_be_scheduled =>
+      'Notification could\'t be scheduled';
+
+  @override
+  String get retry_text => 'Retry';
+
+  @override
+  String get delete_text => 'Delete';
+
+  @override
+  String get confirm_delete_birthday_dialog_content =>
+      'Are you sure you\'d like to delete this reminder?';
+
+  @override
+  String get cancel_text => 'Cancel';
+
+  @override
+  String get today_text => 'Today';
+
+  @override
+  String get tomorrow_text => 'Tomorrow';
+
+  @override
+  String turns_age(int age) {
+    return 'Turns $age';
+  }
+
+  @override
+  String days_remaining(int days) {
+    return 'In $days days';
+  }
+
+  @override
+  String weeks_remaining(int weeks) {
+    return 'In $weeks weeks';
+  }
+
+  @override
+  String months_remaining(int months) {
+    return 'In $months months';
+  }
+
+  @override
+  String years_remaining(int years) {
+    return 'In $years years';
+  }
+
+  @override
+  String years_and_months_remaining(int years, int months) {
+    return 'In $years years and $months months';
+  }
 }

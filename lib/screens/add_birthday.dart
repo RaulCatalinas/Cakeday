@@ -12,6 +12,7 @@ import 'package:cakeday/components/layout/clickable_card.dart'
 import 'package:cakeday/db/db.dart' show Birthday;
 import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
+import 'package:cakeday/handlers/handle_schedule_notification.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;
@@ -312,7 +313,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     ),
                   );
 
-                  final saved = await handleSaveBirthday(
+                  final (saved, id) = await handleSaveBirthday(
                     birthdayData: birthdayData,
                     notificationTime: settings.notificationTime,
                     globalMessage: settings.globalMessage,
@@ -320,7 +321,19 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     context: context,
                   );
 
-                  if (saved) ref.invalidate(birthdaysListProvider);
+                  if (saved) {
+                    ref.invalidate(birthdaysListProvider);
+
+                    if (id == null) return;
+
+                    await handleScheduleNotification(
+                      birthdayData: birthdayData,
+                      notificationTime: settings.notificationTime,
+                      birthdayId: id,
+                      globalMessage: settings.globalMessage,
+                      context: context,
+                    );
+                  }
                 },
               ),
             ],

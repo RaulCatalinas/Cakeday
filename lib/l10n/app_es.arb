@@ -54,11 +54,24 @@
   "no_contact_phone_error": "No hemos podido obtener el número de teléfono de este contacto. Inténtalo de nuevo.",
   "no_birthday_date_error": "Por favor, selecciona una fecha de cumpleaños.",
   "birthday_save_error": "Algo ha ido mal al guardar. Inténtalo de nuevo.",
-  "birthday_saved_with_reminder": "¡Cumpleaños guardado y recordatorio programado! 🎂",
-  "birthday_saved_no_reminder": "¡Cumpleaños guardado correctamente! 🎂",
-  "birthday_saved_reminder_failed": "Cumpleaños guardado, pero no hemos podido programar el recordatorio. Revisa los permisos de notificación.",
+  "reminder_configured_successfully": "¡Recordatorio programado! 🎂",
+  "birthday_saved": "¡Cumpleaños guardado correctamente! 🎂",
+  "reminder_configuration_failed": "No hemos podido programar el recordatorio. Revisa los permisos de notificación.",
   "birthday_deleted_success": "Recordatorio eliminado correctamente.",
   "birthday_deleted_error": "Algo ha ido mal al eliminar. Inténtalo de nuevo.",
+  "notification_could_not_be_scheduled": "No se ha podido programar la notificación",
+  "delete_text": "Eliminar",
+  "confirm_delete_birthday_dialog_content": "¿Seguro que quieres borrar este recordatorio?",
+  "cancel_text": "Cancelar",
+  "retry_text": "Reintentar",
+  "today_text": "Hoy",
+  "tomorrow_text": "Mañana",
+  "turns_age": "Cumple {age}",
+  "days_remaining": "En {days} dias",
+  "weeks_remaining": "En {weeks} semanas",
+  "months_remaining": "En {months} meses",
+  "years_remaining": "En {years} años",
+  "years_and_months_remaining": "En {years} años and {months} meses",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -121,9 +134,68 @@
   "@no_contact_phone_error": {},
   "@no_birthday_date_error": {},
   "@birthday_save_error": {},
-  "@birthday_saved_with_reminder": {},
-  "@birthday_saved_no_reminder": {},
-  "@birthday_saved_reminder_failed": {},
+  "@reminder_configured_successfully": {},
+  "@birthday_saved": {},
+  "@reminder_configuration_failed": {},
   "@birthday_deleted_success": {},
-  "@birthday_deleted_error": {}
+  "@birthday_deleted_error": {},
+  "@notification_could_not_be_scheduled": {},
+  "@retry_text": {},
+  "@delete_text": {},
+  "@confirm_delete_birthday_dialog_content": {},
+  "@cancel_text": {},
+  "@today_text": {},
+  "@tomorrow_text": {},
+  "@turns_age": {
+    "placeholders": {
+      "age": {
+        "type": "int",
+        "description": "Age he/she will be turning"
+      }
+    }
+  },
+  "@days_remaining": {
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "description": "Nº de días que faltan para el cumpleaños"
+      }
+    }
+  },
+  "@weeks_remaining": {
+    "placeholders": {
+      "weeks": {
+        "type": "int",
+        "description": "Number of weeks until the birthday"
+      }
+    }
+  },
+  "@months_remaining": {
+    "placeholders": {
+      "months": {
+        "type": "int",
+        "description": "Number of months until the birthday"
+      }
+    }
+  },
+  "@years_remaining": {
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "description": "Number of years until the birthday"
+      }
+    }
+  },
+  "@years_and_months_remaining": {
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "description": "Number of years until the birthday"
+      },
+      "months": {
+        "type": "int",
+        "description": "Number of months until the birthday"
+      }
+    }
+  }
 }
