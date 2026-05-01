@@ -19,7 +19,7 @@ class CreateBirthdayButton extends StatelessWidget {
       enableFeedback: true,
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => AddBirthdayScreen()),
+        MaterialPageRoute(builder: (_) => const AddBirthdayScreen()),
       ),
       child: const Icon(Icons.add),
     );
