@@ -64,7 +64,7 @@ class RenderAllBirthdays extends ConsumerWidget {
     required String globalMessage,
     required BuildContext context,
   }) async {
-    int? id = birthdayData.id;
+    var id = birthdayData.id;
 
     if (id == null) {
       final birthdayId = await DbManager.getIdByName(

@@ -9,31 +9,39 @@ import 'package:cakeday/dialogs/confirm_delete_birthday.dart'
 import 'package:cakeday/handlers/handle_delete_birthday.dart'
     show handleDeleteBirthday;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/providers/birthdays_provider.dart'
+    show birthdaysListProvider;
+import 'package:cakeday/screens/add_birthday.dart' show AddBirthdayScreen;
+import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:flutter/material.dart'
     show
         BuildContext,
+        ButtonStyle,
         CircleAvatar,
+        Colors,
         Column,
         Expanded,
+        Icon,
         IconButton,
+        Icons,
+        MaterialPageRoute,
         MemoryImage,
+        Navigator,
         Padding,
         Row,
-        StatelessWidget,
         Text,
         Theme,
         VoidCallback,
-        Widget,
-        ButtonStyle,
-        Icon,
-        Icons,
-        Colors;
+        Widget;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerWidget, WidgetRef;
 
-class ReminderCard extends StatelessWidget {
+class ReminderCard extends ConsumerWidget {
   static const _buttonStyles = ButtonStyle(enableFeedback: true);
   final ContactInfo? contactInfo;
   final bool notificationScheduled;
+  final bool showActionButtons;
   final int? id;
 
   final VoidCallback? onRetryNotification;
@@ -42,12 +50,13 @@ class ReminderCard extends StatelessWidget {
     super.key,
     required this.contactInfo,
     this.id,
-    this.notificationScheduled = true,
+    this.notificationScheduled = false,
+    this.showActionButtons = true,
     this.onRetryNotification,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final (name, phone, photo, birthday) =
         contactInfo?.asRecord ??
         (
@@ -106,49 +115,75 @@ class ReminderCard extends StatelessWidget {
                 mainAxisAlignment: .end,
                 crossAxisAlignment: .end,
                 children: [
-                  Row(
-                    mainAxisAlignment: .end,
-                    crossAxisAlignment: .end,
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          // TODO: add logic to edit reminder
+                  if (showActionButtons)
+                    Row(
+                      mainAxisAlignment: .end,
+                      crossAxisAlignment: .end,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            var birthdayId = id;
 
-                          print('Editing reminder...');
-                        },
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        style: _buttonStyles,
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          var birthdayId = id;
-
-                          final deleteReminder =
-                              await showConfirmDeleteBirthdayDialog(
-                                context: context,
-                              );
-
-                          if (deleteReminder) {
                             if (birthdayId == null) {
                               final id = await DbManager.getIdByName(name);
 
                               birthdayId = id;
                             }
 
-                            await handleDeleteBirthday(
-                              id: birthdayId!,
-                              context: context,
+                            final birthday = await DbManager.getBirthdayById(
+                              birthdayId!,
                             );
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.delete_forever,
-                          color: Colors.red,
+
+                            if (birthday == null) return;
+
+                            final birthdayData = BirthdayData.fromBirthday(
+                              birthday,
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AddBirthdayScreen(
+                                  birthdayToEdit: birthdayData,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          style: _buttonStyles,
                         ),
-                        style: _buttonStyles,
-                      ),
-                    ],
-                  ),
+                        IconButton(
+                          onPressed: () async {
+                            var birthdayId = id;
+
+                            final deleteReminder =
+                                await showConfirmDeleteBirthdayDialog(
+                                  context: context,
+                                );
+
+                            if (deleteReminder) {
+                              if (birthdayId == null) {
+                                final id = await DbManager.getIdByName(name);
+
+                                birthdayId = id;
+                              }
+
+                              await handleDeleteBirthday(
+                                id: birthdayId!,
+                                context: context,
+                              );
+
+                              ref.invalidate(birthdaysListProvider);
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.delete_forever,
+                            color: Colors.red,
+                          ),
+                          style: _buttonStyles,
+                        ),
+                      ],
+                    ),
                   if (birthday != null) DaysRemaining(birthday: birthday),
                 ],
               ),

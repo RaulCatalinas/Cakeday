@@ -261,4 +261,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get no_upcoming_birthdays =>
       'No hay cumpleaños en los próximos 30 días.';
+
+  @override
+  String get birthday_already_exists =>
+      'Ya tienes un recordatorio para esta persona.';
 }

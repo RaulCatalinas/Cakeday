@@ -541,6 +541,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No upcoming birthdays in the next 30 days.'**
   String get no_upcoming_birthdays;
+
+  /// No description provided for @birthday_already_exists.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a reminder for this person.'**
+  String get birthday_already_exists;
 }
 
 class _AppLocalizationsDelegate

@@ -81,6 +81,21 @@ class $BirthdaysTable extends Birthdays
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _notificationScheduledMeta =
+      const VerificationMeta('notificationScheduled');
+  @override
+  late final GeneratedColumn<bool> notificationScheduled =
+      GeneratedColumn<bool>(
+        'notification_scheduled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("notification_scheduled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
   @override
   late final GeneratedColumn<String> phone = GeneratedColumn<String>(
@@ -108,21 +123,6 @@ class $BirthdaysTable extends Birthdays
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _notificationScheduledMeta =
-      const VerificationMeta('notificationScheduled');
-  @override
-  late final GeneratedColumn<bool> notificationScheduled =
-      GeneratedColumn<bool>(
-        'notification_scheduled',
-        aliasedName,
-        false,
-        type: DriftSqlType.bool,
-        requiredDuringInsert: false,
-        defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("notification_scheduled" IN (0, 1))',
-        ),
-        defaultValue: const Constant(false),
-      );
   @override
   List<GeneratedColumn> get $columns => [
     createdAt,
@@ -132,10 +132,10 @@ class $BirthdaysTable extends Birthdays
     month,
     name,
     note,
+    notificationScheduled,
     phone,
     photo,
     year,
-    notificationScheduled,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -197,6 +197,15 @@ class $BirthdaysTable extends Birthdays
         note.isAcceptableOrUnknown(data['note']!, _noteMeta),
       );
     }
+    if (data.containsKey('notification_scheduled')) {
+      context.handle(
+        _notificationScheduledMeta,
+        notificationScheduled.isAcceptableOrUnknown(
+          data['notification_scheduled']!,
+          _notificationScheduledMeta,
+        ),
+      );
+    }
     if (data.containsKey('phone')) {
       context.handle(
         _phoneMeta,
@@ -215,15 +224,6 @@ class $BirthdaysTable extends Birthdays
       context.handle(
         _yearMeta,
         year.isAcceptableOrUnknown(data['year']!, _yearMeta),
-      );
-    }
-    if (data.containsKey('notification_scheduled')) {
-      context.handle(
-        _notificationScheduledMeta,
-        notificationScheduled.isAcceptableOrUnknown(
-          data['notification_scheduled']!,
-          _notificationScheduledMeta,
-        ),
       );
     }
     return context;
@@ -263,6 +263,10 @@ class $BirthdaysTable extends Birthdays
         DriftSqlType.string,
         data['${effectivePrefix}note'],
       ),
+      notificationScheduled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}notification_scheduled'],
+      )!,
       phone: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}phone'],
@@ -275,10 +279,6 @@ class $BirthdaysTable extends Birthdays
         DriftSqlType.int,
         data['${effectivePrefix}year'],
       ),
-      notificationScheduled: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}notification_scheduled'],
-      )!,
     );
   }
 
@@ -296,10 +296,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
   final int month;
   final String name;
   final String? note;
+  final bool notificationScheduled;
   final String phone;
   final Uint8List? photo;
   final int? year;
-  final bool notificationScheduled;
   const Birthday({
     required this.createdAt,
     this.customMessage,
@@ -308,10 +308,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     required this.month,
     required this.name,
     this.note,
+    required this.notificationScheduled,
     required this.phone,
     this.photo,
     this.year,
-    required this.notificationScheduled,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -327,6 +327,7 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String>(note);
     }
+    map['notification_scheduled'] = Variable<bool>(notificationScheduled);
     map['phone'] = Variable<String>(phone);
     if (!nullToAbsent || photo != null) {
       map['photo'] = Variable<Uint8List>(photo);
@@ -334,7 +335,6 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     if (!nullToAbsent || year != null) {
       map['year'] = Variable<int>(year);
     }
-    map['notification_scheduled'] = Variable<bool>(notificationScheduled);
     return map;
   }
 
@@ -349,12 +349,12 @@ class Birthday extends DataClass implements Insertable<Birthday> {
       month: Value(month),
       name: Value(name),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      notificationScheduled: Value(notificationScheduled),
       phone: Value(phone),
       photo: photo == null && nullToAbsent
           ? const Value.absent()
           : Value(photo),
       year: year == null && nullToAbsent ? const Value.absent() : Value(year),
-      notificationScheduled: Value(notificationScheduled),
     );
   }
 
@@ -371,12 +371,12 @@ class Birthday extends DataClass implements Insertable<Birthday> {
       month: serializer.fromJson<int>(json['month']),
       name: serializer.fromJson<String>(json['name']),
       note: serializer.fromJson<String?>(json['note']),
-      phone: serializer.fromJson<String>(json['phone']),
-      photo: serializer.fromJson<Uint8List?>(json['photo']),
-      year: serializer.fromJson<int?>(json['year']),
       notificationScheduled: serializer.fromJson<bool>(
         json['notificationScheduled'],
       ),
+      phone: serializer.fromJson<String>(json['phone']),
+      photo: serializer.fromJson<Uint8List?>(json['photo']),
+      year: serializer.fromJson<int?>(json['year']),
     );
   }
   @override
@@ -390,10 +390,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
       'month': serializer.toJson<int>(month),
       'name': serializer.toJson<String>(name),
       'note': serializer.toJson<String?>(note),
+      'notificationScheduled': serializer.toJson<bool>(notificationScheduled),
       'phone': serializer.toJson<String>(phone),
       'photo': serializer.toJson<Uint8List?>(photo),
       'year': serializer.toJson<int?>(year),
-      'notificationScheduled': serializer.toJson<bool>(notificationScheduled),
     };
   }
 
@@ -405,10 +405,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     int? month,
     String? name,
     Value<String?> note = const Value.absent(),
+    bool? notificationScheduled,
     String? phone,
     Value<Uint8List?> photo = const Value.absent(),
     Value<int?> year = const Value.absent(),
-    bool? notificationScheduled,
   }) => Birthday(
     createdAt: createdAt ?? this.createdAt,
     customMessage: customMessage.present
@@ -419,10 +419,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     month: month ?? this.month,
     name: name ?? this.name,
     note: note.present ? note.value : this.note,
+    notificationScheduled: notificationScheduled ?? this.notificationScheduled,
     phone: phone ?? this.phone,
     photo: photo.present ? photo.value : this.photo,
     year: year.present ? year.value : this.year,
-    notificationScheduled: notificationScheduled ?? this.notificationScheduled,
   );
   Birthday copyWithCompanion(BirthdaysCompanion data) {
     return Birthday(
@@ -435,12 +435,12 @@ class Birthday extends DataClass implements Insertable<Birthday> {
       month: data.month.present ? data.month.value : this.month,
       name: data.name.present ? data.name.value : this.name,
       note: data.note.present ? data.note.value : this.note,
-      phone: data.phone.present ? data.phone.value : this.phone,
-      photo: data.photo.present ? data.photo.value : this.photo,
-      year: data.year.present ? data.year.value : this.year,
       notificationScheduled: data.notificationScheduled.present
           ? data.notificationScheduled.value
           : this.notificationScheduled,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      photo: data.photo.present ? data.photo.value : this.photo,
+      year: data.year.present ? data.year.value : this.year,
     );
   }
 
@@ -454,10 +454,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
           ..write('month: $month, ')
           ..write('name: $name, ')
           ..write('note: $note, ')
+          ..write('notificationScheduled: $notificationScheduled, ')
           ..write('phone: $phone, ')
           ..write('photo: $photo, ')
-          ..write('year: $year, ')
-          ..write('notificationScheduled: $notificationScheduled')
+          ..write('year: $year')
           ..write(')'))
         .toString();
   }
@@ -471,10 +471,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
     month,
     name,
     note,
+    notificationScheduled,
     phone,
     $driftBlobEquality.hash(photo),
     year,
-    notificationScheduled,
   );
   @override
   bool operator ==(Object other) =>
@@ -487,10 +487,10 @@ class Birthday extends DataClass implements Insertable<Birthday> {
           other.month == this.month &&
           other.name == this.name &&
           other.note == this.note &&
+          other.notificationScheduled == this.notificationScheduled &&
           other.phone == this.phone &&
           $driftBlobEquality.equals(other.photo, this.photo) &&
-          other.year == this.year &&
-          other.notificationScheduled == this.notificationScheduled);
+          other.year == this.year);
 }
 
 class BirthdaysCompanion extends UpdateCompanion<Birthday> {
@@ -501,10 +501,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
   final Value<int> month;
   final Value<String> name;
   final Value<String?> note;
+  final Value<bool> notificationScheduled;
   final Value<String> phone;
   final Value<Uint8List?> photo;
   final Value<int?> year;
-  final Value<bool> notificationScheduled;
   const BirthdaysCompanion({
     this.createdAt = const Value.absent(),
     this.customMessage = const Value.absent(),
@@ -513,10 +513,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     this.month = const Value.absent(),
     this.name = const Value.absent(),
     this.note = const Value.absent(),
+    this.notificationScheduled = const Value.absent(),
     this.phone = const Value.absent(),
     this.photo = const Value.absent(),
     this.year = const Value.absent(),
-    this.notificationScheduled = const Value.absent(),
   });
   BirthdaysCompanion.insert({
     this.createdAt = const Value.absent(),
@@ -526,10 +526,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     required int month,
     required String name,
     this.note = const Value.absent(),
+    this.notificationScheduled = const Value.absent(),
     required String phone,
     this.photo = const Value.absent(),
     this.year = const Value.absent(),
-    this.notificationScheduled = const Value.absent(),
   }) : day = Value(day),
        month = Value(month),
        name = Value(name),
@@ -542,10 +542,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     Expression<int>? month,
     Expression<String>? name,
     Expression<String>? note,
+    Expression<bool>? notificationScheduled,
     Expression<String>? phone,
     Expression<Uint8List>? photo,
     Expression<int>? year,
-    Expression<bool>? notificationScheduled,
   }) {
     return RawValuesInsertable({
       if (createdAt != null) 'created_at': createdAt,
@@ -555,11 +555,11 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
       if (month != null) 'month': month,
       if (name != null) 'name': name,
       if (note != null) 'note': note,
+      if (notificationScheduled != null)
+        'notification_scheduled': notificationScheduled,
       if (phone != null) 'phone': phone,
       if (photo != null) 'photo': photo,
       if (year != null) 'year': year,
-      if (notificationScheduled != null)
-        'notification_scheduled': notificationScheduled,
     });
   }
 
@@ -571,10 +571,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     Value<int>? month,
     Value<String>? name,
     Value<String?>? note,
+    Value<bool>? notificationScheduled,
     Value<String>? phone,
     Value<Uint8List?>? photo,
     Value<int?>? year,
-    Value<bool>? notificationScheduled,
   }) {
     return BirthdaysCompanion(
       createdAt: createdAt ?? this.createdAt,
@@ -584,11 +584,11 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
       month: month ?? this.month,
       name: name ?? this.name,
       note: note ?? this.note,
+      notificationScheduled:
+          notificationScheduled ?? this.notificationScheduled,
       phone: phone ?? this.phone,
       photo: photo ?? this.photo,
       year: year ?? this.year,
-      notificationScheduled:
-          notificationScheduled ?? this.notificationScheduled,
     );
   }
 
@@ -616,6 +616,11 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     if (note.present) {
       map['note'] = Variable<String>(note.value);
     }
+    if (notificationScheduled.present) {
+      map['notification_scheduled'] = Variable<bool>(
+        notificationScheduled.value,
+      );
+    }
     if (phone.present) {
       map['phone'] = Variable<String>(phone.value);
     }
@@ -624,11 +629,6 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
     }
     if (year.present) {
       map['year'] = Variable<int>(year.value);
-    }
-    if (notificationScheduled.present) {
-      map['notification_scheduled'] = Variable<bool>(
-        notificationScheduled.value,
-      );
     }
     return map;
   }
@@ -643,10 +643,10 @@ class BirthdaysCompanion extends UpdateCompanion<Birthday> {
           ..write('month: $month, ')
           ..write('name: $name, ')
           ..write('note: $note, ')
+          ..write('notificationScheduled: $notificationScheduled, ')
           ..write('phone: $phone, ')
           ..write('photo: $photo, ')
-          ..write('year: $year, ')
-          ..write('notificationScheduled: $notificationScheduled')
+          ..write('year: $year')
           ..write(')'))
         .toString();
   }
@@ -672,10 +672,10 @@ typedef $$BirthdaysTableCreateCompanionBuilder =
       required int month,
       required String name,
       Value<String?> note,
+      Value<bool> notificationScheduled,
       required String phone,
       Value<Uint8List?> photo,
       Value<int?> year,
-      Value<bool> notificationScheduled,
     });
 typedef $$BirthdaysTableUpdateCompanionBuilder =
     BirthdaysCompanion Function({
@@ -686,10 +686,10 @@ typedef $$BirthdaysTableUpdateCompanionBuilder =
       Value<int> month,
       Value<String> name,
       Value<String?> note,
+      Value<bool> notificationScheduled,
       Value<String> phone,
       Value<Uint8List?> photo,
       Value<int?> year,
-      Value<bool> notificationScheduled,
     });
 
 class $$BirthdaysTableFilterComposer
@@ -736,6 +736,11 @@ class $$BirthdaysTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get notificationScheduled => $composableBuilder(
+    column: $table.notificationScheduled,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get phone => $composableBuilder(
     column: $table.phone,
     builder: (column) => ColumnFilters(column),
@@ -748,11 +753,6 @@ class $$BirthdaysTableFilterComposer
 
   ColumnFilters<int> get year => $composableBuilder(
     column: $table.year,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get notificationScheduled => $composableBuilder(
-    column: $table.notificationScheduled,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -801,6 +801,11 @@ class $$BirthdaysTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get notificationScheduled => $composableBuilder(
+    column: $table.notificationScheduled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get phone => $composableBuilder(
     column: $table.phone,
     builder: (column) => ColumnOrderings(column),
@@ -813,11 +818,6 @@ class $$BirthdaysTableOrderingComposer
 
   ColumnOrderings<int> get year => $composableBuilder(
     column: $table.year,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get notificationScheduled => $composableBuilder(
-    column: $table.notificationScheduled,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -854,6 +854,11 @@ class $$BirthdaysTableAnnotationComposer
   GeneratedColumn<String> get note =>
       $composableBuilder(column: $table.note, builder: (column) => column);
 
+  GeneratedColumn<bool> get notificationScheduled => $composableBuilder(
+    column: $table.notificationScheduled,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get phone =>
       $composableBuilder(column: $table.phone, builder: (column) => column);
 
@@ -862,11 +867,6 @@ class $$BirthdaysTableAnnotationComposer
 
   GeneratedColumn<int> get year =>
       $composableBuilder(column: $table.year, builder: (column) => column);
-
-  GeneratedColumn<bool> get notificationScheduled => $composableBuilder(
-    column: $table.notificationScheduled,
-    builder: (column) => column,
-  );
 }
 
 class $$BirthdaysTableTableManager
@@ -904,10 +904,10 @@ class $$BirthdaysTableTableManager
                 Value<int> month = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> note = const Value.absent(),
+                Value<bool> notificationScheduled = const Value.absent(),
                 Value<String> phone = const Value.absent(),
                 Value<Uint8List?> photo = const Value.absent(),
                 Value<int?> year = const Value.absent(),
-                Value<bool> notificationScheduled = const Value.absent(),
               }) => BirthdaysCompanion(
                 createdAt: createdAt,
                 customMessage: customMessage,
@@ -916,10 +916,10 @@ class $$BirthdaysTableTableManager
                 month: month,
                 name: name,
                 note: note,
+                notificationScheduled: notificationScheduled,
                 phone: phone,
                 photo: photo,
                 year: year,
-                notificationScheduled: notificationScheduled,
               ),
           createCompanionCallback:
               ({
@@ -930,10 +930,10 @@ class $$BirthdaysTableTableManager
                 required int month,
                 required String name,
                 Value<String?> note = const Value.absent(),
+                Value<bool> notificationScheduled = const Value.absent(),
                 required String phone,
                 Value<Uint8List?> photo = const Value.absent(),
                 Value<int?> year = const Value.absent(),
-                Value<bool> notificationScheduled = const Value.absent(),
               }) => BirthdaysCompanion.insert(
                 createdAt: createdAt,
                 customMessage: customMessage,
@@ -942,10 +942,10 @@ class $$BirthdaysTableTableManager
                 month: month,
                 name: name,
                 note: note,
+                notificationScheduled: notificationScheduled,
                 phone: phone,
                 photo: photo,
                 year: year,
-                notificationScheduled: notificationScheduled,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

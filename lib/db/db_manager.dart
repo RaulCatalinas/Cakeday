@@ -12,21 +12,30 @@ class DbManager {
 
   DbManager._internal();
 
-  static Future<int> deleteBirthday(int id) =>
-      _instance._db.birthdayDao.deleteBirthday(id);
-  static Future<List<Birthday>> getAllBirthdays() =>
-      _instance._db.birthdayDao.getAll();
-  static Future<Birthday?> getBirthdayById(int id) =>
-      _instance._db.birthdayDao.getById(id);
-  static Future<int?> getIdByName(String name) =>
-      _instance._db.birthdayDao.getIdByName(name);
+  static Future<void> clearAllBirthdays() async =>
+      await _instance._db.birthdayDao.clearAll();
+  static Future<int> deleteBirthday(int id) async =>
+      await _instance._db.birthdayDao.deleteBirthday(id);
+  static Future<bool> existsBirthday({
+    required String name,
+    required String phone,
+  }) async =>
+      await _instance._db.birthdayDao.existsBirthday(name: name, phone: phone);
+  static Future<bool> existsBirthdayById(int id) async =>
+      await _instance._db.birthdayDao.existsBirthdayById(id);
+  static Future<List<Birthday>> getAllBirthdays() async =>
+      await _instance._db.birthdayDao.getAll();
+  static Future<Birthday?> getBirthdayById(int id) async =>
+      await _instance._db.birthdayDao.getById(id);
+  static Future<int?> getIdByName(String name) async =>
+      await _instance._db.birthdayDao.getIdByName(name);
   static Future<void> init() async {
     _instance._db = AppDatabase();
   }
 
   /// Partial update: only columns present in [changes] are written.
-  static Future<int> patchBirthday(int id, BirthdaysCompanion changes) =>
-      _instance._db.birthdayDao.patchBirthday(id, changes);
+  static Future<int> patchBirthday(int id, BirthdaysCompanion changes) async =>
+      await _instance._db.birthdayDao.patchBirthday(id, changes);
 
   static Future<int> saveBirthday({
     required String name,
@@ -37,7 +46,7 @@ class DbManager {
     List<int>? photo,
     String? customMessage,
     String? note,
-  }) => _instance._db.birthdayDao.insert(
+  }) async => await _instance._db.birthdayDao.insert(
     BirthdaysCompanion(
       name: Value(name),
       phone: Value(phone),
@@ -50,8 +59,8 @@ class DbManager {
     ),
   );
 
-  static Future<int> setNotificationScheduled(int id, bool value) =>
-      _instance._db.birthdayDao.patchBirthday(
+  static Future<int> setNotificationScheduled(int id, bool value) async =>
+      await _instance._db.birthdayDao.patchBirthday(
         id,
         BirthdaysCompanion(notificationScheduled: Value(value)),
       );

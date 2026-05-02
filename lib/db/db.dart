@@ -40,10 +40,38 @@ class AppDatabase extends _$AppDatabase {
 class BirthdayDao extends DatabaseAccessor<AppDatabase> {
   BirthdayDao(super.attachedDatabase);
 
+  Future<void> clearAll() async {
+    await attachedDatabase.delete(attachedDatabase.birthdays).go();
+  }
+
   Future<int> deleteBirthday(int id) {
     return (attachedDatabase.delete(
       attachedDatabase.birthdays,
     )..where((birthday) => birthday.id.equals(id))).go();
+  }
+
+  Future<bool> existsBirthday({
+    required String name,
+    required String phone,
+  }) async {
+    final query = attachedDatabase.select(attachedDatabase.birthdays)
+      ..where((b) => b.name.equals(name) & b.phone.equals(phone))
+      ..limit(1);
+
+    final result = await query.getSingleOrNull();
+    return result != null;
+  }
+
+  Future<bool> existsBirthdayById(int id) async {
+    final count = attachedDatabase.birthdays.id.count();
+
+    final query = attachedDatabase.selectOnly(attachedDatabase.birthdays)
+      ..addColumns([count])
+      ..where(attachedDatabase.birthdays.id.equals(id));
+
+    final result = await query.getSingle();
+
+    return result.read(count)! > 0;
   }
 
   Future<List<Birthday>> getAll() {
