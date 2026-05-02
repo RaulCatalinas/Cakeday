@@ -99,6 +99,7 @@ class HomeScreen extends StatelessWidget {
                             name: b.name,
                             phone: b.phone,
                             photo: b.photo,
+                            birthday: DateTime(b.year ?? 0, b.month, b.day),
                           ),
                           notificationScheduled: b.notificationScheduled,
                         ),
