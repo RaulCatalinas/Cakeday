@@ -43,7 +43,7 @@ Future<bool> scheduleNotification({
   required DateTime date,
   required TimeOfDay time,
 }) async {
-  return await AwesomeNotifications().createNotification(
+  await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: id,
       channelKey: 'birthdays',
@@ -58,6 +58,9 @@ Future<bool> scheduleNotification({
       repeats: true,
     ),
   );
+
+  final scheduled = await AwesomeNotifications().listScheduledNotifications();
+  return scheduled.any((n) => n.content?.id == id);
 }
 
 void setupNotificationListeners() {

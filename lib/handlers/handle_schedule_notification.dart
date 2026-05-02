@@ -1,4 +1,3 @@
-// handlers/schedule_notification_handler.dart
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
@@ -32,6 +31,7 @@ Future<bool> handleScheduleNotification({
         type: .error,
         msg: AppLocalizations.of(context)!.reminder_configuration_failed,
       );
+
       return false;
     }
 
@@ -39,18 +39,29 @@ Future<bool> handleScheduleNotification({
       birthdayId,
       true,
     );
-    final success = affectedRows != 0;
+
+    if (affectedRows == 0) {
+      showToast(
+        type: .error,
+        msg: AppLocalizations.of(context)!.reminder_configuration_failed,
+      );
+
+      return false;
+    }
 
     showToast(
-      type: success ? .success : .error,
-      msg: success
-          ? AppLocalizations.of(context)!.reminder_configured_successfully
-          : AppLocalizations.of(context)!.reminder_configuration_failed,
+      type: .success,
+      msg: AppLocalizations.of(context)!.reminder_configured_successfully,
     );
 
-    return success;
+    return true;
   } catch (e) {
     print('Error setting up the notification: $e');
+
+    showToast(
+      type: .error,
+      msg: AppLocalizations.of(context)!.reminder_configuration_failed,
+    );
 
     return false;
   }
