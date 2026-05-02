@@ -265,4 +265,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get birthday_already_exists =>
       'You already have a reminder for this person.';
+
+  @override
+  String get today_birthdays_section_title => 'Today\'s birthdays';
+
+  @override
+  String get upcoming_birthdays_section_title => 'Upcoming birthdays';
 }

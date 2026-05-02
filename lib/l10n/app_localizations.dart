@@ -547,6 +547,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You already have a reminder for this person.'**
   String get birthday_already_exists;
+
+  /// No description provided for @today_birthdays_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'\'s birthdays'**
+  String get today_birthdays_section_title;
+
+  /// No description provided for @upcoming_birthdays_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming birthdays'**
+  String get upcoming_birthdays_section_title;
 }
 
 class _AppLocalizationsDelegate

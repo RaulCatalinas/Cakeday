@@ -3,6 +3,7 @@ import 'package:cakeday/components/birthday/create_birthday_button.dart'
 import 'package:cakeday/components/birthday/reminder_card.dart'
     show ReminderCard;
 import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
+import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
@@ -82,6 +83,13 @@ class HomeScreen extends StatelessWidget {
               return Column(
                 mainAxisAlignment: .center,
                 children: [
+                  SectionTitle(
+                    text: AppLocalizations.of(
+                      context,
+                    )!.today_birthdays_section_title,
+                    fontSize: 13,
+                  ),
+
                   if (todayBirthdays.isEmpty)
                     Text(
                       AppLocalizations.of(context)!.no_birthdays_today,
@@ -107,6 +115,13 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                   const SizedBox(height: 16),
+
+                  SectionTitle(
+                    text: AppLocalizations.of(
+                      context,
+                    )!.upcoming_birthdays_section_title,
+                    fontSize: 13,
+                  ),
 
                   if (upcomingBirthdays.isEmpty)
                     Column(

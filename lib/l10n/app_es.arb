@@ -75,6 +75,8 @@
   "no_birthdays_today": "Hoy no hay cumpleaños 🎂",
   "no_upcoming_birthdays": "No hay cumpleaños en los próximos 30 días.",
   "birthday_already_exists": "Ya tienes un recordatorio para esta persona.",
+  "today_birthdays_section_title": "Cumpleaños de hoy",
+  "upcoming_birthdays_section_title": "Próximos cumpleaños",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -203,5 +205,7 @@
   },
   "@no_birthdays_today": {},
   "@no_upcoming_birthdays": {},
-  "@birthday_already_exists": {}
+  "@birthday_already_exists": {},
+  "@today_birthdays_section_title": {},
+  "@upcoming_birthdays_section_title": {}
 }
