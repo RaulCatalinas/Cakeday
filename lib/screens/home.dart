@@ -79,78 +79,73 @@ class HomeScreen extends StatelessWidget {
               final todayBirthdays = filterTodayBirthdays(snapshot.data!);
               final upcomingBirthdays = filterUpcomingBirthdays(snapshot.data!);
 
-              if (todayBirthdays.isEmpty || upcomingBirthdays.isEmpty) {
-                return Column(
-                  mainAxisAlignment: .center,
-                  children: [
-                    const Icon(
-                      Icons.cake_outlined,
-                      color: Colors.grey,
-                      size: 36,
-                    ),
-                    const SizedBox(height: 8),
-
-                    if (todayBirthdays.isEmpty)
-                      Text(
-                        AppLocalizations.of(context)!.no_birthdays_today,
-                        textAlign: .center,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-
-                    const SizedBox(height: 8),
-
-                    if (upcomingBirthdays.isEmpty)
-                      Text(
-                        AppLocalizations.of(context)!.no_upcoming_birthdays,
-                        textAlign: .center,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                  ],
-                );
-              }
-
               return Column(
                 mainAxisAlignment: .center,
                 children: [
-                  ...todayBirthdays.map((todayBirthday) {
-                    return GradientCard(
-                      child: ReminderCard(
-                        contactInfo: ContactInfo(
-                          name: todayBirthday.name,
-                          phone: todayBirthday.phone,
-                          photo: todayBirthday.photo,
-                        ),
+                  if (todayBirthdays.isEmpty)
+                    Text(
+                      AppLocalizations.of(context)!.no_birthdays_today,
+                      textAlign: .center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
-                    );
-                  }),
-
-                  const SizedBox(height: 8),
-
-                  Column(
-                    mainAxisAlignment: .center,
-                    children: [
-                      for (int i = 0; i < upcomingBirthdays.length; i++) ...[
-                        ReminderCard(
+                    )
+                  else
+                    ...todayBirthdays.map(
+                      (b) => GradientCard(
+                        child: ReminderCard(
+                          id: b.id,
                           contactInfo: ContactInfo(
-                            name: upcomingBirthdays[i].name,
-                            phone: upcomingBirthdays[i].phone,
-                            photo: upcomingBirthdays[i].photo,
-                            birthday: DateTime(
-                              upcomingBirthdays[i].year ?? 0,
-                              upcomingBirthdays[i].month,
-                              upcomingBirthdays[i].day,
-                            ),
+                            name: b.name,
+                            phone: b.phone,
+                            photo: b.photo,
                           ),
                         ),
-                        if (i < upcomingBirthdays.length - 1)
-                          const SizedBox(height: 8),
+                      ),
+                    ),
+
+                  const SizedBox(height: 16),
+
+                  if (upcomingBirthdays.isEmpty)
+                    Column(
+                      children: [
+                        const Icon(
+                          Icons.cake_outlined,
+                          color: Colors.grey,
+                          size: 36,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          AppLocalizations.of(context)!.no_upcoming_birthdays,
+                          textAlign: .center,
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
                       ],
+                    )
+                  else
+                    for (int i = 0; i < upcomingBirthdays.length; i++) ...[
+                      ReminderCard(
+                        id: upcomingBirthdays[i].id,
+                        contactInfo: ContactInfo(
+                          name: upcomingBirthdays[i].name,
+                          phone: upcomingBirthdays[i].phone,
+                          photo: upcomingBirthdays[i].photo,
+                          birthday: DateTime(
+                            upcomingBirthdays[i].year ?? 0,
+                            upcomingBirthdays[i].month,
+                            upcomingBirthdays[i].day,
+                          ),
+                        ),
+                        notificationScheduled:
+                            upcomingBirthdays[i].notificationScheduled,
+                      ),
+                      if (i < upcomingBirthdays.length - 1)
+                        const SizedBox(height: 8),
                     ],
-                  ),
                 ],
               );
             },
