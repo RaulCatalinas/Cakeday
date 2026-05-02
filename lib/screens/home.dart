@@ -100,6 +100,7 @@ class HomeScreen extends StatelessWidget {
                             phone: b.phone,
                             photo: b.photo,
                           ),
+                          notificationScheduled: b.notificationScheduled,
                         ),
                       ),
                     ),
