@@ -6,7 +6,7 @@ import 'package:cakeday/components/common/app_card.dart' show AppCard;
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/dialogs/confirm_delete_birthday.dart'
     show showConfirmDeleteBirthdayDialog;
-import 'package:cakeday/handlers/handle_delete_birthday.dart'
+import 'package:cakeday/handlers/birthday/handle_delete_birthday.dart'
     show handleDeleteBirthday;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/providers/birthdays_provider.dart'

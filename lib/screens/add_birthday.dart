@@ -12,11 +12,11 @@ import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/layout/clickable_card.dart'
     show ClickableCard;
 import 'package:cakeday/db/db_manager.dart' show DbManager;
-import 'package:cakeday/handlers/handle_save_birthday.dart'
+import 'package:cakeday/handlers/birthday/handle_save_birthday.dart'
     show handleSaveBirthday;
-import 'package:cakeday/handlers/handle_schedule_notification.dart';
-import 'package:cakeday/handlers/handle_update_birthday.dart';
-import 'package:cakeday/handlers/handle_update_notification.dart';
+import 'package:cakeday/handlers/birthday/handle_update_birthday.dart';
+import 'package:cakeday/handlers/notifications/handle_schedule_notification.dart';
+import 'package:cakeday/handlers/notifications/handle_update_notification.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;

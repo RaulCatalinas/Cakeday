@@ -2,7 +2,7 @@ import 'package:cakeday/components/birthday/reminder_card.dart'
     show ReminderCard;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/db/db_manager.dart';
-import 'package:cakeday/handlers/handle_schedule_notification.dart'
+import 'package:cakeday/handlers/notifications/handle_schedule_notification.dart'
     show handleScheduleNotification;
 import 'package:cakeday/providers/birthdays_provider.dart';
 import 'package:cakeday/providers/settings_provider.dart'
