@@ -1,28 +1,22 @@
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
-import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/notifications.dart' show scheduleNotification;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
 
 Future<bool> handleScheduleNotification({
-  required BirthdayData birthdayData,
+  required String contactName,
   required TimeOfDay notificationTime,
+  required DateTime birthday,
   required int birthdayId,
-  required String globalMessage,
   required BuildContext context,
 }) async {
   try {
-    final personalized = birthdayData.customMessage;
-    final notificationBody = (personalized != null && personalized.isNotEmpty)
-        ? personalized
-        : globalMessage;
-
     final reminderSet = await scheduleNotification(
       id: birthdayId,
-      title: 'Birthday reminder',
-      msg: notificationBody,
-      date: birthdayData.birthday!,
+      title: AppLocalizations.of(context)!.birthday_reminder_title,
+      msg: AppLocalizations.of(context)!.birthday_reminder_body(contactName),
+      date: birthday,
       time: notificationTime,
     );
 

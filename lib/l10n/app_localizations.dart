@@ -559,6 +559,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upcoming birthdays'**
   String get upcoming_birthdays_section_title;
+
+  /// No description provided for @update_birthday_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while updating the birthday. Please try again.'**
+  String get update_birthday_error;
+
+  /// No description provided for @update_birthday_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday updated successfully! 🎂'**
+  String get update_birthday_success;
+
+  /// No description provided for @reminder_updated_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder updated successfully! 🎂'**
+  String get reminder_updated_successfully;
+
+  /// No description provided for @reminder_update_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'\'t update the reminder. Check your notification permissions.'**
+  String get reminder_update_failed;
+
+  /// No description provided for @birthday_reminder_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday reminder'**
+  String get birthday_reminder_title;
+
+  /// No description provided for @birthday_reminder_body.
+  ///
+  /// In en, this message translates to:
+  /// **'Today is {name}\'\'s birthday! Don\'\'t forget to send your wishes! 🎂🎉'**
+  String birthday_reminder_body(String name);
 }
 
 class _AppLocalizationsDelegate

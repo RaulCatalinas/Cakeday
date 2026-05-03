@@ -77,6 +77,12 @@
   "birthday_already_exists": "You already have a reminder for this person.",
   "today_birthdays_section_title": "Today''s birthdays",
   "upcoming_birthdays_section_title": "Upcoming birthdays",
+  "update_birthday_error": "Something went wrong while updating the birthday. Please try again.",
+  "update_birthday_success": "Birthday updated successfully! 🎂",
+  "reminder_updated_successfully": "Reminder updated successfully! 🎂",
+  "reminder_update_failed": "We couldn''t update the reminder. Check your notification permissions.",
+  "birthday_reminder_title": "Birthday reminder",
+  "birthday_reminder_body": "Today is {name}''s birthday! Don''t forget to send your wishes! 🎂🎉",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -206,5 +212,18 @@
   "@no_upcoming_birthdays": {},
   "@birthday_already_exists": {},
   "@today_birthdays_section_title": {},
-  "@upcoming_birthdays_section_title": {}
+  "@upcoming_birthdays_section_title": {},
+  "@update_birthday_error": {},
+  "@update_birthday_success": {},
+  "@reminder_updated_successfully": {},
+  "@reminder_update_failed": {},
+  "@birthday_reminder_title": {},
+  "@birthday_reminder_body": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "Name of the contact having a birthday"
+      }
+    }
+  }
 }

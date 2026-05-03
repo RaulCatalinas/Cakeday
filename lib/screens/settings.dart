@@ -1,3 +1,5 @@
+import 'package:cakeday/components/birthday/select_reminder_hour.dart'
+    show SelectReminderHour;
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
 import 'package:cakeday/components/common/app_dropdown.dart';
 import 'package:cakeday/components/common/app_switch.dart' show AppSwitch;
@@ -12,7 +14,6 @@ import 'package:cakeday/permissions/notifications.dart'
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
-import 'package:cakeday/utils/time.dart' show selectHour;
 import 'package:flutter/material.dart'
     show
         BuildContext,
@@ -21,10 +22,8 @@ import 'package:flutter/material.dart'
         DropdownMenuEntry,
         Expanded,
         Icon,
-        IconButton,
         Icons,
         LayoutBuilder,
-        MaterialLocalizations,
         Row,
         SafeArea,
         Scaffold,
@@ -49,10 +48,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final settings = ref.watch(appSettingsProvider);
     final notifier = ref.read(appSettingsProvider.notifier);
-
-    final formattedTime = MaterialLocalizations.of(
-      context,
-    ).formatTimeOfDay(settings.notificationTime);
 
     return Scaffold(
       body: SafeArea(
@@ -110,38 +105,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
               ),
               const Divider(thickness: 1, height: 1),
-              AppCard(
+              SelectReminderHour(
+                onSelectedHour: notifier.setNotificationTime,
+                onInit: notifier.setNotificationTime,
                 borderRadius: .zero,
-                child: Row(
-                  children: [
-                    const Icon(Icons.alarm),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: .start,
-                        children: [
-                          Text(AppLocalizations.of(context)!.notification_time),
-                          Subtitle(
-                            text: AppLocalizations.of(
-                              context,
-                            )!.notification_time_subtitle,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(formattedTime),
-                    IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios, size: 20),
-                      onPressed: () async {
-                        final selectedHour = await selectHour(context: context);
-
-                        if (selectedHour != null) {
-                          notifier.setNotificationTime(selectedHour);
-                        }
-                      },
-                    ),
-                  ],
-                ),
               ),
               const Divider(thickness: 1, height: 1),
               AppCard(

@@ -1,5 +1,7 @@
 import 'package:cakeday/components/birthday/reminder_card.dart'
     show ReminderCard;
+import 'package:cakeday/components/birthday/select_reminder_hour.dart'
+    show SelectReminderHour;
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
 import 'package:cakeday/components/common/app_checkbox.dart' show AppCheckbox;
 import 'package:cakeday/components/common/gradient_button.dart'
@@ -13,6 +15,8 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/handlers/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/handlers/handle_schedule_notification.dart';
+import 'package:cakeday/handlers/handle_update_birthday.dart';
+import 'package:cakeday/handlers/handle_update_notification.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/permissions/contacts.dart'
     show requestContactListPermission;
@@ -48,6 +52,7 @@ import 'package:flutter/material.dart'
         Text,
         TextEditingController,
         Theme,
+        TimeOfDay,
         Visibility,
         Widget;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
@@ -70,6 +75,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   bool usePersonalizedMessage = false;
   bool useNote = false;
   bool includeYear = false;
+  TimeOfDay? notificationTime;
 
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
@@ -172,7 +178,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               const Divider(thickness: 1, height: 1),
               ClickableCard(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                borderRadius: .vertical(bottom: .circular(25.0)),
+                borderRadius: .zero,
                 onTap: () async {
                   final date = await selectDate(context: context);
 
@@ -195,6 +201,12 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     ),
                   ],
                 ),
+              ),
+              const Divider(thickness: 1, height: 1),
+              SelectReminderHour(
+                borderRadius: .vertical(bottom: .circular(25.0)),
+                onSelectedHour: (hour) =>
+                    setState(() => notificationTime = hour),
               ),
 
               const Padding(padding: .symmetric(vertical: 16)),
@@ -303,6 +315,8 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 )!.save_birthday_reminder_button_text,
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
                 onTap: () async {
+                  final settings = ref.read(appSettingsProvider);
+
                   if (widget.birthdayToEdit == null) {
                     final existRecord = await DbManager.existsBirthday(
                       name: contactInfo!.name,
@@ -320,8 +334,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       return;
                     }
 
-                    final settings = ref.read(appSettingsProvider);
-
                     final birthdayData = BirthdayData(
                       contactInfo: contactInfo,
                       birthday: birthday,
@@ -338,7 +350,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
                     final (saved, id) = await handleSaveBirthday(
                       birthdayData: birthdayData,
-                      notificationTime: settings.notificationTime,
                       globalMessage: settings.globalMessage,
                       enableNotifications: settings.enableNotifications,
                       context: context,
@@ -350,10 +361,11 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       if (id == null) return;
 
                       await handleScheduleNotification(
-                        birthdayData: birthdayData,
-                        notificationTime: settings.notificationTime,
+                        contactName: contactInfo!.name,
+                        birthday: birthday!,
+                        notificationTime:
+                            notificationTime ?? settings.notificationTime,
                         birthdayId: id,
-                        globalMessage: settings.globalMessage,
                         context: context,
                       );
                     }
@@ -361,7 +373,47 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     return;
                   }
 
-                  print('Editing existing birthday...');
+                  var id = widget.birthdayToEdit!.id;
+
+                  if (id == null) {
+                    final birthdayId = await DbManager.getIdByName(
+                      contactInfo!.name,
+                    );
+
+                    id = birthdayId;
+                  }
+
+                  final saved = await handleUpdateBirthday(
+                    id: id!,
+                    name: contactInfo!.name,
+                    phone: contactInfo!.phone ?? '',
+                    day: birthday!.day,
+                    month: birthday!.month,
+                    year: includeYear ? birthday!.year : null,
+                    photo: contactInfo!.photo,
+                    customMessage: _trimmedOrNull(
+                      enabled: usePersonalizedMessage,
+                      text: messageController.text,
+                    ),
+                    note: _trimmedOrNull(
+                      enabled: useNote,
+                      text: noteController.text,
+                    ),
+                    context: context,
+                  );
+
+                  if (saved) {
+                    ref.invalidate(birthdaysListProvider);
+
+                    await handleUpdateNotification(
+                      birthdayId: id,
+                      contactName: contactInfo!.name,
+                      birthday: birthday!,
+                      notificationTime:
+                          notificationTime ?? settings.notificationTime,
+                      context: context,
+                    );
+                  }
                 },
               ),
             ],

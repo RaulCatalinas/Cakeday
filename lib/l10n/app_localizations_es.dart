@@ -271,4 +271,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get upcoming_birthdays_section_title => 'Próximos cumpleaños';
+
+  @override
+  String get update_birthday_error =>
+      'Algo ha ido mal al actualizar el cumpleaños. Inténtalo de nuevo.';
+
+  @override
+  String get update_birthday_success =>
+      '¡Cumpleaños actualizado correctamente! 🎂';
+
+  @override
+  String get reminder_updated_successfully =>
+      '¡Recordatorio actualizado correctamente! 🎂';
+
+  @override
+  String get reminder_update_failed =>
+      'No hemos podido actualizar el recordatorio. Revisa los permisos de notificación.';
+
+  @override
+  String get birthday_reminder_title => 'Recordatorio de cumpleaños';
+
+  @override
+  String birthday_reminder_body(String name) {
+    return '¡Hoy es el cumpleaños de $name! ¡No olvides enviar tus felicitaciones! 🎂🎉';
+  }
 }

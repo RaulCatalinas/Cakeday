@@ -22,6 +22,7 @@ class BirthdayData {
 
   factory BirthdayData.fromBirthday(Birthday row) {
     return BirthdayData(
+      id: row.id,
       contactInfo: ContactInfo(
         name: row.name,
         phone: row.phone,

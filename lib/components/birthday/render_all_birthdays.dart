@@ -45,9 +45,10 @@ class RenderAllBirthdays extends ConsumerWidget {
           notificationScheduled: birthdayData.notificationScheduled,
           onRetryNotification: () async {
             await _onRetryNotification(
-              birthdayData: birthdayData,
+              contactName: birthdayData.contactInfo!.name,
+              birthday: birthdayData.birthday!,
+              birthdayId: birthdayData.id,
               notificationTime: settings.notificationTime,
-              globalMessage: settings.globalMessage,
               context: context,
             );
 
@@ -59,17 +60,16 @@ class RenderAllBirthdays extends ConsumerWidget {
   }
 
   Future<void> _onRetryNotification({
-    required BirthdayData birthdayData,
+    required String contactName,
+    required DateTime birthday,
+    required int? birthdayId,
     required TimeOfDay notificationTime,
-    required String globalMessage,
     required BuildContext context,
   }) async {
-    var id = birthdayData.id;
+    var id = birthdayId;
 
     if (id == null) {
-      final birthdayId = await DbManager.getIdByName(
-        birthdayData.contactInfo!.name,
-      );
+      final birthdayId = await DbManager.getIdByName(contactName);
 
       if (birthdayId == null) return;
 
@@ -77,10 +77,10 @@ class RenderAllBirthdays extends ConsumerWidget {
     }
 
     await handleScheduleNotification(
-      birthdayData: birthdayData,
       notificationTime: notificationTime,
+      contactName: contactName,
+      birthday: birthday,
       birthdayId: id,
-      globalMessage: globalMessage,
       context: context,
     );
   }

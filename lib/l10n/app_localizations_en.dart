@@ -271,4 +271,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get upcoming_birthdays_section_title => 'Upcoming birthdays';
+
+  @override
+  String get update_birthday_error =>
+      'Something went wrong while updating the birthday. Please try again.';
+
+  @override
+  String get update_birthday_success => 'Birthday updated successfully! 🎂';
+
+  @override
+  String get reminder_updated_successfully =>
+      'Reminder updated successfully! 🎂';
+
+  @override
+  String get reminder_update_failed =>
+      'We couldn\'t update the reminder. Check your notification permissions.';
+
+  @override
+  String get birthday_reminder_title => 'Birthday reminder';
+
+  @override
+  String birthday_reminder_body(String name) {
+    return 'Today is $name\'s birthday! Don\'t forget to send your wishes! 🎂🎉';
+  }
 }

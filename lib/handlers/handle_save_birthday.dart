@@ -2,11 +2,10 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/toast.dart' show showToast;
-import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
+import 'package:flutter/material.dart' show BuildContext;
 
 Future<(bool, int?)> handleSaveBirthday({
   required BirthdayData birthdayData,
-  required TimeOfDay notificationTime,
   required String globalMessage,
   required bool enableNotifications,
   required BuildContext context,
