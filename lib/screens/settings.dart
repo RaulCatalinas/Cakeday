@@ -109,6 +109,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onSelectedHour: notifier.setNotificationTime,
                 onInit: notifier.setNotificationTime,
                 borderRadius: .zero,
+                initialHour: settings.notificationTime,
               ),
               const Divider(thickness: 1, height: 1),
               AppCard(
