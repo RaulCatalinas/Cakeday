@@ -2,13 +2,13 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/toast.dart' show showToast;
-import 'package:flutter/material.dart' show BuildContext;
+import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
 
 Future<(bool, int?)> handleSaveBirthday({
   required BirthdayData birthdayData,
-  required String globalMessage,
   required bool enableNotifications,
   required BuildContext context,
+  TimeOfDay? notificationTime,
 }) async {
   try {
     if (birthdayData.contactInfo == null) {
@@ -43,6 +43,7 @@ Future<(bool, int?)> handleSaveBirthday({
       year: birthdayData.includeYear ? birthdayData.birthday!.year : null,
       customMessage: birthdayData.customMessage,
       note: birthdayData.note,
+      notificationTime: notificationTime,
     );
 
     if (birthdayId <= 0) {

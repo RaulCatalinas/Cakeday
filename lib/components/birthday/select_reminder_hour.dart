@@ -24,12 +24,14 @@ class SelectReminderHour extends StatefulWidget {
   final Function(TimeOfDay) onSelectedHour;
   final Function(TimeOfDay)? onInit;
   final BorderRadius? borderRadius;
+  final TimeOfDay? initialHour;
 
   const SelectReminderHour({
     super.key,
     required this.onSelectedHour,
     this.onInit,
     this.borderRadius,
+    this.initialHour,
   });
 
   @override
@@ -37,7 +39,7 @@ class SelectReminderHour extends StatefulWidget {
 }
 
 class _SelectReminderHourState extends State<SelectReminderHour> {
-  var selectedHour = const TimeOfDay(hour: 9, minute: 0);
+  late TimeOfDay selectedHour;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +77,7 @@ class _SelectReminderHourState extends State<SelectReminderHour> {
             ),
           ),
           Text(formattedTime),
+          const SizedBox(width: 8),
           const Icon(Icons.arrow_forward_ios, size: 20),
         ],
       ),
@@ -85,8 +88,8 @@ class _SelectReminderHourState extends State<SelectReminderHour> {
   void initState() {
     super.initState();
 
-    if (widget.onInit == null) return;
+    selectedHour = widget.initialHour ?? const TimeOfDay(hour: 9, minute: 0);
 
-    widget.onInit!(selectedHour);
+    widget.onInit?.call(selectedHour);
   }
 }

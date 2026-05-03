@@ -205,6 +205,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               const Divider(thickness: 1, height: 1),
               SelectReminderHour(
                 borderRadius: .vertical(bottom: .circular(25.0)),
+                initialHour: widget.birthdayToEdit?.notificationHour,
                 onSelectedHour: (hour) =>
                     setState(() => notificationTime = hour),
               ),
@@ -350,8 +351,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
                     final (saved, id) = await handleSaveBirthday(
                       birthdayData: birthdayData,
-                      globalMessage: settings.globalMessage,
                       enableNotifications: settings.enableNotifications,
+                      notificationTime:
+                          notificationTime ?? settings.notificationTime,
                       context: context,
                     );
 
@@ -399,6 +401,8 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       enabled: useNote,
                       text: noteController.text,
                     ),
+                    notificationTime:
+                        notificationTime ?? settings.notificationTime,
                     context: context,
                   );
 

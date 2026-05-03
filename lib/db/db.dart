@@ -30,11 +30,16 @@ class AppDatabase extends _$AppDatabase {
       if (from < 2) {
         await migrator.addColumn(birthdays, birthdays.notificationScheduled);
       }
+
+      if (from < 3) {
+        await migrator.addColumn(birthdays, birthdays.notificationHour);
+        await migrator.addColumn(birthdays, birthdays.notificationMinute);
+      }
     },
   );
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 }
 
 class BirthdayDao extends DatabaseAccessor<AppDatabase> {
@@ -121,6 +126,9 @@ class Birthdays extends Table {
   IntColumn get month => integer()();
   TextColumn get name => text()();
   TextColumn get note => text().nullable()();
+  IntColumn get notificationHour => integer().withDefault(const Constant(9))();
+  IntColumn get notificationMinute =>
+      integer().withDefault(const Constant(0))();
   BoolColumn get notificationScheduled =>
       boolean().withDefault(const Constant(false))();
   TextColumn get phone => text()();

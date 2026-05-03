@@ -1,5 +1,6 @@
 import 'package:cakeday/db/db.dart' show Birthday;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
+import 'package:flutter/material.dart' show TimeOfDay;
 
 class BirthdayData {
   final int? id;
@@ -9,6 +10,7 @@ class BirthdayData {
   final String? customMessage;
   final String? note;
   final bool notificationScheduled;
+  final TimeOfDay? notificationHour;
 
   const BirthdayData({
     this.id,
@@ -18,6 +20,7 @@ class BirthdayData {
     this.customMessage,
     this.note,
     this.notificationScheduled = false,
+    this.notificationHour,
   });
 
   factory BirthdayData.fromBirthday(Birthday row) {
@@ -36,6 +39,10 @@ class BirthdayData {
       customMessage: row.customMessage,
       note: row.note,
       notificationScheduled: row.notificationScheduled,
+      notificationHour: TimeOfDay(
+        hour: row.notificationHour,
+        minute: row.notificationMinute,
+      ),
     );
   }
 }

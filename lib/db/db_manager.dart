@@ -3,6 +3,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:cakeday/db/db.dart'
     show AppDatabase, BirthdaysCompanion, Birthday;
 import 'package:drift/drift.dart' show Value;
+import 'package:flutter/material.dart';
 
 class DbManager {
   static final DbManager _instance = DbManager._internal();
@@ -42,6 +43,7 @@ class DbManager {
     required String phone,
     required int day,
     required int month,
+    TimeOfDay? notificationTime,
     int? year,
     List<int>? photo,
     String? customMessage,
@@ -56,6 +58,8 @@ class DbManager {
       photo: Value(photo != null ? Uint8List.fromList(photo) : null),
       customMessage: Value(customMessage),
       note: Value(note),
+      notificationHour: Value(notificationTime?.hour ?? 9),
+      notificationMinute: Value(notificationTime?.minute ?? 0),
     ),
   );
 
@@ -72,6 +76,7 @@ class DbManager {
     required String phone,
     required int day,
     required int month,
+    TimeOfDay? notificationTime,
     int? year,
     List<int>? photo,
     String? customMessage,
@@ -88,6 +93,8 @@ class DbManager {
         photo: Value(photo != null ? Uint8List.fromList(photo) : null),
         customMessage: Value(customMessage),
         note: Value(note),
+        notificationHour: Value(notificationTime?.hour ?? 9),
+        notificationMinute: Value(notificationTime?.minute ?? 0),
       ),
     );
 

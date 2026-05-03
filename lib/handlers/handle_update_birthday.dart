@@ -1,7 +1,7 @@
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/toast.dart' show showToast;
-import 'package:flutter/material.dart' show BuildContext;
+import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
 
 Future<bool> handleUpdateBirthday({
   required int id,
@@ -14,6 +14,7 @@ Future<bool> handleUpdateBirthday({
   required List<int>? photo,
   required String? customMessage,
   required String? note,
+  TimeOfDay? notificationTime,
 }) async {
   try {
     final success = await DbManager.updateBirthday(
@@ -26,6 +27,7 @@ Future<bool> handleUpdateBirthday({
       photo: photo,
       customMessage: customMessage,
       note: note,
+      notificationTime: notificationTime,
     );
 
     if (!success) {
