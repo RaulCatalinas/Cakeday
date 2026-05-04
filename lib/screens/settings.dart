@@ -1,14 +1,14 @@
 import 'package:cakeday/components/birthday/select_reminder_hour.dart'
     show SelectReminderHour;
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
-import 'package:cakeday/components/common/app_dropdown.dart';
+import 'package:cakeday/components/common/app_dropdown.dart' show AppDropdown;
 import 'package:cakeday/components/common/app_switch.dart' show AppSwitch;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
 import 'package:cakeday/components/layout/preview_message.dart'
     show PreviewMessage;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
-import 'package:cakeday/managers/language_manager.dart';
+import 'package:cakeday/managers/language_manager.dart' show LanguageManager;
 import 'package:cakeday/permissions/notifications.dart'
     show requestNotificationsPermission;
 import 'package:cakeday/providers/settings_provider.dart'
@@ -109,7 +109,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               const Divider(thickness: 1, height: 1),
               SelectReminderHour(
                 onSelectedHour: notifier.setNotificationTime,
-                onInit: notifier.setNotificationTime,
                 borderRadius: .zero,
                 initialHour: settings.notificationTime,
               ),
