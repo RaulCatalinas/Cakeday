@@ -1,88 +1,95 @@
 {
   "@@locale": "es",
   "add_birthday_header": "Añadir cumpleaños",
-  "information_section_title": "Información",
-  "select_contact": "Selecciona de la lista de contactos",
-  "date_section_title": "Fecha",
+  "information_section_title": "Contacto",
+  "select_contact": "Elige de tus contactos",
+  "date_section_title": "Cumpleaños",
   "year_of_birth": "Año de nacimiento",
   "message": "Mensaje",
   "personalized_message": "Mensaje personalizado",
-  "personalized_message_input_hint_text": "Mensaje de cumpleaños personalizado",
+  "personalized_message_input_hint_text": "Escribe un mensaje de cumpleaños personal…",
   "note_section_title": "Nota",
-  "note_input_hint_text": "Por ejemplo: Le gusta el café",
+  "note_input_hint_text": "Por ejemplo: Le encanta la tarta de chocolate",
   "optional_text": "Opcional",
   "all_birthdays_header": "Todos los cumpleaños",
-  "app_search_bar_hint_text": "Buscar recordatorios",
-  "could_not_load_birthdays_error": "No hemos podido cargar tus cumpleaños. Inténtalo de nuevo dentro de un momento.",
-  "not_birthdays_yet_information": "Aún no hay cumpleaños.\nAñade alguno desde la pantalla de añadir.",
-  "no_search_matches_error": "No se han encontrado resultados que coincidan con tu búsqueda.\nPrueba con otro nombre o fecha.",
-  "general_message_section_title": "Mensaje general",
-  "notifications_section_title": "Notificaciones",
-  "enable_notifications": "Activar notificaciones",
-  "enable_notifications_subtitle": "Te avisa el día del cumpleaños",
-  "notification_time": "Hora de notificación",
-  "notification_time_subtitle": "Se repite cada año",
-  "advance_notice": "Aviso previo",
-  "advance_notice_subtitle": "Avisa también el día anterior",
+  "app_search_bar_hint_text": "Busca por nombre o fecha…",
+  "could_not_load_birthdays_error": "No hemos podido cargar tus cumpleaños. Desliza hacia abajo para volver a intentarlo.",
+  "not_birthdays_yet_information": "Aún no tienes cumpleaños.\n¡Pulsa el botón + para añadir el primero!",
+  "no_search_matches_error": "No se han encontrado resultados.\nPrueba con otro nombre o mes.",
+  "general_message_section_title": "Mensaje de cumpleaños",
+  "notifications_section_title": "Recordatorios",
+  "enable_notifications": "Activar recordatorios",
+  "enable_notifications_subtitle": "Recibe un aviso el día del cumpleaños",
+  "notification_time": "Hora del recordatorio",
+  "notification_time_subtitle": "Recibirás el aviso a esta hora cada año",
+  "advance_notice": "Aviso anticipado",
+  "advance_notice_subtitle": "Avísame también el día anterior",
   "appearance_section_title": "Apariencia",
   "dark_mode": "Modo oscuro",
-  "dark_mode_subtitle": "Cambiar entre el tema claro y el oscuro",
-  "global_birthday_input_hint_text": "Mensaje de cumpleaños",
+  "dark_mode_subtitle": "Cambia entre el tema claro y el oscuro",
+  "global_birthday_input_hint_text": "Escribe tu mensaje de cumpleaños predeterminado…",
   "default_global_message": "¡Feliz cumpleaños, '{name}'! 🎂🎉 ¡Espero que estés pasando un día increíble!",
   "count_birthday_message_chars": "{count} caracteres · mínimo 10",
-  "name_placeholder_info": "se sustituirá por el nombre del contacto al abrir WhatsApp",
+  "name_placeholder_info": "se sustituirá por el nombre de tu contacto al abrir WhatsApp",
   "cancel_button_text": "Cancelar",
-  "empty_birthday_message_error": "El mensaje de cumpleaños no debe estar vacio",
-  "too_short_birthday_error": "El mensaje es demasiado corto",
+  "empty_birthday_message_error": "Escribe un mensaje de cumpleaños antes de guardar.",
+  "too_short_birthday_error": "El mensaje es demasiado corto. Escribe al menos 10 caracteres.",
   "save_birthday_button_text": "Guardar mensaje",
   "edit_message_button_text": "Editar mensaje",
   "preview_whatsapp_text": "VISTA PREVIA · WHATSAPP",
   "home_tab_label": "Inicio",
-  "settings_tab_label": "Configuración",
+  "settings_tab_label": "Ajustes",
   "all_birthdays_tab_label": "Cumpleaños",
   "unknown_text": "Desconocido",
-  "change_language": "Idioma de la aplicación",
+  "change_language": "Idioma de la app",
   "spanish_language": "Español",
-  "english_language": "Ingles",
-  "change_language_subtitle": "Elige tu idioma preferido",
+  "english_language": "Inglés",
+  "change_language_subtitle": "Elige el idioma que prefieras",
   "change_language_hint_text": "Selecciona un idioma",
-  "os_language": "Predeterminado del sistema",
-  "getting_birthdays_error": "No se han podido cargar los cumpleaños. Inténtalo de nuevo.",
-  "empty_birthdays_error": "Aún no tienes cumpleaños guardados.",
+  "os_language": "Usar el idioma del dispositivo",
+  "getting_birthdays_error": "No hemos podido cargar los cumpleaños. Inténtalo de nuevo.",
+  "empty_birthdays_error": "Aún no tienes cumpleaños guardados.\n¡Pulsa + para empezar!",
   "save_birthday_reminder_button_text": "Guardar cumpleaños",
-  "no_contact_selected_error": "Por favor, selecciona un contacto antes de guardar.",
-  "no_contact_phone_error": "No hemos podido obtener el número de teléfono de este contacto. Inténtalo de nuevo.",
-  "no_birthday_date_error": "Por favor, selecciona una fecha de cumpleaños.",
-  "birthday_save_error": "Algo ha ido mal al guardar. Inténtalo de nuevo.",
-  "reminder_configured_successfully": "¡Recordatorio programado! 🎂",
-  "birthday_saved": "¡Cumpleaños guardado correctamente! 🎂",
-  "reminder_configuration_failed": "No hemos podido programar el recordatorio. Revisa los permisos de notificación.",
-  "birthday_deleted_success": "Recordatorio eliminado correctamente.",
-  "birthday_deleted_error": "Algo ha ido mal al eliminar. Inténtalo de nuevo.",
-  "notification_could_not_be_scheduled": "No se ha podido programar la notificación",
-  "delete_text": "Eliminar",
-  "confirm_delete_birthday_dialog_content": "¿Seguro que quieres borrar este recordatorio?",
-  "cancel_text": "Cancelar",
+  "no_contact_selected_error": "Elige un contacto primero.",
+  "no_contact_phone_error": "No hemos encontrado un número de teléfono para este contacto. Prueba con otro.",
+  "no_birthday_date_error": "Selecciona la fecha de cumpleaños.",
+  "birthday_save_error": "Algo ha ido mal. Inténtalo de nuevo.",
+  "reminder_configured_successfully": "¡Recordatorio programado! Te avisaremos el gran día 🎂",
+  "birthday_saved": "¡Cumpleaños guardado! 🎂",
+  "reminder_configuration_failed": "Cumpleaños guardado, pero no hemos podido programar el recordatorio. Ve a Ajustes para activar las notificaciones.",
+  "birthday_deleted_success": "Recordatorio eliminado.",
+  "birthday_deleted_error": "No hemos podido eliminar el recordatorio. Inténtalo de nuevo.",
+  "notification_could_not_be_scheduled": "No hemos podido programar el recordatorio para este cumpleaños.",
   "retry_text": "Reintentar",
+  "delete_text": "Eliminar",
+  "confirm_delete_birthday_dialog_content": "¿Seguro que quieres eliminar este recordatorio? Esta acción no se puede deshacer.",
+  "cancel_text": "Cancelar",
   "today_text": "Hoy",
   "tomorrow_text": "Mañana",
   "turns_age": "Cumple {age}",
-  "days_remaining": "En {days} dias",
+  "days_remaining": "En {days} días",
   "weeks_remaining": "En {weeks} semanas",
   "months_remaining": "En {months} meses",
   "years_remaining": "En {years} años",
-  "years_and_months_remaining": "En {years} años and {months} meses",
+  "years_and_months_remaining": "En {years} años y {months} meses",
   "no_birthdays_today": "Hoy no hay cumpleaños 🎂",
   "no_upcoming_birthdays": "No hay cumpleaños en los próximos 30 días.",
   "birthday_already_exists": "Ya tienes un recordatorio para esta persona.",
-  "today_birthdays_section_title": "Cumpleaños de hoy",
-  "upcoming_birthdays_section_title": "Próximos cumpleaños",
-  "update_birthday_error": "Algo ha ido mal al actualizar el cumpleaños. Inténtalo de nuevo.",
-  "update_birthday_success": "¡Cumpleaños actualizado correctamente! 🎂",
-  "reminder_updated_successfully": "¡Recordatorio actualizado correctamente! 🎂",
-  "reminder_update_failed": "No hemos podido actualizar el recordatorio. Revisa los permisos de notificación.",
-  "birthday_reminder_title": "Recordatorio de cumpleaños",
-  "birthday_reminder_body": "¡Hoy es el cumpleaños de {name}! ¡No olvides enviar tus felicitaciones! 🎂🎉",
+  "today_birthdays_section_title": "Hoy",
+  "upcoming_birthdays_section_title": "Próximamente",
+  "update_birthday_error": "No hemos podido guardar los cambios. Inténtalo de nuevo.",
+  "update_birthday_success": "¡Cumpleaños actualizado! 🎂",
+  "reminder_updated_successfully": "¡Recordatorio actualizado! 🎂",
+  "reminder_update_failed": "No hemos podido actualizar el recordatorio. Ve a Ajustes para comprobar los permisos de notificación.",
+  "birthday_reminder_title": "🎂 ¡Cumpleaños hoy!",
+  "birthday_reminder_body": "¡Hoy es el cumpleaños de {name}! Pulsa para enviar tus felicitaciones 🎉",
+  "contacts_permission_denied": "Para añadir cumpleaños más rápido, permite a Cakeday acceder a tus contactos en Ajustes.",
+  "contacts_permission_permanently_denied": "El acceso a los contactos está bloqueado. Puedes activarlo en los Ajustes de tu teléfono.",
+  "contacts_permission_limited": "Solo has compartido algunos contactos. Es posible que algunas personas no aparezcan en la lista.",
+  "contacts_permission_restricted": "Tu dispositivo no permite el acceso a los contactos. Revisa el control parental o los ajustes del dispositivo.",
+  "notifications_permission_denied": "Activa las notificaciones para que Cakeday pueda recordarte los cumpleaños.",
+  "notifications_permission_permanently_denied": "Las notificaciones están desactivadas. Puedes activarlas en los Ajustes de tu teléfono.",
+  "notifications_permission_restricted": "Tu dispositivo no permite las notificaciones. Revisa el control parental o los ajustes del dispositivo.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -114,13 +121,12 @@
   "@default_global_message": {},
   "@count_birthday_message_chars": {
     "placeholders": {
-      "count":{
-        "description": "Caracteres del mensaje de cumpleaños",
+      "count": {
+        "description": "Número de caracteres del mensaje de cumpleaños",
         "type": "int"
       }
     }
   },
-
   "@name_placeholder_info": {},
   "@cancel_button_text": {},
   "@empty_birthday_message_error": {},
@@ -161,7 +167,7 @@
     "placeholders": {
       "age": {
         "type": "int",
-        "description": "Age he/she will be turning"
+        "description": "Edad que va a cumplir"
       }
     }
   },
@@ -169,7 +175,7 @@
     "placeholders": {
       "days": {
         "type": "int",
-        "description": "Nº de días que faltan para el cumpleaños"
+        "description": "Número de días que faltan para el cumpleaños"
       }
     }
   },
@@ -177,7 +183,7 @@
     "placeholders": {
       "weeks": {
         "type": "int",
-        "description": "Number of weeks until the birthday"
+        "description": "Número de semanas que faltan para el cumpleaños"
       }
     }
   },
@@ -185,7 +191,7 @@
     "placeholders": {
       "months": {
         "type": "int",
-        "description": "Number of months until the birthday"
+        "description": "Número de meses que faltan para el cumpleaños"
       }
     }
   },
@@ -193,7 +199,7 @@
     "placeholders": {
       "years": {
         "type": "int",
-        "description": "Number of years until the birthday"
+        "description": "Número de años que faltan para el cumpleaños"
       }
     }
   },
@@ -201,11 +207,11 @@
     "placeholders": {
       "years": {
         "type": "int",
-        "description": "Number of years until the birthday"
+        "description": "Número de años que faltan para el cumpleaños"
       },
       "months": {
         "type": "int",
-        "description": "Number of months until the birthday"
+        "description": "Número de meses que faltan para el cumpleaños"
       }
     }
   },
@@ -226,5 +232,12 @@
         "description": "Nombre del contacto que cumple años"
       }
     }
-  }
+  },
+  "@contacts_permission_denied": {},
+  "@contacts_permission_permanently_denied": {},
+  "@contacts_permission_limited": {},
+  "@contacts_permission_restricted": {},
+  "@notifications_permission_denied": {},
+  "@notifications_permission_permanently_denied": {},
+  "@notifications_permission_restricted": {}
 }

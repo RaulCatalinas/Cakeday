@@ -107,25 +107,25 @@ abstract class AppLocalizations {
   /// No description provided for @information_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Information'**
+  /// **'Contact'**
   String get information_section_title;
 
   /// No description provided for @select_contact.
   ///
   /// In en, this message translates to:
-  /// **'Select from the contacts list'**
+  /// **'Choose from your contacts'**
   String get select_contact;
 
   /// No description provided for @date_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Date'**
+  /// **'Birthday'**
   String get date_section_title;
 
   /// No description provided for @year_of_birth.
   ///
   /// In en, this message translates to:
-  /// **'Year of birth'**
+  /// **'Birth year'**
   String get year_of_birth;
 
   /// No description provided for @message.
@@ -137,13 +137,13 @@ abstract class AppLocalizations {
   /// No description provided for @personalized_message.
   ///
   /// In en, this message translates to:
-  /// **'Personalized message'**
+  /// **'Custom message'**
   String get personalized_message;
 
   /// No description provided for @personalized_message_input_hint_text.
   ///
   /// In en, this message translates to:
-  /// **'Personalized birthday message'**
+  /// **'Write a personal birthday message…'**
   String get personalized_message_input_hint_text;
 
   /// No description provided for @note_section_title.
@@ -155,7 +155,7 @@ abstract class AppLocalizations {
   /// No description provided for @note_input_hint_text.
   ///
   /// In en, this message translates to:
-  /// **'E.g.: He likes coffee'**
+  /// **'E.g.: She loves chocolate cake'**
   String get note_input_hint_text;
 
   /// No description provided for @optional_text.
@@ -173,73 +173,73 @@ abstract class AppLocalizations {
   /// No description provided for @app_search_bar_hint_text.
   ///
   /// In en, this message translates to:
-  /// **'Search for reminders'**
+  /// **'Search by name or date…'**
   String get app_search_bar_hint_text;
 
   /// No description provided for @could_not_load_birthdays_error.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'\'t load your birthdays. Please try again in a moment.'**
+  /// **'We couldn\'\'t load your birthdays. Pull down to try again.'**
   String get could_not_load_birthdays_error;
 
   /// No description provided for @not_birthdays_yet_information.
   ///
   /// In en, this message translates to:
-  /// **'No birthdays yet.\nAdd someone using the add screen.'**
+  /// **'No birthdays yet.\nTap the + button to add your first one!'**
   String get not_birthdays_yet_information;
 
   /// No description provided for @no_search_matches_error.
   ///
   /// In en, this message translates to:
-  /// **'No reminders match your search.\nTry another name or date.'**
+  /// **'No results found.\nTry a different name or month.'**
   String get no_search_matches_error;
 
   /// No description provided for @general_message_section_title.
   ///
   /// In en, this message translates to:
-  /// **'General message'**
+  /// **'Birthday message'**
   String get general_message_section_title;
 
   /// No description provided for @notifications_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Notifications'**
+  /// **'Reminders'**
   String get notifications_section_title;
 
   /// No description provided for @enable_notifications.
   ///
   /// In en, this message translates to:
-  /// **'Enable notifications'**
+  /// **'Enable reminders'**
   String get enable_notifications;
 
   /// No description provided for @enable_notifications_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Alerts you on the day of the birthday'**
+  /// **'Get notified on the day of the birthday'**
   String get enable_notifications_subtitle;
 
   /// No description provided for @notification_time.
   ///
   /// In en, this message translates to:
-  /// **'Notification time'**
+  /// **'Reminder time'**
   String get notification_time;
 
   /// No description provided for @notification_time_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Repeats every year'**
+  /// **'You\'\'ll be notified at this time every year'**
   String get notification_time_subtitle;
 
   /// No description provided for @advance_notice.
   ///
   /// In en, this message translates to:
-  /// **'Advance notice'**
+  /// **'Early reminder'**
   String get advance_notice;
 
   /// No description provided for @advance_notice_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Also notify the day before'**
+  /// **'Also notify me the day before'**
   String get advance_notice_subtitle;
 
   /// No description provided for @appearance_section_title.
@@ -263,7 +263,7 @@ abstract class AppLocalizations {
   /// No description provided for @global_birthday_input_hint_text.
   ///
   /// In en, this message translates to:
-  /// **'Birthday message'**
+  /// **'Write your default birthday message…'**
   String get global_birthday_input_hint_text;
 
   /// No description provided for @default_global_message.
@@ -275,13 +275,13 @@ abstract class AppLocalizations {
   /// No description provided for @count_birthday_message_chars.
   ///
   /// In en, this message translates to:
-  /// **'{count} characters · minimum 10'**
+  /// **'{count} characters · 10 minimum'**
   String count_birthday_message_chars(int count);
 
   /// No description provided for @name_placeholder_info.
   ///
   /// In en, this message translates to:
-  /// **'will be replaced with the contact\'\'s name when opening WhatsApp'**
+  /// **'will be replaced with your contact\'\'s name when you open WhatsApp'**
   String get name_placeholder_info;
 
   /// No description provided for @cancel_button_text.
@@ -293,13 +293,13 @@ abstract class AppLocalizations {
   /// No description provided for @empty_birthday_message_error.
   ///
   /// In en, this message translates to:
-  /// **'A birthday greeting shouldn\'\'t be empty'**
+  /// **'Please write a birthday message before saving.'**
   String get empty_birthday_message_error;
 
   /// No description provided for @too_short_birthday_error.
   ///
   /// In en, this message translates to:
-  /// **'The message is too short'**
+  /// **'Your message is a bit short. Write at least 10 characters.'**
   String get too_short_birthday_error;
 
   /// No description provided for @save_birthday_button_text.
@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @change_language_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose your preferred language'**
+  /// **'Choose the language you prefer'**
   String get change_language_subtitle;
 
   /// No description provided for @change_language_hint_text.
@@ -377,19 +377,19 @@ abstract class AppLocalizations {
   /// No description provided for @os_language.
   ///
   /// In en, this message translates to:
-  /// **'System default'**
+  /// **'Use device language'**
   String get os_language;
 
   /// No description provided for @getting_birthdays_error.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'\'t load the birthdays. Please try again.'**
+  /// **'We couldn\'\'t load your birthdays. Please try again.'**
   String get getting_birthdays_error;
 
   /// No description provided for @empty_birthdays_error.
   ///
   /// In en, this message translates to:
-  /// **'You don\'\'t have any birthdays saved yet.'**
+  /// **'You haven\'\'t added any birthdays yet.\nTap + to get started!'**
   String get empty_birthdays_error;
 
   /// No description provided for @save_birthday_reminder_button_text.
@@ -401,67 +401,67 @@ abstract class AppLocalizations {
   /// No description provided for @no_contact_selected_error.
   ///
   /// In en, this message translates to:
-  /// **'Please select a contact before saving.'**
+  /// **'Please choose a contact first.'**
   String get no_contact_selected_error;
 
   /// No description provided for @no_contact_phone_error.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'\'t get the phone number for this contact. Please try again.'**
+  /// **'We couldn\'\'t find a phone number for this contact. Please try a different one.'**
   String get no_contact_phone_error;
 
   /// No description provided for @no_birthday_date_error.
   ///
   /// In en, this message translates to:
-  /// **'Please select a birthday date.'**
+  /// **'Please select the birthday date.'**
   String get no_birthday_date_error;
 
   /// No description provided for @birthday_save_error.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong while saving. Please try again.'**
+  /// **'Something went wrong. Please try again.'**
   String get birthday_save_error;
 
   /// No description provided for @reminder_configured_successfully.
   ///
   /// In en, this message translates to:
-  /// **'Reminder set! 🎂'**
+  /// **'Reminder set! You\'\'ll be notified on the big day 🎂'**
   String get reminder_configured_successfully;
 
   /// No description provided for @birthday_saved.
   ///
   /// In en, this message translates to:
-  /// **'Birthday saved successfully! 🎂'**
+  /// **'Birthday saved! 🎂'**
   String get birthday_saved;
 
   /// No description provided for @reminder_configuration_failed.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'\'t set the reminder. Check your notification permissions.'**
+  /// **'Birthday saved, but we couldn\'\'t set the reminder. Go to Settings to enable notifications.'**
   String get reminder_configuration_failed;
 
   /// No description provided for @birthday_deleted_success.
   ///
   /// In en, this message translates to:
-  /// **'Reminder deleted successfully.'**
+  /// **'Reminder deleted.'**
   String get birthday_deleted_success;
 
   /// No description provided for @birthday_deleted_error.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong while deleting. Please try again.'**
+  /// **'We couldn\'\'t delete the reminder. Please try again.'**
   String get birthday_deleted_error;
 
   /// No description provided for @notification_could_not_be_scheduled.
   ///
   /// In en, this message translates to:
-  /// **'Notification could\'\'t be scheduled'**
+  /// **'We couldn\'\'t set the reminder for this birthday.'**
   String get notification_could_not_be_scheduled;
 
   /// No description provided for @retry_text.
   ///
   /// In en, this message translates to:
-  /// **'Retry'**
+  /// **'Try again'**
   String get retry_text;
 
   /// No description provided for @delete_text.
@@ -473,7 +473,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirm_delete_birthday_dialog_content.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you\'\'d like to delete this reminder?'**
+  /// **'Are you sure you want to delete this reminder? This can\'\'t be undone.'**
   String get confirm_delete_birthday_dialog_content;
 
   /// No description provided for @cancel_text.
@@ -539,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @no_upcoming_birthdays.
   ///
   /// In en, this message translates to:
-  /// **'No upcoming birthdays in the next 30 days.'**
+  /// **'No birthdays coming up in the next 30 days.'**
   String get no_upcoming_birthdays;
 
   /// No description provided for @birthday_already_exists.
@@ -551,50 +551,92 @@ abstract class AppLocalizations {
   /// No description provided for @today_birthdays_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Today\'\'s birthdays'**
+  /// **'Today'**
   String get today_birthdays_section_title;
 
   /// No description provided for @upcoming_birthdays_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Upcoming birthdays'**
+  /// **'Coming up'**
   String get upcoming_birthdays_section_title;
 
   /// No description provided for @update_birthday_error.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong while updating the birthday. Please try again.'**
+  /// **'We couldn\'\'t save your changes. Please try again.'**
   String get update_birthday_error;
 
   /// No description provided for @update_birthday_success.
   ///
   /// In en, this message translates to:
-  /// **'Birthday updated successfully! 🎂'**
+  /// **'Birthday updated! 🎂'**
   String get update_birthday_success;
 
   /// No description provided for @reminder_updated_successfully.
   ///
   /// In en, this message translates to:
-  /// **'Reminder updated successfully! 🎂'**
+  /// **'Reminder updated! 🎂'**
   String get reminder_updated_successfully;
 
   /// No description provided for @reminder_update_failed.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'\'t update the reminder. Check your notification permissions.'**
+  /// **'We couldn\'\'t update the reminder. Go to Settings to check your notification permissions.'**
   String get reminder_update_failed;
 
   /// No description provided for @birthday_reminder_title.
   ///
   /// In en, this message translates to:
-  /// **'Birthday reminder'**
+  /// **'🎂 Birthday today!'**
   String get birthday_reminder_title;
 
   /// No description provided for @birthday_reminder_body.
   ///
   /// In en, this message translates to:
-  /// **'Today is {name}\'\'s birthday! Don\'\'t forget to send your wishes! 🎂🎉'**
+  /// **'Today is {name}\'\'s birthday! Tap to send your wishes 🎉'**
   String birthday_reminder_body(String name);
+
+  /// No description provided for @contacts_permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'To add birthdays quickly, allow Cakeday to access your contacts in Settings.'**
+  String get contacts_permission_denied;
+
+  /// No description provided for @contacts_permission_permanently_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts access is blocked. You can enable it in your phone\'\'s Settings.'**
+  String get contacts_permission_permanently_denied;
+
+  /// No description provided for @contacts_permission_limited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'\'ve only shared some contacts. Some people may not appear in the list.'**
+  String get contacts_permission_limited;
+
+  /// No description provided for @contacts_permission_restricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your device doesn\'\'t allow access to contacts. Check your parental controls or device settings.'**
+  String get contacts_permission_restricted;
+
+  /// No description provided for @notifications_permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications so Cakeday can remind you on birthdays.'**
+  String get notifications_permission_denied;
+
+  /// No description provided for @notifications_permission_permanently_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off. You can enable them in your phone\'\'s Settings.'**
+  String get notifications_permission_permanently_denied;
+
+  /// No description provided for @notifications_permission_restricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your device doesn\'\'t allow notifications. Check your parental controls or device settings.'**
+  String get notifications_permission_restricted;
 }
 
 class _AppLocalizationsDelegate

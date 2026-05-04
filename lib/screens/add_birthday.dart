@@ -121,7 +121,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               ClickableCard(
                 color: const Color(0x33FF6B6B),
                 onTap: () async {
-                  final status = await requestContactListPermission();
+                  final status = await requestContactListPermission(
+                    context: context,
+                  );
 
                   if (!status.isGranted && !status.isLimited) return;
 

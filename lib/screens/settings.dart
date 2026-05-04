@@ -95,7 +95,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     AppSwitch(
                       defaultValue: settings.enableNotifications,
                       preOnChanged: () async {
-                        final status = await requestNotificationsPermission();
+                        final status = await requestNotificationsPermission(
+                          context: context,
+                        );
                         return status.isGranted;
                       },
                       onChanged: (value) =>
