@@ -21,6 +21,16 @@ class LanguageManager {
     _onLanguageChanged?.call();
   }
 
+  static String getLanguageCode() {
+    final prefsLanguage = Preferences.getLanguage();
+
+    return switch (prefsLanguage) {
+      null => _getDefaultLocale().languageCode,
+      'os' => Locale(_osLanguage).languageCode,
+      _ => Locale(prefsLanguage).languageCode,
+    };
+  }
+
   static Locale getLocale() {
     final prefsLanguage = Preferences.getLanguage();
 
@@ -28,16 +38,6 @@ class LanguageManager {
       null => _getDefaultLocale(),
       'os' => Locale(_osLanguage),
       _ => Locale(prefsLanguage),
-    };
-  }
-
-  static String getRawLocale() {
-    final prefsLanguage = Preferences.getLanguage();
-
-    return switch (prefsLanguage) {
-      null => _getDefaultLocale().languageCode,
-      'os' => Locale(_osLanguage).languageCode,
-      _ => Locale(prefsLanguage).languageCode,
     };
   }
 
