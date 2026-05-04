@@ -36,7 +36,8 @@ class LanguageManager {
 
     return switch (prefsLanguage) {
       null => _getDefaultLocale().languageCode,
-      _ => prefsLanguage,
+      'os' => Locale(_osLanguage).languageCode,
+      _ => Locale(prefsLanguage).languageCode,
     };
   }
 
