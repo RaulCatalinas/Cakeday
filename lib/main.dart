@@ -1,11 +1,11 @@
 import 'package:cakeday/components/layout/main_tab_scaffold.dart'
     show MainTabScaffold;
-import 'package:cakeday/db/db_manager.dart';
+import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
-import 'package:cakeday/managers/language_manager.dart';
-import 'package:cakeday/screens/all_birthdays.dart';
+import 'package:cakeday/managers/language_manager.dart' show LanguageManager;
+import 'package:cakeday/screens/all_birthdays.dart' show AllBirthdaysScreen;
 import 'package:cakeday/screens/home.dart' show HomeScreen;
-import 'package:cakeday/screens/settings.dart';
+import 'package:cakeday/screens/settings.dart' show SettingsScreen;
 import 'package:cakeday/types/nav_item.dart' show NavItem;
 import 'package:cakeday/utils/notifications.dart'
     show initializeNotifications, setupNotificationListeners;
@@ -40,7 +40,7 @@ void main() async {
     initializeNotifications(),
   ]);
 
-  setupNotificationListeners();
+  await setupNotificationListeners();
 
   runApp(const ProviderScope(child: MyApp()));
 }

@@ -5,6 +5,8 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationChannel,
         NotificationContent,
         ReceivedAction;
+import 'package:cakeday/db/db_manager.dart';
+import 'package:cakeday/utils/preferences.dart';
 import 'package:cakeday/utils/urls.dart' show openWhatsApp;
 import 'package:flutter/material.dart' show TimeOfDay;
 
@@ -29,10 +31,36 @@ Future<void> initializeNotifications() async {
 
 @pragma('vm:entry-point')
 Future<void> onNotificationReceived(ReceivedAction action) async {
-  openWhatsApp(
-    phone: '+34600826546',
-    message: 'Hello from Flutter mobile app {name}',
-    name: 'Raul Catalinas',
+  final globalMessage = Preferences.getGlobalMessage();
+
+  if (globalMessage == null) {
+    print('No global message set. Please set a global message in preferences.');
+
+    return;
+  }
+
+  if (action.id == null) {
+    print('Received notification action with null ID. Cannot proceed.');
+
+    return;
+  }
+
+  final birthday = await DbManager.getBirthdayById(action.id!);
+
+  if (birthday == null) {
+    print('No birthday found for ID ${action.id}. Cannot proceed.');
+
+    return;
+  }
+
+  final message = birthday.customMessage != null
+      ? birthday.customMessage!
+      : globalMessage.replaceAll('{name}', birthday.name);
+
+  await openWhatsApp(
+    phone: birthday.phone,
+    message: message,
+    name: birthday.name,
   );
 }
 
@@ -60,11 +88,12 @@ Future<bool> scheduleNotification({
   );
 
   final scheduled = await AwesomeNotifications().listScheduledNotifications();
+
   return scheduled.any((n) => n.content?.id == id);
 }
 
-void setupNotificationListeners() {
-  AwesomeNotifications().setListeners(
+Future<void> setupNotificationListeners() async {
+  await AwesomeNotifications().setListeners(
     onActionReceivedMethod: onNotificationReceived,
   );
 }

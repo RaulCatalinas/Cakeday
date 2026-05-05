@@ -1,3 +1,4 @@
+import 'package:cakeday/managers/language_manager.dart' show LanguageManager;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:url_launcher/url_launcher.dart' show launchUrl, canLaunchUrl;
 
@@ -15,7 +16,15 @@ Future<void> openWhatsApp({
   );
 
   if (!await canLaunchUrl(uri)) {
-    showToast(type: .error, msg: 'WhatsApp is not installed on this device');
+    final languageCode = LanguageManager.getLanguageCode();
+    final isSpanish = languageCode == 'es';
+
+    showToast(
+      type: .error,
+      msg: isSpanish
+          ? 'No hemos podido abrir WhatsApp para enviar el mensaje de cumpleaños.'
+          : 'We couldn\'t open WhatsApp to send the birthday message.',
+    );
 
     return;
   }
