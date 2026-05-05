@@ -5,8 +5,8 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationChannel,
         NotificationContent,
         ReceivedAction;
-import 'package:cakeday/db/db_manager.dart';
-import 'package:cakeday/utils/preferences.dart';
+import 'package:cakeday/db/db_manager.dart' show DbManager;
+import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:cakeday/utils/urls.dart' show openWhatsApp;
 import 'package:flutter/material.dart' show TimeOfDay;
 
