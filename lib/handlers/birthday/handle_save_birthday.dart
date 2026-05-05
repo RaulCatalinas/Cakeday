@@ -3,6 +3,7 @@ import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<(bool, int?)> handleSaveBirthday({
   required BirthdayData birthdayData,
@@ -60,8 +61,10 @@ Future<(bool, int?)> handleSaveBirthday({
     );
 
     return (true, birthdayId);
-  } catch (e) {
-    print(e);
+  } catch (e, stackTrace) {
+    LogKeeper.error('Error saving the birthday: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
+
     showToast(
       type: .error,
       msg: AppLocalizations.of(context)!.birthday_save_error,

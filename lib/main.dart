@@ -12,6 +12,7 @@ import 'package:cakeday/utils/notifications.dart'
 import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:flutter/material.dart'
     show
+        AppLifecycleState,
         BuildContext,
         Icons,
         Locale,
@@ -27,9 +28,12 @@ import 'package:flutter_themed/flutter_themed.dart'
     show ThemeStorageAdapter, Themed;
 import 'package:flutter_themed/themed_app.dart' show ThemedApp;
 import 'package:intl/date_symbol_data_local.dart' show initializeDateFormatting;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  LogKeeper.configure(maxLogAgeDays: 7, minLevelForProduction: .warning);
 
   await Preferences.init();
   await Future.wait([
@@ -106,6 +110,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == .paused || state == .detached) {
+      await LogKeeper.saveLogs();
+    }
   }
 
   @override

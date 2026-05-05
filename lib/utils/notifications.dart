@@ -9,13 +9,14 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:cakeday/utils/urls.dart' show openWhatsApp;
 import 'package:flutter/material.dart' show TimeOfDay;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<void> deleteReminder({required int id}) async {
   try {
     await AwesomeNotifications().cancel(id);
   } catch (e, stackTrace) {
-    print('Error deleting reminder: $e');
-    print('StackTrace: $stackTrace');
+    LogKeeper.error('Error deleting reminder with ID $id: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
   }
 }
 
@@ -34,13 +35,17 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
   final globalMessage = Preferences.getGlobalMessage();
 
   if (globalMessage == null) {
-    print('No global message set. Please set a global message in preferences.');
+    LogKeeper.error(
+      'No global message set. Please set a global message in preferences.',
+    );
 
     return;
   }
 
   if (action.id == null) {
-    print('Received notification action with null ID. Cannot proceed.');
+    LogKeeper.error(
+      'Received notification action with null ID. Cannot proceed.',
+    );
 
     return;
   }
@@ -48,7 +53,7 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
   final birthday = await DbManager.getBirthdayById(action.id!);
 
   if (birthday == null) {
-    print('No birthday found for ID ${action.id}. Cannot proceed.');
+    LogKeeper.error('No birthday found for ID ${action.id}. Cannot proceed.');
 
     return;
   }
@@ -93,7 +98,12 @@ Future<bool> scheduleNotification({
 }
 
 Future<void> setupNotificationListeners() async {
-  await AwesomeNotifications().setListeners(
-    onActionReceivedMethod: onNotificationReceived,
-  );
+  try {
+    await AwesomeNotifications().setListeners(
+      onActionReceivedMethod: onNotificationReceived,
+    );
+  } catch (e, stackTrace) {
+    LogKeeper.error('Error setting up notification listeners: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
+  }
 }

@@ -3,6 +3,7 @@ import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/notifications.dart' show deleteReminder;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<bool> handleDeleteBirthday({
   required int id,
@@ -26,8 +27,8 @@ Future<bool> handleDeleteBirthday({
 
     return deletedBirthdaySuccessfully;
   } catch (e, stackTrace) {
-    print('Error deleting the reminder: $e');
-    print('StackTrace: $stackTrace');
+    LogKeeper.error('Error deleting the birthday with id $id: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
 
     showToast(
       type: .error,

@@ -3,6 +3,7 @@ import 'package:cakeday/utils/notifications.dart'
     show deleteReminder, scheduleNotification;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<bool> handleUpdateNotification({
   required int birthdayId,
@@ -37,8 +38,10 @@ Future<bool> handleUpdateNotification({
 
     return true;
   } catch (e, stackTrace) {
-    print('Error updating the notification: $e');
-    print('StackTrace: $stackTrace');
+    LogKeeper.error(
+      'Error updating the notification for the contact $contactName: $e',
+    );
+    LogKeeper.error('StackTrace: $stackTrace');
 
     showToast(
       type: .error,

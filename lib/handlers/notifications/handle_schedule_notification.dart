@@ -3,6 +3,7 @@ import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/notifications.dart' show scheduleNotification;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<bool> handleScheduleNotification({
   required String contactName,
@@ -49,8 +50,9 @@ Future<bool> handleScheduleNotification({
     );
 
     return true;
-  } catch (e) {
-    print('Error setting up the notification: $e');
+  } catch (e, stackTrace) {
+    LogKeeper.error('Error setting up the notification: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
 
     showToast(
       type: .error,

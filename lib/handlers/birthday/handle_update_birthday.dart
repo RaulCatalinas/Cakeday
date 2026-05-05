@@ -2,6 +2,7 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<bool> handleUpdateBirthday({
   required int id,
@@ -44,8 +45,9 @@ Future<bool> handleUpdateBirthday({
     );
     return true;
   } catch (e, stackTrace) {
-    print('Error updating birthday: $e');
-    print('StackTrace: $stackTrace');
+    LogKeeper.error('Error updating the birthday with id $id: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
+
     showToast(
       type: .error,
       msg: AppLocalizations.of(context)!.update_birthday_error,
