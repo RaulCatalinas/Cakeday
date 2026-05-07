@@ -63,7 +63,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               AppCard(
                 child: PreviewMessage(
-                  onChanged: (value) => notifier.setGlobalMessage(value),
+                  onChanged: (value) async =>
+                      await notifier.setGlobalMessage(value),
                 ),
               ),
 
@@ -100,15 +101,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         );
                         return status.isGranted;
                       },
-                      onChanged: (value) =>
-                          notifier.setEnableNotifications(value),
+                      onChanged: (value) async =>
+                          await notifier.setEnableNotifications(value),
                     ),
                   ],
                 ),
               ),
               const Divider(thickness: 1, height: 1),
               SelectReminderHour(
-                onSelectedHour: notifier.setNotificationTime,
+                onSelectedHour: (time) async =>
+                    await notifier.setNotificationTime(time),
                 borderRadius: .zero,
                 initialHour: settings.notificationTime,
               ),
@@ -134,7 +136,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     AppSwitch(
                       defaultValue: settings.advanceNotice,
-                      onChanged: (value) => notifier.setAdvanceNotice(value),
+                      onChanged: (value) async =>
+                          await notifier.setAdvanceNotice(value),
                     ),
                   ],
                 ),
@@ -165,8 +168,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     AppSwitch(
                       defaultValue: Preferences.getDarkMode() ?? false,
-                      onChanged: (value) {
-                        Preferences.saveDarkMode(value);
+                      onChanged: (value) async {
+                        await Preferences.saveDarkMode(value);
                         Themed.toggleTheme();
                       },
                     ),

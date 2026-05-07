@@ -50,23 +50,27 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     );
   }
 
-  void setAdvanceNotice(bool value) {
+  Future<void> setAdvanceNotice(bool value) async {
     state = state.copyWith(advanceNotice: value);
-    Preferences.saveAdvanceNotice(value);
+
+    await Preferences.saveAdvanceNotice(value);
   }
 
-  void setEnableNotifications(bool value) {
+  Future<void> setEnableNotifications(bool value) async {
     state = state.copyWith(enableNotifications: value);
-    Preferences.saveEnableNotifications(value);
+
+    await Preferences.saveEnableNotifications(value);
   }
 
-  void setGlobalMessage(String message) {
+  Future<void> setGlobalMessage(String message) async {
     state = state.copyWith(globalMessage: message);
-    Preferences.saveGlobalMessage(message);
+
+    await Preferences.saveGlobalMessage(message);
   }
 
-  void setNotificationTime(TimeOfDay time) {
+  Future<void> setNotificationTime(TimeOfDay time) async {
     state = state.copyWith(notificationTime: time);
-    Preferences.saveNotificationTime(time);
+
+    await Preferences.saveNotificationTime(time);
   }
 }
