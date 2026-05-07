@@ -1,5 +1,5 @@
-import 'package:cakeday/db/db.dart' show Birthday;
-import 'package:cakeday/l10n/app_localizations.dart';
+import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:flutter/material.dart' show BuildContext;
 
 int daysUntilBirthday({required int month, required int day}) {
@@ -14,22 +14,26 @@ int daysUntilBirthday({required int month, required int day}) {
   return next.difference(today).inDays;
 }
 
-List<Birthday> filterTodayBirthdays(List<Birthday> birthdays) {
-  return birthdays.where(isTodayBirthday).toList();
+List<BirthdayData> filterTodayBirthdays(List<BirthdayData> birthdays) {
+  return birthdays.where((b) => isTodayBirthday(b.birthday!)).toList();
 }
 
-List<Birthday> filterUpcomingBirthdays(
-  List<Birthday> birthdays, {
+List<BirthdayData> filterUpcomingBirthdays(
+  List<BirthdayData> birthdays, {
   int withinDays = 30,
 }) {
-  return birthdays.where((birthday) {
-    final days = daysUntilBirthday(month: birthday.month, day: birthday.day);
+  return birthdays.where((b) {
+    final days = daysUntilBirthday(
+      month: b.birthday!.month,
+      day: b.birthday!.day,
+    );
+
     return days > 0 && days <= withinDays;
   }).toList()..sort(
-    (a, b) => daysUntilBirthday(
-      month: a.month,
-      day: a.day,
-    ).compareTo(daysUntilBirthday(month: b.month, day: b.day)),
+    (a, b) => daysUntilBirthday(month: a.birthday!.month, day: a.birthday!.day)
+        .compareTo(
+          daysUntilBirthday(month: b.birthday!.month, day: b.birthday!.day),
+        ),
   );
 }
 
@@ -57,7 +61,7 @@ String formatTimeUntilBirthday({
   };
 }
 
-bool isTodayBirthday(Birthday birthday) {
+bool isTodayBirthday(DateTime birthday) {
   final now = DateTime.now();
 
   return birthday.month == now.month && birthday.day == now.day;
