@@ -2,7 +2,6 @@ import 'package:cakeday/components/birthday/create_birthday_button.dart'
     show CreateBirthdayButton;
 import 'package:cakeday/components/birthday/reminder_card.dart'
     show ReminderCard;
-import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/providers/birthdays_provider.dart'
@@ -106,12 +105,11 @@ class HomeScreen extends ConsumerWidget {
                         )
                       else
                         ...todayBirthdays.map(
-                          (b) => GradientCard(
-                            child: ReminderCard(
-                              id: b.id,
-                              contactInfo: b.contactInfo,
-                              notificationScheduled: b.notificationScheduled,
-                            ),
+                          (b) => ReminderCard(
+                            id: b.id,
+                            contactInfo: b.contactInfo,
+                            notificationScheduled: b.notificationScheduled,
+                            useGradientCard: true,
                           ),
                         ),
 

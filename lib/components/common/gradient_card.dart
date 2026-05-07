@@ -20,12 +20,7 @@ class GradientCard extends StatelessWidget {
     super.key,
     required this.child,
     this.colors = const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
-    this.borderRadius = const .only(
-      topLeft: .circular(14),
-      topRight: .circular(14),
-      bottomRight: .circular(4),
-      bottomLeft: .circular(14),
-    ),
+    this.borderRadius = const .all(.circular(25.0)),
     this.padding = 12,
   });
 

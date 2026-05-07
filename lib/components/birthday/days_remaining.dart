@@ -6,8 +6,9 @@ import 'package:flutter/material.dart'
 
 class DaysRemaining extends StatelessWidget {
   final DateTime birthday;
+  final Color? todayColor;
 
-  const DaysRemaining({super.key, required this.birthday});
+  const DaysRemaining({super.key, required this.birthday, this.todayColor});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class DaysRemaining extends StatelessWidget {
 
   Color _color({required int days, required BuildContext context}) {
     return switch (days) {
-      0 => const Color(0xFF34C759),
+      0 => todayColor ?? const Color(0xFF34C759),
       <= 3 => const Color(0xFFFF6B6B),
       <= 7 => const Color(0xFFFF9F0A),
       _ => Theme.of(context).colorScheme.onSurfaceVariant,
