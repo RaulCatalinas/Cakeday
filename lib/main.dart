@@ -33,7 +33,7 @@ import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  LogKeeper.configure(maxLogAgeDays: 7, minLevelForProduction: .warning);
+  LogKeeper.configure(maxLogAgeDays: 7);
 
   await Preferences.init();
   await Future.wait([
