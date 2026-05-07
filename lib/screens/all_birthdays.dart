@@ -26,7 +26,7 @@ import 'package:flutter/material.dart'
         Widget;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show AsyncValueExtensions, ConsumerState, ConsumerStatefulWidget;
-import 'package:logkeeper/logkeeper.dart';
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 class AllBirthdaysScreen extends ConsumerStatefulWidget {
   const AllBirthdaysScreen({super.key});

@@ -27,7 +27,7 @@ import 'package:flutter/material.dart'
         TextStyle,
         Theme,
         Widget;
-import 'package:logkeeper/logkeeper.dart';
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
