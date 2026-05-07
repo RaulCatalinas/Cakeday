@@ -26,6 +26,7 @@ import 'package:flutter/material.dart'
         Widget;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show AsyncValueExtensions, ConsumerState, ConsumerStatefulWidget;
+import 'package:logkeeper/logkeeper.dart';
 
 class AllBirthdaysScreen extends ConsumerStatefulWidget {
   const AllBirthdaysScreen({super.key});
@@ -64,17 +65,22 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
                     .when(
                       loading: () =>
                           const Center(child: CircularProgressIndicator()),
-                      error: (_, _) => Center(
-                        child: Padding(
-                          padding: const .symmetric(horizontal: 16),
-                          child: Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.could_not_load_birthdays_error,
-                            textAlign: .center,
+                      error: (e, stackTrace) {
+                        LogKeeper.error('Error loading birthdays: $e');
+                        LogKeeper.error('StackTrace: $stackTrace');
+
+                        return Center(
+                          child: Padding(
+                            padding: const .symmetric(horizontal: 16),
+                            child: Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.could_not_load_birthdays_error,
+                              textAlign: .center,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                       data: (data) {
                         if (data.isEmpty) {
                           return Center(

@@ -27,6 +27,7 @@ import 'package:flutter/material.dart'
         TextStyle,
         Theme,
         Widget;
+import 'package:logkeeper/logkeeper.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -45,6 +46,9 @@ class HomeScreen extends StatelessWidget {
               }
 
               if (snapshot.hasError) {
+                LogKeeper.error('Error loading birthdays: ${snapshot.error}');
+                LogKeeper.error('StackTrace: ${snapshot.stackTrace}');
+
                 return Column(
                   children: [
                     const Icon(
