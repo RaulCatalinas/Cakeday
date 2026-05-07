@@ -1,6 +1,7 @@
 import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
 import 'package:cakeday/components/common/input.dart' show Input;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:cakeday/utils/preferences.dart';
 import 'package:cakeday/utils/toast.dart';
 import 'package:flutter/material.dart'
     show
@@ -21,8 +22,10 @@ import 'package:flutter/material.dart'
         TextEditingController,
         TextStyle,
         ValueListenableBuilder,
-        Widget;
+        Widget,
+        WidgetsBinding;
 import 'package:flutter/services.dart' show HapticFeedback;
+import 'package:logkeeper/logkeeper.dart';
 
 class PreviewMessage extends StatefulWidget {
   final void Function(String) onChanged;
@@ -42,9 +45,31 @@ class _PreviewMessageState extends State<PreviewMessage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!messageInitialized) {
-      message = AppLocalizations.of(context)!.default_global_message;
+    final existGlobalMessage = Preferences.getGlobalMessage() != null;
+
+    if (!existGlobalMessage && !messageInitialized) {
+      final defaultGlobalMessage = AppLocalizations.of(
+        context,
+      )!.default_global_message;
+      message = defaultGlobalMessage;
       messageInitialized = true;
+
+      Preferences.saveGlobalMessage(defaultGlobalMessage)
+          .then((_) {
+            LogKeeper.info(
+              'Default global message saved to preferences successfully.',
+            );
+          })
+          .catchError((e, stackTrace) {
+            LogKeeper.error(
+              'Error saving default global message to preferences: $e',
+            );
+            LogKeeper.error('StackTrace: $stackTrace');
+          });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onChanged(defaultGlobalMessage);
+      });
     }
 
     return Column(

@@ -88,6 +88,8 @@ Future<bool> scheduleNotification({
       day: date.day,
       hour: time.hour,
       minute: time.minute,
+      second: 0,
+      repeats: true,
       allowWhileIdle: true,
     ),
   );
