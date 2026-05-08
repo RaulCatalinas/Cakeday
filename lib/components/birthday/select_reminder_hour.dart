@@ -76,6 +76,7 @@ class _SelectReminderHourState extends State<SelectReminderHour> {
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Text(formattedTime),
           const SizedBox(width: 8),
           const Icon(Icons.arrow_forward_ios, size: 20),
