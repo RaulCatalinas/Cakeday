@@ -314,7 +314,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             child: Input(
                               controller: noteController,
                               focusNode: noteFocusNode,
-                              maxLength: 69,
+                              maxLength: 100,
                               hintText: AppLocalizations.of(
                                 context,
                               )!.note_input_hint_text,
