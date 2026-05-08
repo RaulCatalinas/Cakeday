@@ -74,9 +74,9 @@ class AddBirthdayScreen extends ConsumerStatefulWidget {
 class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   ContactInfo? contactInfo;
   DateTime? birthday;
-  bool usePersonalizedMessage = false;
-  bool useNote = false;
-  bool includeYear = false;
+  late bool usePersonalizedMessage;
+  late bool useNote;
+  late bool includeYear;
   TimeOfDay? notificationTime;
   int messageCharCount = 0;
 
@@ -151,6 +151,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 showActionButtons: false,
                 notificationScheduled:
                     widget.birthdayToEdit?.notificationScheduled ?? false,
+                note: widget.birthdayToEdit?.note,
               ),
 
               const Padding(padding: .symmetric(vertical: 16)),
@@ -231,6 +232,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           ),
                         ),
                         AppCheckbox(
+                          defaultValue: usePersonalizedMessage,
                           onChanged: (value) {
                             setState(() => usePersonalizedMessage = value);
 
@@ -293,6 +295,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           ),
                         ),
                         AppCheckbox(
+                          defaultValue: useNote,
                           onChanged: (value) {
                             setState(() => useNote = value);
 
@@ -311,6 +314,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             child: Input(
                               controller: noteController,
                               focusNode: noteFocusNode,
+                              maxLength: 69,
                               hintText: AppLocalizations.of(
                                 context,
                               )!.note_input_hint_text,
@@ -457,6 +461,10 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   void initState() {
     super.initState();
 
+    useNote = false;
+    usePersonalizedMessage = false;
+    includeYear = false;
+
     if (widget.birthdayToEdit == null) return;
 
     final birthdayDateTime = DateTime(
@@ -481,10 +489,12 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
     );
 
     if (widget.birthdayToEdit!.note != null) {
+      useNote = true;
       noteController.text = widget.birthdayToEdit!.note!;
     }
 
     if (widget.birthdayToEdit!.customMessage != null) {
+      usePersonalizedMessage = true;
       messageController.text = widget.birthdayToEdit!.customMessage!;
     }
   }

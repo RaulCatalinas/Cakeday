@@ -19,6 +19,7 @@ class Input extends StatefulWidget {
   final String hintText;
   final void Function(String value)? onChanged;
   final int maxLines;
+  final int? maxLength;
   final bool autocorrect;
   final Color borderColor;
   final TextInputType? keyboardType;
@@ -35,6 +36,7 @@ class Input extends StatefulWidget {
     this.keyboardType,
     this.focusNode,
     this.controller,
+    this.maxLength,
   });
 
   @override
@@ -54,6 +56,7 @@ class _InputState extends State<Input> {
       keyboardType: widget.keyboardType,
       focusNode: widget.focusNode,
       onChanged: _onChanged,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(color: widget.borderColor),

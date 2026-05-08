@@ -46,6 +46,7 @@ class ReminderCard extends ConsumerWidget {
   final bool useGradientCard;
   final int? id;
   final VoidCallback? onRetryNotification;
+  final String? note;
 
   const ReminderCard({
     super.key,
@@ -55,6 +56,7 @@ class ReminderCard extends ConsumerWidget {
     this.showActionButtons = true,
     this.useGradientCard = false,
     this.onRetryNotification,
+    this.note,
   });
 
   @override
@@ -200,6 +202,17 @@ class ReminderCard extends ConsumerWidget {
             ),
           ],
         ),
+
+        if (note != null)
+          Text(
+            note!,
+            maxLines: 2,
+            overflow: .ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontStyle: .italic,
+            ),
+          ),
 
         if (!notificationScheduled)
           ScheduleBirthdayNotification(

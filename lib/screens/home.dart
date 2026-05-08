@@ -110,6 +110,7 @@ class HomeScreen extends ConsumerWidget {
                             contactInfo: b.contactInfo,
                             notificationScheduled: b.notificationScheduled,
                             useGradientCard: true,
+                            note: b.note,
                           ),
                         ),
 
@@ -151,6 +152,7 @@ class HomeScreen extends ConsumerWidget {
                             contactInfo: upcomingBirthdays[i].contactInfo,
                             notificationScheduled:
                                 upcomingBirthdays[i].notificationScheduled,
+                            note: upcomingBirthdays[i].note,
                           ),
                           if (i < upcomingBirthdays.length - 1)
                             const SizedBox(height: 8),

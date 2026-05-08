@@ -43,6 +43,7 @@ class RenderAllBirthdays extends ConsumerWidget {
           id: birthdayData.id,
           contactInfo: birthdayData.contactInfo,
           notificationScheduled: birthdayData.notificationScheduled,
+          note: birthdayData.note,
           onRetryNotification: () async {
             await _onRetryNotification(
               contactName: birthdayData.contactInfo!.name,

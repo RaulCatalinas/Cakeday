@@ -4,11 +4,13 @@ import 'package:flutter/material.dart'
 class AppCheckbox extends StatefulWidget {
   final Color activatedColor;
   final void Function(bool) onChanged;
+  final bool defaultValue;
 
   const AppCheckbox({
     super.key,
     required this.onChanged,
     this.activatedColor = const Color(0xff34C759),
+    this.defaultValue = false,
   });
 
   @override
@@ -16,7 +18,7 @@ class AppCheckbox extends StatefulWidget {
 }
 
 class _AppCheckboxState extends State<AppCheckbox> {
-  bool activated = false;
+  late bool activated;
 
   @override
   Widget build(BuildContext context) {
@@ -31,5 +33,11 @@ class _AppCheckboxState extends State<AppCheckbox> {
         });
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    activated = widget.defaultValue;
   }
 }
