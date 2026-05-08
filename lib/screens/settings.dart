@@ -206,7 +206,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                       const SizedBox(height: 12),
                       AppDropdown(
-                        initialValue: LanguageManager.getLanguageCode(),
+                        initialValue: Preferences.getLanguage() ?? 'en',
                         width: constraints.maxWidth,
                         hintText: AppLocalizations.of(
                           context,
