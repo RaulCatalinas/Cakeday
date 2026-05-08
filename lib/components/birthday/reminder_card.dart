@@ -210,7 +210,6 @@ class ReminderCard extends ConsumerWidget {
             overflow: .ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontStyle: .italic,
             ),
           ),
 
