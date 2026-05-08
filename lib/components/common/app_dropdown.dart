@@ -1,15 +1,18 @@
+import 'package:dropdown_button2/dropdown_button2.dart'
+    show DropdownButtonFormField2, DropdownItem, DropdownStyleData;
 import 'package:flutter/material.dart'
     show
         BuildContext,
         Container,
-        DropdownMenu,
-        DropdownMenuEntry,
+        InputDecoration,
         State,
         StatefulWidget,
-        Widget;
+        Widget,
+        OutlineInputBorder,
+        ValueNotifier;
 
 class AppDropdown<T> extends StatefulWidget {
-  final List<DropdownMenuEntry<T>> dropdownMenuEntries;
+  final List<DropdownItem<T>> dropdownMenuEntries;
   final void Function(T?)? onSelected;
   final bool initiallyVisible;
   final bool readOnly;
@@ -34,6 +37,7 @@ class AppDropdown<T> extends StatefulWidget {
 
 class AppDropdownState<T> extends State<AppDropdown<T>> {
   late bool isVisible;
+  late final ValueNotifier<T?> valueNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +45,16 @@ class AppDropdownState<T> extends State<AppDropdown<T>> {
       return Container();
     }
 
-    return DropdownMenu<T>(
-      width: widget.width,
-      dropdownMenuEntries: widget.dropdownMenuEntries,
-      onSelected: widget.onSelected,
-      hintText: widget.hintText,
-      initialSelection: widget.initialValue,
-      enableFilter: !widget.readOnly,
-      enableSearch: !widget.readOnly,
-      requestFocusOnTap: !widget.readOnly,
+    return DropdownButtonFormField2<T>(
+      valueListenable: valueNotifier,
+      items: widget.dropdownMenuEntries,
+      dropdownStyleData: DropdownStyleData(width: widget.width),
+      enableFeedback: true,
+      onChanged: _onSelected,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        border: const OutlineInputBorder(borderRadius: .all(.circular(25))),
+      ),
     );
   }
 
@@ -64,12 +69,20 @@ class AppDropdownState<T> extends State<AppDropdown<T>> {
   @override
   void initState() {
     super.initState();
+
     isVisible = widget.initiallyVisible;
+    valueNotifier = ValueNotifier(widget.initialValue);
   }
 
   void toggleVisibility() {
     setState(() {
       isVisible = !isVisible;
     });
+  }
+
+  void _onSelected(T? value) {
+    valueNotifier.value = value;
+
+    widget.onSelected?.call(value);
   }
 }

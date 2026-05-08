@@ -14,12 +14,12 @@ import 'package:cakeday/permissions/notifications.dart'
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart'
     show
         BuildContext,
         Column,
         Divider,
-        DropdownMenuEntry,
         Expanded,
         Icon,
         Icons,
@@ -44,6 +44,8 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  late String selectedLanguage;
+
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(appSettingsProvider);
@@ -51,7 +53,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       body: SafeArea(
-        minimum: .all(15.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: .start,
@@ -206,33 +207,34 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                       const SizedBox(height: 12),
                       AppDropdown(
-                        initialValue: Preferences.getLanguage() ?? 'en',
+                        initialValue: selectedLanguage,
                         width: constraints.maxWidth,
                         hintText: AppLocalizations.of(
                           context,
                         )!.change_language_hint_text,
                         dropdownMenuEntries: [
-                          DropdownMenuEntry(
+                          DropdownItem(
                             value: 'en',
-                            label: AppLocalizations.of(
-                              context,
-                            )!.english_language,
+                            child: Text(
+                              AppLocalizations.of(context)!.english_language,
+                            ),
                           ),
-                          DropdownMenuEntry(
+                          DropdownItem(
                             value: 'es',
-                            label: AppLocalizations.of(
-                              context,
-                            )!.spanish_language,
+                            child: Text(
+                              AppLocalizations.of(context)!.spanish_language,
+                            ),
                           ),
-                          DropdownMenuEntry(
+                          DropdownItem(
                             value: 'os',
-                            label: AppLocalizations.of(context)!.os_language,
+                            child: Text(
+                              AppLocalizations.of(context)!.os_language,
+                            ),
                           ),
                         ],
                         onSelected: (value) {
-                          if (value == null) return;
-
-                          LanguageManager.changeLanguage(value);
+                          LanguageManager.changeLanguage(value!);
+                          setState(() => selectedLanguage = value);
                         },
                       ),
                     ],
@@ -244,5 +246,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    selectedLanguage = Preferences.getLanguage() ?? 'os';
   }
 }
