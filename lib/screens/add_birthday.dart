@@ -4,6 +4,8 @@ import 'package:cakeday/components/birthday/select_reminder_hour.dart'
     show SelectReminderHour;
 import 'package:cakeday/components/common/app_card.dart' show AppCard;
 import 'package:cakeday/components/common/app_checkbox.dart' show AppCheckbox;
+import 'package:cakeday/components/common/character_counter.dart'
+    show CharacterCounter;
 import 'package:cakeday/components/common/gradient_button.dart'
     show GradientButton;
 import 'package:cakeday/components/common/header.dart' show Header;
@@ -76,6 +78,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   bool useNote = false;
   bool includeYear = false;
   TimeOfDay? notificationTime;
+  int messageCharCount = 0;
 
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
@@ -239,6 +242,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                     Visibility(
                       visible: usePersonalizedMessage,
                       child: Column(
+                        crossAxisAlignment: .start,
                         children: [
                           const Padding(padding: .symmetric(vertical: 8)),
                           SizedBox(
@@ -251,7 +255,18 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                               )!.personalized_message_input_hint_text,
                               maxLines: 3,
                               keyboardType: .multiline,
+                              onChanged: (value) => setState(
+                                () => messageCharCount = value.length,
+                              ),
                             ),
+                          ),
+                          const SizedBox(height: 4),
+                          CharacterCounter(
+                            count: messageCharCount,
+                            minimum: 10,
+                            label: AppLocalizations.of(
+                              context,
+                            )!.count_birthday_message_chars(messageCharCount),
                           ),
                         ],
                       ),

@@ -1,8 +1,10 @@
+import 'package:cakeday/components/common/character_counter.dart'
+    show CharacterCounter;
 import 'package:cakeday/components/common/gradient_card.dart' show GradientCard;
 import 'package:cakeday/components/common/input.dart' show Input;
+import 'package:cakeday/components/common/subtitle.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
-import 'package:cakeday/utils/preferences.dart';
-import 'package:cakeday/utils/toast.dart';
+import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:flutter/material.dart'
     show
         Align,
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart'
         Color,
         Colors,
         Column,
-        FontWeight,
         GestureDetector,
         Row,
         SizedBox,
@@ -21,7 +22,6 @@ import 'package:flutter/material.dart'
         TextButton,
         TextEditingController,
         TextStyle,
-        ValueListenableBuilder,
         Widget,
         WidgetsBinding;
 import 'package:flutter/services.dart' show HapticFeedback;
@@ -42,12 +42,14 @@ class _PreviewMessageState extends State<PreviewMessage> {
   bool editing = false;
   String message = '';
   bool messageInitialized = false;
+  bool canSave = false;
+  int charCount = 0;
 
   @override
   Widget build(BuildContext context) {
-    final existGlobalMessage = Preferences.getGlobalMessage() != null;
+    final globalMessage = Preferences.getGlobalMessage();
 
-    if (!existGlobalMessage && !messageInitialized) {
+    if (globalMessage != null && !messageInitialized) {
       final defaultGlobalMessage = AppLocalizations.of(
         context,
       )!.default_global_message;
@@ -66,11 +68,16 @@ class _PreviewMessageState extends State<PreviewMessage> {
             );
             LogKeeper.error('StackTrace: $stackTrace');
           });
+    } else if (globalMessage != null && !messageInitialized) {
+      message = globalMessage;
+      messageInitialized = true;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.onChanged(defaultGlobalMessage);
-      });
+      LogKeeper.info('Global message loaded from preferences successfully.');
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onChanged(message);
+    });
 
     return Column(
       crossAxisAlignment: .start,
@@ -100,36 +107,27 @@ class _PreviewMessageState extends State<PreviewMessage> {
                   context,
                 )!.global_birthday_input_hint_text,
                 maxLines: 3,
+                onChanged: (value) => setState(() => charCount = value.length),
               ),
               const SizedBox(height: 6),
-              ValueListenableBuilder(
-                valueListenable: controller,
-                builder: (context, value, _) {
-                  final count = value.text.length;
-                  final color = count < 10
-                      ? const Color(0xFFFF3B30)
-                      : const Color(0xFF6E6E73);
-
-                  return Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.count_birthday_message_chars(count),
-                        style: TextStyle(fontSize: 11, color: color),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
+              Column(
+                crossAxisAlignment: .start,
+                children: [
+                  CharacterCounter(
+                    count: charCount,
+                    minimum: 10,
+                    label: AppLocalizations.of(
+                      context,
+                    )!.count_birthday_message_chars(controller.text.length),
+                    onMinimumReached: () => setState(() => canSave = true),
+                    onTooShort: () => setState(() => canSave = false),
+                  ),
+                  const SizedBox(height: 4),
+                  Subtitle(
+                    text:
                         '💡 {name} ${AppLocalizations.of(context)!.name_placeholder_info}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Color(0xFF6E6E73),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Row(
@@ -141,7 +139,7 @@ class _PreviewMessageState extends State<PreviewMessage> {
                     child: Text(
                       AppLocalizations.of(context)!.cancel_button_text,
                       style: const TextStyle(
-                        color: Color(0xFF6E6E73),
+                        color: Color(0xFFFF6B6B),
                         fontWeight: .w700,
                         fontSize: 13,
                       ),
@@ -150,43 +148,12 @@ class _PreviewMessageState extends State<PreviewMessage> {
                   const SizedBox(width: 16),
                   TextButton(
                     style: const ButtonStyle(enableFeedback: true),
-                    onPressed: () {
-                      final value = controller.text.trim();
-
-                      if (value.isEmpty) {
-                        showToast(
-                          type: .error,
-                          msg: AppLocalizations.of(
-                            context,
-                          )!.empty_birthday_message_error,
-                        );
-
-                        return;
-                      }
-
-                      if (value.length < 10) {
-                        showToast(
-                          type: .error,
-                          msg: AppLocalizations.of(
-                            context,
-                          )!.too_short_birthday_error,
-                        );
-
-                        return;
-                      }
-
-                      setState(() {
-                        message = value;
-                        editing = false;
-                      });
-                      widget.onChanged(value);
-                      HapticFeedback.mediumImpact();
-                    },
+                    onPressed: canSave ? _saveMessage : null,
                     child: Text(
                       '💾 ${AppLocalizations.of(context)!.save_birthday_button_text}',
-                      style: const TextStyle(
-                        color: Color(0xFFFF6B6B),
-                        fontWeight: FontWeight.w700,
+                      style: TextStyle(
+                        color: canSave ? Color(0xFFFF6B6B) : Color(0xFF6E6E73),
+                        fontWeight: .w700,
                         fontSize: 13,
                       ),
                     ),
@@ -207,7 +174,7 @@ class _PreviewMessageState extends State<PreviewMessage> {
                 '✏️ ${AppLocalizations.of(context)!.edit_message_button_text}',
                 style: const TextStyle(
                   color: Color(0xFFFF6B6B),
-                  fontWeight: FontWeight.w700,
+                  fontWeight: .w700,
                   fontSize: 13,
                 ),
               ),
@@ -215,5 +182,16 @@ class _PreviewMessageState extends State<PreviewMessage> {
           ),
       ],
     );
+  }
+
+  void _saveMessage() {
+    final value = controller.text.trim();
+
+    setState(() {
+      message = value;
+      editing = false;
+    });
+    widget.onChanged(value);
+    HapticFeedback.mediumImpact();
   }
 }
