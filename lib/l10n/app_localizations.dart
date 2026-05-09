@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @os_language.
   ///
   /// In en, this message translates to:
-  /// **'Use device language'**
+  /// **'Device language'**
   String get os_language;
 
   /// No description provided for @getting_birthdays_error.

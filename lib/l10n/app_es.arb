@@ -46,7 +46,7 @@
   "english_language": "Inglés",
   "change_language_subtitle": "Elige el idioma que prefieras",
   "change_language_hint_text": "Selecciona un idioma",
-  "os_language": "Usar el idioma del dispositivo",
+  "os_language": "Idioma del dispositivo",
   "getting_birthdays_error": "No hemos podido cargar los cumpleaños. Inténtalo de nuevo.",
   "empty_birthdays_error": "Aún no tienes cumpleaños guardados.\n¡Pulsa + para empezar!",
   "save_birthday_reminder_button_text": "Guardar cumpleaños",

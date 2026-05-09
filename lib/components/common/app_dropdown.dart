@@ -47,7 +47,9 @@ class AppDropdownState<T> extends State<AppDropdown<T>> {
 
     return DropdownButtonFormField2<T>(
       valueListenable: valueNotifier,
+      alignment: .topCenter,
       items: widget.dropdownMenuEntries,
+      isExpanded: true,
       dropdownStyleData: DropdownStyleData(width: widget.width),
       enableFeedback: true,
       onChanged: _onSelected,

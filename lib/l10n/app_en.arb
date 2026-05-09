@@ -46,7 +46,7 @@
   "english_language": "English",
   "change_language_subtitle": "Choose the language you prefer",
   "change_language_hint_text": "Select a language",
-  "os_language": "Use device language",
+  "os_language": "Device language",
   "getting_birthdays_error": "We couldn''t load your birthdays. Please try again.",
   "empty_birthdays_error": "You haven''t added any birthdays yet.\nTap + to get started!",
   "save_birthday_reminder_button_text": "Save birthday",

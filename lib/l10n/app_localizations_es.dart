@@ -161,7 +161,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get change_language_hint_text => 'Selecciona un idioma';
 
   @override
-  String get os_language => 'Usar el idioma del dispositivo';
+  String get os_language => 'Idioma del dispositivo';
 
   @override
   String get getting_birthdays_error =>

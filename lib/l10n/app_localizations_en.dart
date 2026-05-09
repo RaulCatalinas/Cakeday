@@ -160,7 +160,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get change_language_hint_text => 'Select a language';
 
   @override
-  String get os_language => 'Use device language';
+  String get os_language => 'Device language';
 
   @override
   String get getting_birthdays_error =>
