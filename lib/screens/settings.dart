@@ -169,7 +169,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     AppSwitch(
-                      defaultValue: Preferences.getDarkMode() ?? false,
+                      defaultValue: Preferences.getDarkMode(),
                       onChanged: (value) async {
                         await Preferences.saveDarkMode(value);
                         Themed.toggleTheme();

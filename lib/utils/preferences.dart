@@ -1,5 +1,8 @@
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter/material.dart' show TimeOfDay;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
 
 class Preferences {
   static late SharedPreferences _prefs;
@@ -13,7 +16,16 @@ class Preferences {
   static const language = 'language';
 
   static bool? getAdvanceNotice() => _prefs.getBool(advanceNotice);
-  static bool? getDarkMode() => _prefs.getBool(darkMode);
+  static bool getDarkMode() {
+    final prefsDarkMode = _prefs.getBool(darkMode);
+
+    if (prefsDarkMode == null) {
+      return PlatformDispatcher.instance.platformBrightness == .dark;
+    }
+
+    return prefsDarkMode;
+  }
+
   static bool? getEnableNotifications() => _prefs.getBool(enableNotifications);
   static String? getGlobalMessage() => _prefs.getString(globalMessage);
   static String? getLanguage() => _prefs.getString(language);

@@ -52,8 +52,6 @@ class AppThemeStorageAdapter implements ThemeStorageAdapter {
   Future<String?> loadTheme() async {
     final isDark = Preferences.getDarkMode();
 
-    if (isDark == null) return null;
-
     return isDark ? 'dark' : 'light';
   }
 
