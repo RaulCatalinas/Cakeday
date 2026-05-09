@@ -53,15 +53,6 @@ android {
             )
         }
     }
-
-    splits {
-        abi {
-            isEnable = gradle.startParameter.taskNames.any { it.contains("Release") }
-            reset()
-            include("arm64-v8a", "armeabi-v7a")
-            isUniversalApk = false
-        }
-    }
 }
 
 kotlin {
