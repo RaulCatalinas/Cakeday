@@ -23,6 +23,8 @@ import 'package:flutter/material.dart'
         WidgetsBindingObserver,
         WidgetsFlutterBinding,
         runApp;
+import 'package:flutter_native_splash/flutter_native_splash.dart'
+    show FlutterNativeSplash;
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:flutter_themed/flutter_themed.dart'
     show ThemeStorageAdapter, Themed;
@@ -31,7 +33,9 @@ import 'package:intl/date_symbol_data_local.dart' show initializeDateFormatting;
 import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final binding = WidgetsFlutterBinding.ensureInitialized();
+
+  FlutterNativeSplash.preserve(widgetsBinding: binding);
   LogKeeper.configure(maxLogAgeDays: 7);
 
   await Preferences.init();
@@ -41,9 +45,10 @@ void main() async {
     initializeDateFormatting('en'),
     initializeDateFormatting('es'),
     initializeNotifications(),
-  ]);
+  ], eagerError: true);
   await setupNotificationListeners();
 
+  FlutterNativeSplash.remove();
   runApp(const ProviderScope(child: MyApp()));
 }
 
