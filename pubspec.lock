@@ -513,10 +513,10 @@ packages:
     dependency: "direct main"
     description:
       name: logkeeper
-      sha256: "041965f8a66d116f6574004ff52d78ad373cf46056ff28124c1bdb8cf07f0768"
+      sha256: "498af0e8753ac714683b571c38cae779a4083d55a0305841b0f260fd6a31054a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   matcher:
     dependency: transitive
     description:
