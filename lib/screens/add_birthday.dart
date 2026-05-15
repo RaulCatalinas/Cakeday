@@ -43,6 +43,7 @@ import 'package:flutter/material.dart'
         Icon,
         IconButton,
         Icons,
+        InkWell,
         Localizations,
         Navigator,
         Padding,
@@ -54,7 +55,6 @@ import 'package:flutter/material.dart'
         SizedBox,
         Text,
         TextEditingController,
-        Theme,
         TimeOfDay,
         Visibility,
         Widget;
@@ -160,38 +160,36 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               SectionTitle(
                 text: AppLocalizations.of(context)!.date_section_title,
               ),
-              ClickableCard(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
+              AppCard(
                 borderRadius: .vertical(top: .circular(25.0)),
-                onTap: () async {
-                  final date = await selectDate(context: context);
-                  setState(() => birthday = date);
-                },
-                child: Row(
-                  children: [
-                    const Icon(Icons.cake),
-                    const Padding(padding: .symmetric(horizontal: 8)),
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(context)!.date_section_title,
+                child: InkWell(
+                  onTap: () async {
+                    final date = await selectDate(context: context);
+                    setState(() => birthday = date);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.cake),
+                      const Padding(padding: .symmetric(horizontal: 8)),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.date_section_title,
+                        ),
                       ),
-                    ),
-                    Text(formattedMonthAndDay),
-                    const Padding(padding: .symmetric(horizontal: 8)),
-                    const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                  ],
+                      Text(formattedMonthAndDay),
+                      const Padding(padding: .symmetric(horizontal: 8)),
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                    ],
+                  ),
                 ),
               ),
               const Divider(thickness: 1, height: 1),
-              ClickableCard(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
+              AppCard(
                 borderRadius: .zero,
-                onTap: () async {
-                  final date = await selectDate(context: context);
-
-                  setState(() => birthday = date);
-                },
+                padding: 16.0,
                 child: Row(
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: .center,
                   children: [
                     const Icon(Icons.card_giftcard),
                     const Padding(padding: .symmetric(horizontal: 8)),

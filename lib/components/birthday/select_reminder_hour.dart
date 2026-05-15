@@ -1,5 +1,5 @@
+import 'package:cakeday/components/common/app_card.dart';
 import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
-import 'package:cakeday/components/layout/clickable_card.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/time.dart' show selectHour;
 import 'package:flutter/material.dart'
@@ -10,13 +10,13 @@ import 'package:flutter/material.dart'
         Expanded,
         Icon,
         Icons,
+        InkWell,
         MaterialLocalizations,
         Row,
         SizedBox,
         State,
         StatefulWidget,
         Text,
-        Theme,
         TimeOfDay,
         Widget;
 
@@ -25,6 +25,7 @@ class SelectReminderHour extends StatefulWidget {
   final Function(TimeOfDay)? onInit;
   final BorderRadius? borderRadius;
   final TimeOfDay? initialHour;
+  final double padding;
 
   const SelectReminderHour({
     super.key,
@@ -32,6 +33,7 @@ class SelectReminderHour extends StatefulWidget {
     this.onInit,
     this.borderRadius,
     this.initialHour,
+    this.padding = 25.0,
   });
 
   @override
@@ -47,39 +49,41 @@ class _SelectReminderHourState extends State<SelectReminderHour> {
       context,
     ).formatTimeOfDay(selectedHour);
 
-    return ClickableCard(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
+    return AppCard(
       borderRadius: widget.borderRadius,
-      onTap: () async {
-        final hour = await selectHour(context: context);
+      padding: widget.padding,
+      child: InkWell(
+        onTap: () async {
+          final hour = await selectHour(context: context);
 
-        if (hour == null) return;
+          if (hour == null) return;
 
-        setState(() => selectedHour = hour);
-        widget.onSelectedHour(hour);
-      },
-      child: Row(
-        mainAxisAlignment: .center,
-        children: [
-          const Icon(Icons.alarm),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: .start,
-              children: [
-                Text(AppLocalizations.of(context)!.notification_time),
-                Subtitle(
-                  text: AppLocalizations.of(
-                    context,
-                  )!.notification_time_subtitle,
-                ),
-              ],
+          setState(() => selectedHour = hour);
+          widget.onSelectedHour(hour);
+        },
+        child: Row(
+          mainAxisAlignment: .center,
+          children: [
+            const Icon(Icons.alarm),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  Text(AppLocalizations.of(context)!.notification_time),
+                  Subtitle(
+                    text: AppLocalizations.of(
+                      context,
+                    )!.notification_time_subtitle,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Text(formattedTime),
-          const SizedBox(width: 5),
-          const Icon(Icons.arrow_forward_ios, size: 20),
-        ],
+            Text(formattedTime),
+            const SizedBox(width: 5),
+            const Icon(Icons.arrow_forward_ios, size: 20),
+          ],
+        ),
       ),
     );
   }
