@@ -5,13 +5,13 @@ import 'package:flutter/material.dart'
         BottomNavigationBarItem,
         BuildContext,
         Icon,
-        Navigator,
         PopScope,
         Scaffold,
         State,
         StatefulWidget,
         Theme,
         Widget;
+import 'package:flutter/services.dart' show SystemNavigator;
 
 class MainTabScaffold extends StatefulWidget {
   final List<NavItem> tabs;
@@ -29,19 +29,20 @@ class _MainTabScaffoldState extends State<MainTabScaffold> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
+      onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
 
         final shouldPop = await _onPopInvoked();
 
         if (shouldPop && context.mounted) {
-          Navigator.of(context).pop();
+          SystemNavigator.pop();
         }
       },
       child: Scaffold(
         body: widget.tabs[_currentIndex].screen,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
+          enableFeedback: true,
           onTap: (index) => setState(() => _currentIndex = index),
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -60,7 +61,7 @@ class _MainTabScaffoldState extends State<MainTabScaffold> {
 
   Future<bool> _onPopInvoked() async {
     if (_currentIndex != 0) {
-      setState(() => _currentIndex = 0);
+      setState(() => _currentIndex--);
 
       return false;
     }
