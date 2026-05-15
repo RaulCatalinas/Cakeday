@@ -195,7 +195,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminder_configuration_failed =>
-      'Birthday saved, but we couldn\'t set the reminder. Go to Settings to enable notifications.';
+      'We couldn\'t set the reminder for this birthday.';
 
   @override
   String get birthday_deleted_success => 'Reminder deleted.';
@@ -203,10 +203,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get birthday_deleted_error =>
       'We couldn\'t delete the reminder. Please try again.';
-
-  @override
-  String get notification_could_not_be_scheduled =>
-      'We couldn\'t set the reminder for this birthday.';
 
   @override
   String get retry_text => 'Try again';
@@ -282,7 +278,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get update_birthday_success => 'Birthday updated! 🎂';
 
   @override
-  String get reminder_updated_successfully => 'Reminder updated! 🎂';
+  String get reminder_updated_successfully => 'Reminders updated! 🎂';
 
   @override
   String get reminder_update_failed =>
@@ -323,4 +319,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifications_permission_restricted =>
       'Your device doesn\'t allow notifications. Check your parental controls or device settings.';
+
+  @override
+  String get birthday_reminder_day_before_title => '🎂 Birthday tomorrow!';
+
+  @override
+  String birthday_reminder_day_before_body(String name) {
+    return '$name\'s birthday is tomorrow! 🎉';
+  }
+
+  @override
+  String get day_before_reminder_configured_successfully =>
+      'Early reminder set! You\'ll be notified the day before 🎂';
+
+  @override
+  String get day_before_reminder_configuration_failed =>
+      'We couldn\'t set the day-before reminder for this birthday.';
 }

@@ -17,6 +17,7 @@ import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/handlers/birthday/handle_save_birthday.dart'
     show handleSaveBirthday;
 import 'package:cakeday/handlers/birthday/handle_update_birthday.dart';
+import 'package:cakeday/handlers/notifications/handle_schedule_day_before_notification.dart';
 import 'package:cakeday/handlers/notifications/handle_schedule_notification.dart';
 import 'package:cakeday/handlers/notifications/handle_update_notification.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
@@ -390,7 +391,19 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             notificationTime ?? settings.notificationTime,
                         birthdayId: id,
                         context: context,
+                        notifyDayBefore: settings.advanceNotice,
                       );
+
+                      if (settings.advanceNotice) {
+                        await handleScheduleDayBeforeNotification(
+                          contactName: contactInfo!.name,
+                          notificationTime:
+                              notificationTime ?? settings.notificationTime,
+                          birthday: birthday!,
+                          birthdayId: id,
+                          context: context,
+                        );
+                      }
                     }
 
                     return;
@@ -437,6 +450,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                       notificationTime:
                           notificationTime ?? settings.notificationTime,
                       context: context,
+                      notifyDayBefore: settings.advanceNotice,
                     );
                   }
                 },

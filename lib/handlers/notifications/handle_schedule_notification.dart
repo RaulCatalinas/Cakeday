@@ -11,6 +11,7 @@ Future<bool> handleScheduleNotification({
   required DateTime birthday,
   required int birthdayId,
   required BuildContext context,
+  required bool notifyDayBefore,
 }) async {
   try {
     final reminderSet = await scheduleNotification(

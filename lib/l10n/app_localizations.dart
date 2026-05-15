@@ -437,7 +437,7 @@ abstract class AppLocalizations {
   /// No description provided for @reminder_configuration_failed.
   ///
   /// In en, this message translates to:
-  /// **'Birthday saved, but we couldn\'\'t set the reminder. Go to Settings to enable notifications.'**
+  /// **'We couldn\'\'t set the reminder for this birthday.'**
   String get reminder_configuration_failed;
 
   /// No description provided for @birthday_deleted_success.
@@ -451,12 +451,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'\'t delete the reminder. Please try again.'**
   String get birthday_deleted_error;
-
-  /// No description provided for @notification_could_not_be_scheduled.
-  ///
-  /// In en, this message translates to:
-  /// **'We couldn\'\'t set the reminder for this birthday.'**
-  String get notification_could_not_be_scheduled;
 
   /// No description provided for @retry_text.
   ///
@@ -575,7 +569,7 @@ abstract class AppLocalizations {
   /// No description provided for @reminder_updated_successfully.
   ///
   /// In en, this message translates to:
-  /// **'Reminder updated! 🎂'**
+  /// **'Reminders updated! 🎂'**
   String get reminder_updated_successfully;
 
   /// No description provided for @reminder_update_failed.
@@ -637,6 +631,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your device doesn\'\'t allow notifications. Check your parental controls or device settings.'**
   String get notifications_permission_restricted;
+
+  /// No description provided for @birthday_reminder_day_before_title.
+  ///
+  /// In en, this message translates to:
+  /// **'🎂 Birthday tomorrow!'**
+  String get birthday_reminder_day_before_title;
+
+  /// No description provided for @birthday_reminder_day_before_body.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'\'s birthday is tomorrow! 🎉'**
+  String birthday_reminder_day_before_body(String name);
+
+  /// No description provided for @day_before_reminder_configured_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Early reminder set! You\'\'ll be notified the day before 🎂'**
+  String get day_before_reminder_configured_successfully;
+
+  /// No description provided for @day_before_reminder_configuration_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'\'t set the day-before reminder for this birthday.'**
+  String get day_before_reminder_configuration_failed;
 }
 
 class _AppLocalizationsDelegate

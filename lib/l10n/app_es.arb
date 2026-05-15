@@ -56,10 +56,9 @@
   "birthday_save_error": "Algo ha ido mal. Inténtalo de nuevo.",
   "reminder_configured_successfully": "¡Recordatorio programado! Te avisaremos el gran día 🎂",
   "birthday_saved": "¡Cumpleaños guardado! 🎂",
-  "reminder_configuration_failed": "Cumpleaños guardado, pero no hemos podido programar el recordatorio. Ve a Ajustes para activar las notificaciones.",
+  "reminder_configuration_failed": "No hemos podido programar el recordatorio para este cumpleaños.",
   "birthday_deleted_success": "Recordatorio eliminado.",
   "birthday_deleted_error": "No hemos podido eliminar el recordatorio. Inténtalo de nuevo.",
-  "notification_could_not_be_scheduled": "No hemos podido programar el recordatorio para este cumpleaños.",
   "retry_text": "Reintentar",
   "delete_text": "Eliminar",
   "confirm_delete_birthday_dialog_content": "¿Seguro que quieres eliminar este recordatorio? Esta acción no se puede deshacer.",
@@ -79,7 +78,7 @@
   "upcoming_birthdays_section_title": "Próximamente",
   "update_birthday_error": "No hemos podido guardar los cambios. Inténtalo de nuevo.",
   "update_birthday_success": "¡Cumpleaños actualizado! 🎂",
-  "reminder_updated_successfully": "¡Recordatorio actualizado! 🎂",
+  "reminder_updated_successfully": "¡Recordatorios actualizados! 🎂",
   "reminder_update_failed": "No hemos podido actualizar el recordatorio. Ve a Ajustes para comprobar los permisos de notificación.",
   "birthday_reminder_title": "🎂 ¡Cumpleaños hoy!",
   "birthday_reminder_body": "¡Hoy es el cumpleaños de {name}! Pulsa para enviar tus felicitaciones 🎉",
@@ -90,6 +89,10 @@
   "notifications_permission_denied": "Activa las notificaciones para que Cakeday pueda recordarte los cumpleaños.",
   "notifications_permission_permanently_denied": "Las notificaciones están desactivadas. Puedes activarlas en los Ajustes de tu teléfono.",
   "notifications_permission_restricted": "Tu dispositivo no permite las notificaciones. Revisa el control parental o los ajustes del dispositivo.",
+  "birthday_reminder_day_before_title": "🎂 ¡Cumpleaños mañana!",
+"birthday_reminder_day_before_body": "¡Mañana es el cumpleaños de {name}! 🎉",
+  "day_before_reminder_configured_successfully": "¡Recordatorio anticipado activado! Te avisaremos el día antes 🎂",
+  "day_before_reminder_configuration_failed": "No hemos podido programar el recordatorio del día anterior para este cumpleaños.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -156,7 +159,6 @@
   "@reminder_configuration_failed": {},
   "@birthday_deleted_success": {},
   "@birthday_deleted_error": {},
-  "@notification_could_not_be_scheduled": {},
   "@retry_text": {},
   "@delete_text": {},
   "@confirm_delete_birthday_dialog_content": {},
@@ -239,5 +241,16 @@
   "@contacts_permission_restricted": {},
   "@notifications_permission_denied": {},
   "@notifications_permission_permanently_denied": {},
-  "@notifications_permission_restricted": {}
+  "@notifications_permission_restricted": {},
+  "@birthday_reminder_day_before_title": {},
+  "@birthday_reminder_day_before_body": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "Nombre del contacto que cumple años"
+      }
+    }
+  },
+  "@day_before_reminder_configured_successfully": {},
+  "@day_before_reminder_configuration_failed": {}
 }

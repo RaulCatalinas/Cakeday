@@ -31,7 +31,7 @@ class ScheduleBirthdayNotification extends StatelessWidget {
         const Padding(padding: .symmetric(horizontal: 4)),
         Expanded(
           child: Text(
-            AppLocalizations.of(context)!.notification_could_not_be_scheduled,
+            AppLocalizations.of(context)!.reminder_configuration_failed,
             style: const TextStyle(fontSize: 12, color: Color(0xFFFF9F0A)),
           ),
         ),

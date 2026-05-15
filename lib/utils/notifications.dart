@@ -5,6 +5,8 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationChannel,
         NotificationContent,
         ReceivedAction;
+import 'package:cakeday/constants/ids.dart'
+    show previousDayNotificationIdOffset;
 import 'package:cakeday/db/db_manager.dart' show DbManager;
 import 'package:cakeday/utils/preferences.dart' show Preferences;
 import 'package:cakeday/utils/urls.dart' show openWhatsApp;
@@ -69,6 +71,37 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
   );
 }
 
+Future<bool> scheduleDayBeforeNotification({
+  required int id,
+  required String title,
+  required String msg,
+  required DateTime date,
+  required TimeOfDay time,
+}) async {
+  final notificationId = id + previousDayNotificationIdOffset;
+
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: notificationId,
+      channelKey: 'birthdays',
+      title: title,
+      body: msg,
+    ),
+    schedule: NotificationCalendar(
+      month: date.month,
+      day: date.day - 1,
+      hour: time.hour,
+      minute: time.minute,
+      second: 0,
+      repeats: true,
+      allowWhileIdle: true,
+    ),
+  );
+
+  final scheduled = await AwesomeNotifications().listScheduledNotifications();
+  return scheduled.any((n) => n.content?.id == notificationId);
+}
+
 Future<bool> scheduleNotification({
   required int id,
   required String title,
@@ -95,7 +128,6 @@ Future<bool> scheduleNotification({
   );
 
   final scheduled = await AwesomeNotifications().listScheduledNotifications();
-
   return scheduled.any((n) => n.content?.id == id);
 }
 

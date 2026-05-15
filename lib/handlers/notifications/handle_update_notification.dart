@@ -1,6 +1,8 @@
+import 'package:cakeday/constants/ids.dart'
+    show previousDayNotificationIdOffset;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/notifications.dart'
-    show deleteReminder, scheduleNotification;
+    show deleteReminder, scheduleDayBeforeNotification, scheduleNotification;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart' show BuildContext, TimeOfDay;
 import 'package:logkeeper/logkeeper.dart' show LogKeeper;
@@ -11,9 +13,11 @@ Future<bool> handleUpdateNotification({
   required String contactName,
   required TimeOfDay notificationTime,
   required BuildContext context,
+  required bool notifyDayBefore,
 }) async {
   try {
     await deleteReminder(id: birthdayId);
+    await deleteReminder(id: birthdayId + previousDayNotificationIdOffset);
 
     final scheduled = await scheduleNotification(
       id: birthdayId,
@@ -29,6 +33,22 @@ Future<bool> handleUpdateNotification({
         msg: AppLocalizations.of(context)!.reminder_update_failed,
       );
       return false;
+    }
+
+    if (notifyDayBefore) {
+      final dayBeforeScheduled = await scheduleDayBeforeNotification(
+        id: birthdayId,
+        title: AppLocalizations.of(context)!.birthday_reminder_title,
+        msg: AppLocalizations.of(context)!.birthday_reminder_body(contactName),
+        date: birthday,
+        time: notificationTime,
+      );
+
+      if (!dayBeforeScheduled) {
+        LogKeeper.warning(
+          'Failed to schedule the day-before notification for $contactName',
+        );
+      }
     }
 
     showToast(

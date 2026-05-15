@@ -196,7 +196,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reminder_configuration_failed =>
-      'Cumpleaños guardado, pero no hemos podido programar el recordatorio. Ve a Ajustes para activar las notificaciones.';
+      'No hemos podido programar el recordatorio para este cumpleaños.';
 
   @override
   String get birthday_deleted_success => 'Recordatorio eliminado.';
@@ -204,10 +204,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get birthday_deleted_error =>
       'No hemos podido eliminar el recordatorio. Inténtalo de nuevo.';
-
-  @override
-  String get notification_could_not_be_scheduled =>
-      'No hemos podido programar el recordatorio para este cumpleaños.';
 
   @override
   String get retry_text => 'Reintentar';
@@ -283,7 +279,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get update_birthday_success => '¡Cumpleaños actualizado! 🎂';
 
   @override
-  String get reminder_updated_successfully => '¡Recordatorio actualizado! 🎂';
+  String get reminder_updated_successfully => '¡Recordatorios actualizados! 🎂';
 
   @override
   String get reminder_update_failed =>
@@ -324,4 +320,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get notifications_permission_restricted =>
       'Tu dispositivo no permite las notificaciones. Revisa el control parental o los ajustes del dispositivo.';
+
+  @override
+  String get birthday_reminder_day_before_title => '🎂 ¡Cumpleaños mañana!';
+
+  @override
+  String birthday_reminder_day_before_body(String name) {
+    return '¡Mañana es el cumpleaños de $name! 🎉';
+  }
+
+  @override
+  String get day_before_reminder_configured_successfully =>
+      '¡Recordatorio anticipado activado! Te avisaremos el día antes 🎂';
+
+  @override
+  String get day_before_reminder_configuration_failed =>
+      'No hemos podido programar el recordatorio del día anterior para este cumpleaños.';
 }

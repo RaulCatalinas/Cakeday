@@ -22,7 +22,6 @@ class RenderAllBirthdays extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(appSettingsProvider);
     final flatItems = _prepareItemsToRender(items: allBirthdays);
 
     return ListView.builder(
@@ -45,12 +44,15 @@ class RenderAllBirthdays extends ConsumerWidget {
           notificationScheduled: birthdayData.notificationScheduled,
           note: birthdayData.note,
           onRetryNotification: () async {
+            final settings = ref.read(appSettingsProvider);
+
             await _onRetryNotification(
               contactName: birthdayData.contactInfo!.name,
               birthday: birthdayData.birthday!,
               birthdayId: birthdayData.id,
               notificationTime: settings.notificationTime,
               context: context,
+              notifyDayBefore: settings.advanceNotice,
             );
 
             ref.invalidate(birthdaysListProvider);
@@ -66,6 +68,7 @@ class RenderAllBirthdays extends ConsumerWidget {
     required int? birthdayId,
     required TimeOfDay notificationTime,
     required BuildContext context,
+    required bool notifyDayBefore,
   }) async {
     var id = birthdayId;
 
@@ -83,6 +86,7 @@ class RenderAllBirthdays extends ConsumerWidget {
       birthday: birthday,
       birthdayId: id,
       context: context,
+      notifyDayBefore: notifyDayBefore,
     );
   }
 
