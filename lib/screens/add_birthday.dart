@@ -178,6 +178,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           AppLocalizations.of(context)!.date_section_title,
                         ),
                       ),
+                      const Padding(padding: .symmetric(horizontal: 8)),
                       Text(formattedMonthAndDay),
                       const Padding(padding: .symmetric(horizontal: 8)),
                       const Icon(Icons.arrow_forward_ios_rounded, size: 16),
