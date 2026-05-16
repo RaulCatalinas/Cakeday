@@ -186,7 +186,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               const Divider(thickness: 1, height: 1),
               AppCard(
                 borderRadius: .zero,
-                padding: 16.0,
                 child: Row(
                   mainAxisAlignment: .center,
                   crossAxisAlignment: .center,
