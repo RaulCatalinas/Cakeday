@@ -89,6 +89,8 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = ref.read(appSettingsProvider);
+
     final locale = Localizations.localeOf(context).toString();
     final formattedMonthAndDay = birthday != null
         ? DateFormat.MMMMd(locale).format(birthday!)
@@ -209,7 +211,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
               const Divider(thickness: 1, height: 1),
               SelectReminderHour(
                 borderRadius: .vertical(bottom: .circular(25.0)),
-                initialHour: widget.birthdayToEdit?.notificationHour,
+                initialHour:
+                    widget.birthdayToEdit?.notificationHour ??
+                    settings.notificationTime,
                 onSelectedHour: (hour) =>
                     setState(() => notificationTime = hour),
               ),
@@ -335,8 +339,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 )!.save_birthday_reminder_button_text,
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
                 onTap: () async {
-                  final settings = ref.read(appSettingsProvider);
-
                   if (widget.birthdayToEdit == null) {
                     final existRecord = await DbManager.existsBirthday(
                       name: contactInfo!.name,
