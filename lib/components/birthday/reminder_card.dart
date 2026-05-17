@@ -22,7 +22,6 @@ import 'package:flutter/material.dart'
         CircleAvatar,
         Colors,
         Column,
-        Expanded,
         Icon,
         IconButton,
         Icons,
@@ -34,9 +33,13 @@ import 'package:flutter/material.dart'
         Text,
         Theme,
         VoidCallback,
-        Widget;
+        Widget,
+        Localizations,
+        TextStyle,
+        SizedBox;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerWidget, WidgetRef;
+import 'package:intl/intl.dart' show DateFormat;
 
 class ReminderCard extends ConsumerWidget {
   static const _buttonStyles = ButtonStyle(enableFeedback: true);
@@ -67,7 +70,7 @@ class ReminderCard extends ConsumerWidget {
   }
 
   Widget _getCommonChild(BuildContext context, WidgetRef ref) {
-    final (name, phone, photo, birthday) =
+    final (name, _, photo, birthday) =
         contactInfo?.asRecord ??
         (
           AppLocalizations.of(context)!.unknown_text,
@@ -76,47 +79,41 @@ class ReminderCard extends ConsumerWidget {
           null,
         );
 
+    final locale = Localizations.localeOf(context).toString();
+    final formattedMonthAndDay = birthday != null
+        ? DateFormat.MMMd(locale).format(birthday)
+        : AppLocalizations.of(context)!.unknown_text;
+
     return Column(
       children: [
         Row(
-          mainAxisAlignment: .start,
+          mainAxisAlignment: .spaceAround,
+          crossAxisAlignment: .center,
           children: [
-            const Padding(padding: .symmetric(horizontal: 8)),
-            CircleAvatar(
-              radius: 24,
-              foregroundImage: photo != null ? MemoryImage(photo) : null,
-              child: photo == null
-                  ? Text(
-                      name.isNotEmpty
-                          ? name[0].toUpperCase()
-                          : AppLocalizations.of(
-                              context,
-                            )!.unknown_text[0].toUpperCase(),
-                    )
-                  : null,
-            ),
-            const Padding(padding: .directional(start: 8, end: 8)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  Text(
-                    name,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const Padding(padding: .directional(top: 3, bottom: 3)),
-                  Text(
-                    phone?.trim() ?? AppLocalizations.of(context)!.unknown_text,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: .start,
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  foregroundImage: photo != null ? MemoryImage(photo) : null,
+                  child: photo == null
+                      ? Text(
+                          name.isNotEmpty
+                              ? name[0].toUpperCase()
+                              : AppLocalizations.of(
+                                  context,
+                                )!.unknown_text[0].toUpperCase(),
+                        )
+                      : null,
+                ),
+                const Padding(padding: .symmetric(horizontal: 8)),
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: .ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
             ),
             Column(
               mainAxisAlignment: .end,
@@ -193,13 +190,27 @@ class ReminderCard extends ConsumerWidget {
                       ),
                     ],
                   ),
-                if (birthday != null)
-                  DaysRemaining(
-                    birthday: birthday,
-                    todayColor: useGradientCard ? Colors.green.shade900 : null,
-                  ),
               ],
             ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: .spaceAround,
+          crossAxisAlignment: .center,
+          children: [
+            Text(
+              formattedMonthAndDay,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+
+            if (birthday != null)
+              DaysRemaining(
+                birthday: birthday,
+                todayColor: useGradientCard ? Colors.green.shade900 : null,
+              ),
           ],
         ),
 

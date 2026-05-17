@@ -93,7 +93,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
     final locale = Localizations.localeOf(context).toString();
     final formattedMonthAndDay = birthday != null
-        ? DateFormat.MMMMd(locale).format(birthday!)
+        ? DateFormat.MMMd(locale).format(birthday!)
         : AppLocalizations.of(context)!.unknown_text;
     final formattedYear = birthday != null
         ? DateFormat.y(locale).format(birthday!)
@@ -178,7 +178,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           AppLocalizations.of(context)!.date_section_title,
                         ),
                       ),
-                      const Padding(padding: .symmetric(horizontal: 8)),
                       Text(formattedMonthAndDay),
                       const Padding(padding: .symmetric(horizontal: 8)),
                       const Icon(Icons.arrow_forward_ios_rounded, size: 16),
@@ -204,6 +203,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           : AppLocalizations.of(context)!.optional_text,
                     ),
                     AppCheckbox(
+                      defaultValue: includeYear,
                       onChanged: (value) => setState(() => includeYear = value),
                     ),
                   ],
