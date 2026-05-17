@@ -2,7 +2,15 @@ import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/utils/birthday_utils.dart'
     show daysUntilBirthday, formatTimeUntilBirthday;
 import 'package:flutter/material.dart'
-    show BuildContext, Color, StatelessWidget, Text, TextStyle, Widget, Theme;
+    show
+        BuildContext,
+        Color,
+        Row,
+        StatelessWidget,
+        Text,
+        TextStyle,
+        Theme,
+        Widget;
 
 class DaysRemaining extends StatelessWidget {
   final DateTime birthday;
@@ -24,11 +32,23 @@ class DaysRemaining extends StatelessWidget {
       _ => formatTimeUntilBirthday(days: days, context: context),
     };
 
-    return Text(
-      '$text$ageText',
-      style: TextStyle(
-        color: _color(days: days, context: context),
-      ),
+    return Row(
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            color: _color(days: days, context: context),
+            fontSize: 16,
+          ),
+        ),
+        Text(
+          ageText,
+          style: TextStyle(
+            fontSize: 14,
+            color: _color(days: days, context: context),
+          ),
+        ),
+      ],
     );
   }
 

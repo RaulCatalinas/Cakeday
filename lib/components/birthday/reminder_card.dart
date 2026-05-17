@@ -203,6 +203,7 @@ class ReminderCard extends ConsumerWidget {
               formattedMonthAndDay,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 14,
               ),
             ),
 
