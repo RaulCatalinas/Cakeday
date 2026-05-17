@@ -111,7 +111,7 @@ class ReminderCard extends ConsumerWidget {
                   name,
                   maxLines: 1,
                   overflow: .ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: TextStyle(fontSize: 19, fontWeight: .w600),
                 ),
               ],
             ),
@@ -125,6 +125,7 @@ class ReminderCard extends ConsumerWidget {
                     crossAxisAlignment: .end,
                     children: [
                       IconButton(
+                        iconSize: 21,
                         onPressed: () async {
                           var birthdayId = id;
 
@@ -157,6 +158,7 @@ class ReminderCard extends ConsumerWidget {
                         style: _buttonStyles,
                       ),
                       IconButton(
+                        iconSize: 21,
                         onPressed: () async {
                           var birthdayId = id;
 
