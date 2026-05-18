@@ -198,7 +198,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'We couldn\'t set the reminder for this birthday.';
 
   @override
-  String get birthday_deleted_success => 'Reminder deleted.';
+  String get birthday_deleted_success => 'Reminders deleted.';
 
   @override
   String get birthday_deleted_error =>

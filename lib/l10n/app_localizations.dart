@@ -443,7 +443,7 @@ abstract class AppLocalizations {
   /// No description provided for @birthday_deleted_success.
   ///
   /// In en, this message translates to:
-  /// **'Reminder deleted.'**
+  /// **'Reminders deleted.'**
   String get birthday_deleted_success;
 
   /// No description provided for @birthday_deleted_error.

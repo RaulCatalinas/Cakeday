@@ -57,7 +57,7 @@
   "reminder_configured_successfully": "Reminder set! You''ll be notified on the big day 🎂",
   "birthday_saved": "Birthday saved! 🎂",
   "reminder_configuration_failed": "We couldn''t set the reminder for this birthday.",
-  "birthday_deleted_success": "Reminder deleted.",
+  "birthday_deleted_success": "Reminders deleted.",
   "birthday_deleted_error": "We couldn''t delete the reminder. Please try again.",
   "retry_text": "Try again",
   "delete_text": "Delete",

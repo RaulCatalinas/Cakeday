@@ -57,7 +57,7 @@
   "reminder_configured_successfully": "¡Recordatorio programado! Te avisaremos el gran día 🎂",
   "birthday_saved": "¡Cumpleaños guardado! 🎂",
   "reminder_configuration_failed": "No hemos podido programar el recordatorio para este cumpleaños.",
-  "birthday_deleted_success": "Recordatorio eliminado.",
+  "birthday_deleted_success": "Recordatorios eliminados.",
   "birthday_deleted_error": "No hemos podido eliminar el recordatorio. Inténtalo de nuevo.",
   "retry_text": "Reintentar",
   "delete_text": "Eliminar",

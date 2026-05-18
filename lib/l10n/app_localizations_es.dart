@@ -199,7 +199,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'No hemos podido programar el recordatorio para este cumpleaños.';
 
   @override
-  String get birthday_deleted_success => 'Recordatorio eliminado.';
+  String get birthday_deleted_success => 'Recordatorios eliminados.';
 
   @override
   String get birthday_deleted_error =>
