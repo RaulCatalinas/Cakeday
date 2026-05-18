@@ -510,6 +510,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
     if (widget.birthdayToEdit!.customMessage != null) {
       usePersonalizedMessage = true;
       messageController.text = widget.birthdayToEdit!.customMessage!;
+      messageCharCount = messageController.text.length;
     }
   }
 
