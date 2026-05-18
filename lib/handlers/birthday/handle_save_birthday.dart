@@ -12,30 +12,6 @@ Future<(bool, int?)> handleSaveBirthday({
   TimeOfDay? notificationTime,
 }) async {
   try {
-    if (birthdayData.contactInfo == null) {
-      showToast(
-        type: .error,
-        msg: AppLocalizations.of(context)!.no_contact_selected_error,
-      );
-      return (false, null);
-    }
-
-    if (birthdayData.contactInfo?.phone == null) {
-      showToast(
-        type: .error,
-        msg: AppLocalizations.of(context)!.no_contact_phone_error,
-      );
-      return (false, null);
-    }
-
-    if (birthdayData.birthday == null) {
-      showToast(
-        type: .error,
-        msg: AppLocalizations.of(context)!.no_birthday_date_error,
-      );
-      return (false, null);
-    }
-
     final birthdayId = await DbManager.saveBirthday(
       name: birthdayData.contactInfo!.name,
       phone: birthdayData.contactInfo!.phone!,

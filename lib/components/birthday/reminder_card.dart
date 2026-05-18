@@ -129,8 +129,13 @@ class ReminderCard extends ConsumerWidget {
                         onPressed: () async {
                           var birthdayId = id;
 
-                          if (birthdayId == null) {
-                            final id = await DbManager.getIdByName(name);
+                          if (birthdayId == null &&
+                              contactInfo!.birthday != null) {
+                            final id = await DbManager.getIdByInfo(
+                              name: name,
+                              phone: contactInfo!.phone ?? '',
+                              date: contactInfo!.birthday!,
+                            );
 
                             birthdayId = id;
                           }
@@ -168,8 +173,12 @@ class ReminderCard extends ConsumerWidget {
                               );
 
                           if (deleteReminder) {
-                            if (birthdayId == null) {
-                              final id = await DbManager.getIdByName(name);
+                            if (birthdayId == null && birthday != null) {
+                              final id = await DbManager.getIdByInfo(
+                                name: name,
+                                phone: contactInfo!.phone ?? '',
+                                date: birthday,
+                              );
 
                               birthdayId = id;
                             }

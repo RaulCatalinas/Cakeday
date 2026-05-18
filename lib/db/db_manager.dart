@@ -20,16 +20,25 @@ class DbManager {
   static Future<bool> existsBirthday({
     required String name,
     required String phone,
-  }) async =>
-      await _instance._db.birthdayDao.existsBirthday(name: name, phone: phone);
-  static Future<bool> existsBirthdayById(int id) async =>
-      await _instance._db.birthdayDao.existsBirthdayById(id);
+    required DateTime date,
+  }) async => await _instance._db.birthdayDao.existsBirthday(
+    name: name,
+    phone: phone,
+    date: date,
+  );
   static Future<List<Birthday>> getAllBirthdays() async =>
       await _instance._db.birthdayDao.getAll();
   static Future<Birthday?> getBirthdayById(int id) async =>
       await _instance._db.birthdayDao.getById(id);
-  static Future<int?> getIdByName(String name) async =>
-      await _instance._db.birthdayDao.getIdByName(name);
+  static Future<int?> getIdByInfo({
+    required String name,
+    required String phone,
+    required DateTime date,
+  }) async => await _instance._db.birthdayDao.getIdByInfo(
+    name: name,
+    phone: phone,
+    date: date,
+  );
   static Future<void> init() async {
     _instance._db = AppDatabase();
   }

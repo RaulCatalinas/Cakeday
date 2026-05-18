@@ -135,6 +135,8 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
                   final result = await pickContact();
 
+                  if (result == null) return;
+
                   setState(() => contactInfo = result);
                 },
                 child: Row(
@@ -167,6 +169,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 child: InkWell(
                   onTap: () async {
                     final date = await selectDate(context: context);
+
+                    if (date == null) return;
+
                     setState(() => birthday = date);
                   },
                   child: Row(
@@ -341,9 +346,43 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
                 onTap: () async {
                   if (widget.birthdayToEdit == null) {
+                    if (contactInfo == null) {
+                      showToast(
+                        type: .error,
+                        msg: AppLocalizations.of(
+                          context,
+                        )!.no_contact_selected_error,
+                      );
+
+                      return;
+                    }
+
+                    if (contactInfo?.phone == null) {
+                      showToast(
+                        type: .error,
+                        msg: AppLocalizations.of(
+                          context,
+                        )!.no_contact_phone_error,
+                      );
+
+                      return;
+                    }
+
+                    if (birthday == null) {
+                      showToast(
+                        type: .error,
+                        msg: AppLocalizations.of(
+                          context,
+                        )!.no_birthday_date_error,
+                      );
+
+                      return;
+                    }
+
                     final existRecord = await DbManager.existsBirthday(
                       name: contactInfo!.name,
                       phone: contactInfo!.phone ?? '',
+                      date: birthday!,
                     );
 
                     if (existRecord) {
@@ -412,8 +451,10 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                   var id = widget.birthdayToEdit!.id;
 
                   if (id == null) {
-                    final birthdayId = await DbManager.getIdByName(
-                      contactInfo!.name,
+                    final birthdayId = await DbManager.getIdByInfo(
+                      name: contactInfo!.name,
+                      phone: contactInfo!.phone ?? '',
+                      date: birthday!,
                     );
 
                     id = birthdayId;

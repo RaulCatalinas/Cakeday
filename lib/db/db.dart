@@ -58,25 +58,20 @@ class BirthdayDao extends DatabaseAccessor<AppDatabase> {
   Future<bool> existsBirthday({
     required String name,
     required String phone,
+    required DateTime date,
   }) async {
     final query = attachedDatabase.select(attachedDatabase.birthdays)
-      ..where((b) => b.name.equals(name) & b.phone.equals(phone))
+      ..where(
+        (b) =>
+            b.name.equals(name) &
+            b.phone.equals(phone) &
+            b.day.equals(date.day) &
+            b.month.equals(date.month),
+      )
       ..limit(1);
 
     final result = await query.getSingleOrNull();
     return result != null;
-  }
-
-  Future<bool> existsBirthdayById(int id) async {
-    final count = attachedDatabase.birthdays.id.count();
-
-    final query = attachedDatabase.selectOnly(attachedDatabase.birthdays)
-      ..addColumns([count])
-      ..where(attachedDatabase.birthdays.id.equals(id));
-
-    final result = await query.getSingle();
-
-    return result.read(count)! > 0;
   }
 
   Future<List<Birthday>> getAll() {
@@ -97,9 +92,19 @@ class BirthdayDao extends DatabaseAccessor<AppDatabase> {
     return query.getSingleOrNull();
   }
 
-  Future<int?> getIdByName(String name) async {
+  Future<int?> getIdByInfo({
+    required String name,
+    required String phone,
+    required DateTime date,
+  }) async {
     final query = attachedDatabase.select(attachedDatabase.birthdays)
-      ..where((p) => p.name.equals(name));
+      ..where(
+        (p) =>
+            p.name.equals(name) &
+            p.phone.equals(phone) &
+            p.day.equals(date.day) &
+            p.month.equals(date.month),
+      );
 
     final result = await query.getSingleOrNull();
     return result?.id;

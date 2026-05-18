@@ -48,6 +48,7 @@ class RenderAllBirthdays extends ConsumerWidget {
 
             await _onRetryNotification(
               contactName: birthdayData.contactInfo!.name,
+              contactPhone: birthdayData.contactInfo!.phone ?? '',
               birthday: birthdayData.birthday!,
               birthdayId: birthdayData.id,
               notificationTime: settings.notificationTime,
@@ -64,6 +65,7 @@ class RenderAllBirthdays extends ConsumerWidget {
 
   Future<void> _onRetryNotification({
     required String contactName,
+    required String contactPhone,
     required DateTime birthday,
     required int? birthdayId,
     required TimeOfDay notificationTime,
@@ -73,7 +75,11 @@ class RenderAllBirthdays extends ConsumerWidget {
     var id = birthdayId;
 
     if (id == null) {
-      final birthdayId = await DbManager.getIdByName(contactName);
+      final birthdayId = await DbManager.getIdByInfo(
+        name: contactName,
+        phone: contactPhone,
+        date: birthday,
+      );
 
       if (birthdayId == null) return;
 
