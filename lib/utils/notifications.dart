@@ -78,30 +78,37 @@ Future<bool> scheduleDayBeforeNotification({
   required DateTime date,
   required TimeOfDay time,
 }) async {
-  final notificationId = id + previousDayNotificationIdOffset;
+  try {
+    final notificationId = id + previousDayNotificationIdOffset;
 
-  final reminderDate = date.subtract(const Duration(days: 1));
+    final reminderDate = date.subtract(const Duration(days: 1));
 
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: notificationId,
-      channelKey: 'birthdays',
-      title: title,
-      body: msg,
-    ),
-    schedule: NotificationCalendar(
-      month: reminderDate.month,
-      day: reminderDate.day,
-      hour: time.hour,
-      minute: time.minute,
-      second: 0,
-      repeats: true,
-      allowWhileIdle: true,
-    ),
-  );
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: notificationId,
+        channelKey: 'birthdays',
+        title: title,
+        body: msg,
+      ),
+      schedule: NotificationCalendar(
+        month: reminderDate.month,
+        day: reminderDate.day,
+        hour: time.hour,
+        minute: time.minute,
+        second: 0,
+        repeats: true,
+        allowWhileIdle: true,
+      ),
+    );
 
-  final scheduled = await AwesomeNotifications().listScheduledNotifications();
-  return scheduled.any((n) => n.content?.id == notificationId);
+    final scheduled = await AwesomeNotifications().listScheduledNotifications();
+    return scheduled.any((n) => n.content?.id == notificationId);
+  } catch (e, stackTrace) {
+    LogKeeper.error('Error setting the reminder for the previous day: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
+
+    return false;
+  }
 }
 
 Future<bool> scheduleNotification({
@@ -111,26 +118,33 @@ Future<bool> scheduleNotification({
   required DateTime date,
   required TimeOfDay time,
 }) async {
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: id,
-      channelKey: 'birthdays',
-      title: title,
-      body: msg,
-    ),
-    schedule: NotificationCalendar(
-      month: date.month,
-      day: date.day,
-      hour: time.hour,
-      minute: time.minute,
-      second: 0,
-      repeats: true,
-      allowWhileIdle: true,
-    ),
-  );
+  try {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: id,
+        channelKey: 'birthdays',
+        title: title,
+        body: msg,
+      ),
+      schedule: NotificationCalendar(
+        month: date.month,
+        day: date.day,
+        hour: time.hour,
+        minute: time.minute,
+        second: 0,
+        repeats: true,
+        allowWhileIdle: true,
+      ),
+    );
 
-  final scheduled = await AwesomeNotifications().listScheduledNotifications();
-  return scheduled.any((n) => n.content?.id == id);
+    final scheduled = await AwesomeNotifications().listScheduledNotifications();
+    return scheduled.any((n) => n.content?.id == id);
+  } catch (e, stackTrace) {
+    LogKeeper.error('Error setting the reminder: $e');
+    LogKeeper.error('StackTrace: $stackTrace');
+
+    return false;
+  }
 }
 
 Future<void> setupNotificationListeners() async {
