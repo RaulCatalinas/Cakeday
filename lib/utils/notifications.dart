@@ -80,6 +80,8 @@ Future<bool> scheduleDayBeforeNotification({
 }) async {
   final notificationId = id + previousDayNotificationIdOffset;
 
+  final reminderDate = date.subtract(const Duration(days: 1));
+
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: notificationId,
@@ -88,8 +90,8 @@ Future<bool> scheduleDayBeforeNotification({
       body: msg,
     ),
     schedule: NotificationCalendar(
-      month: date.month,
-      day: date.day - 1,
+      month: reminderDate.month,
+      day: reminderDate.day,
       hour: time.hour,
       minute: time.minute,
       second: 0,
