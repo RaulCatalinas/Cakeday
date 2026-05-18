@@ -119,13 +119,13 @@ abstract class AppLocalizations {
   /// No description provided for @date_section_title.
   ///
   /// In en, this message translates to:
-  /// **'Birthday'**
+  /// **'Date'**
   String get date_section_title;
 
   /// No description provided for @year_of_birth.
   ///
   /// In en, this message translates to:
-  /// **'Birth year'**
+  /// **'Year'**
   String get year_of_birth;
 
   /// No description provided for @message.

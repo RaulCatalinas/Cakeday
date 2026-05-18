@@ -18,10 +18,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_contact => 'Choose from your contacts';
 
   @override
-  String get date_section_title => 'Birthday';
+  String get date_section_title => 'Date';
 
   @override
-  String get year_of_birth => 'Birth year';
+  String get year_of_birth => 'Year';
 
   @override
   String get message => 'Message';
