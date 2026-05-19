@@ -41,6 +41,7 @@ import 'package:flutter/material.dart'
         BuildContext,
         Color,
         Column,
+        Curves,
         Divider,
         Expanded,
         FocusNode,
@@ -61,7 +62,8 @@ import 'package:flutter/material.dart'
         TextEditingController,
         TimeOfDay,
         Visibility,
-        Widget;
+        Widget,
+        WidgetsBinding;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerStatefulWidget, ConsumerState;
 import 'package:intl/intl.dart' show DateFormat;
@@ -107,6 +109,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
       body: SafeArea(
         minimum: .all(15.0),
         child: SingleChildScrollView(
+          controller: scrollController,
           child: Column(
             mainAxisAlignment: .center,
             children: [
@@ -447,6 +450,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                           context: context,
                         );
                       }
+
+                      _resetState();
+                      _scrollToTop();
                     }
 
                     return;
@@ -557,6 +563,30 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
       messageController.text = widget.birthdayToEdit!.customMessage!;
       messageCharCount = messageController.text.length;
     }
+  }
+
+  void _resetState() {
+    setState(() {
+      contactInfo = null;
+      includeYear = false;
+      birthday = null;
+      usePersonalizedMessage = false;
+      messageController.text = '';
+      useNote = false;
+      noteController.text = '';
+    });
+  }
+
+  void _scrollToTop() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!scrollController.hasClients) return;
+
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   String? _trimmedOrNull({required bool enabled, required String text}) {
