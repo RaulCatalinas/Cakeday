@@ -1,5 +1,7 @@
 import 'dart:async' show Timer;
 
+import 'package:ensure_visible_when_focused/ensure_visible_when_focused.dart'
+    show EnsureVisibleWhenFocused;
 import 'package:flutter/material.dart'
     show
         BorderSide,
@@ -49,21 +51,14 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      autocorrect: true,
-      maxLines: widget.maxLines,
-      keyboardType: widget.keyboardType,
-      focusNode: widget.focusNode,
-      onChanged: _onChanged,
-      maxLength: widget.maxLength,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: widget.borderColor),
-        ),
-        hintText: widget.hintText,
-      ),
-    );
+    return widget.focusNode != null
+        ? EnsureVisibleWhenFocused(
+            focusNode: widget.focusNode!,
+            alignment: 0.5,
+            alwaysAlign: true,
+            child: _getCommonChild(),
+          )
+        : _getCommonChild();
   }
 
   @override
@@ -79,6 +74,24 @@ class _InputState extends State<Input> {
     super.initState();
 
     _controller = widget.controller ?? TextEditingController();
+  }
+
+  Widget _getCommonChild() {
+    return TextField(
+      controller: _controller,
+      autocorrect: true,
+      maxLines: widget.maxLines,
+      keyboardType: widget.keyboardType,
+      focusNode: widget.focusNode,
+      onChanged: _onChanged,
+      maxLength: widget.maxLength,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: widget.borderColor),
+        ),
+        hintText: widget.hintText,
+      ),
+    );
   }
 
   void _onChanged(String value) {
