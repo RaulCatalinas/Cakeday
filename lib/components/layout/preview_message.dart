@@ -41,41 +41,42 @@ class _PreviewMessageState extends State<PreviewMessage> {
 
   bool editing = false;
   String message = '';
-  bool messageInitialized = false;
   bool canSave = false;
   int charCount = 0;
+  bool messageInitialized = false;
 
   @override
   Widget build(BuildContext context) {
-    final globalMessage = Preferences.getGlobalMessage();
+    if (!messageInitialized) {
+      final globalMessage = Preferences.getGlobalMessage();
 
-    if (globalMessage != null && !messageInitialized) {
-      final defaultGlobalMessage = AppLocalizations.of(
-        context,
-      )!.default_global_message;
-      message = defaultGlobalMessage;
-      messageInitialized = true;
+      if (globalMessage != null) {
+        setState(() {
+          message = globalMessage;
+        });
 
-      Preferences.saveGlobalMessage(defaultGlobalMessage)
-          .then((_) {
-            LogKeeper.info(
-              'Default global message saved to preferences successfully.',
+        LogKeeper.info('Global message loaded from preferences successfully.');
+
+        messageInitialized = true;
+      } else {
+        setState(() {
+          message = AppLocalizations.of(context)!.default_global_message;
+        });
+
+        Preferences.saveGlobalMessage(message)
+            .then((_) => LogKeeper.info('Default global message saved.'))
+            .catchError(
+              (e, stackTrace) => {
+                LogKeeper.error('Error saving default message: $e'),
+                LogKeeper.error('StackTrace: $stackTrace'),
+              },
             );
-          })
-          .catchError((e, stackTrace) {
-            LogKeeper.error(
-              'Error saving default global message to preferences: $e',
-            );
-            LogKeeper.error('StackTrace: $stackTrace');
-          });
-    } else if (globalMessage != null && !messageInitialized) {
-      message = globalMessage;
-      messageInitialized = true;
+      }
 
-      LogKeeper.info('Global message loaded from preferences successfully.');
+      messageInitialized = true;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.onChanged(message);
     });
 
