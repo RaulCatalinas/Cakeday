@@ -437,7 +437,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             notificationTime ?? settings.notificationTime,
                         birthdayId: id,
                         context: context,
-                        notifyDayBefore: settings.advanceNotice,
                       );
 
                       if (settings.advanceNotice) {

@@ -53,7 +53,6 @@ class RenderAllBirthdays extends ConsumerWidget {
               birthdayId: birthdayData.id,
               notificationTime: settings.notificationTime,
               context: context,
-              notifyDayBefore: settings.advanceNotice,
             );
 
             ref.invalidate(birthdaysListProvider);
@@ -70,7 +69,6 @@ class RenderAllBirthdays extends ConsumerWidget {
     required int? birthdayId,
     required TimeOfDay notificationTime,
     required BuildContext context,
-    required bool notifyDayBefore,
   }) async {
     var id = birthdayId;
 
@@ -92,7 +90,6 @@ class RenderAllBirthdays extends ConsumerWidget {
       birthday: birthday,
       birthdayId: id,
       context: context,
-      notifyDayBefore: notifyDayBefore,
     );
   }
 
