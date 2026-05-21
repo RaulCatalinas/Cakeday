@@ -32,6 +32,7 @@ Future<bool> handleUpdateNotification({
         type: .error,
         msg: AppLocalizations.of(context)!.reminder_update_failed,
       );
+
       return false;
     }
 
