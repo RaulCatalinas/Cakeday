@@ -7,6 +7,7 @@ import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/common/subtitle.dart' show Subtitle;
 import 'package:cakeday/components/layout/preview_message.dart'
     show PreviewMessage;
+import 'package:cakeday/handlers/notifications/handle_reschedule_all_notifications.dart';
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/managers/language_manager.dart' show LanguageManager;
 import 'package:cakeday/permissions/notifications.dart'
@@ -138,8 +139,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     AppSwitch(
                       defaultValue: settings.advanceNotice,
-                      onChanged: (value) async =>
-                          await notifier.setAdvanceNotice(value),
+                      onChanged: (value) async {
+                        await notifier.setAdvanceNotice(value);
+
+                        await handleRescheduleAllNotifications(
+                          context: context,
+                          notifyDayBefore: value,
+                        );
+                      },
                     ),
                   ],
                 ),

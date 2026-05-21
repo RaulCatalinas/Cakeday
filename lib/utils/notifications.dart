@@ -15,6 +15,8 @@ import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 
 Future<void> deleteReminder({required int id}) async {
   try {
+    if (!await _programedNotification(id: id)) return;
+
     await AwesomeNotifications().cancel(id);
   } catch (e, stackTrace) {
     LogKeeper.error('Error deleting reminder with ID $id: $e');
@@ -101,8 +103,7 @@ Future<bool> scheduleDayBeforeNotification({
       ),
     );
 
-    final scheduled = await AwesomeNotifications().listScheduledNotifications();
-    return scheduled.any((n) => n.content?.id == notificationId);
+    return await _programedNotification(id: notificationId);
   } catch (e, stackTrace) {
     LogKeeper.error('Error setting the reminder for the previous day: $e');
     LogKeeper.error('StackTrace: $stackTrace');
@@ -137,8 +138,7 @@ Future<bool> scheduleNotification({
       ),
     );
 
-    final scheduled = await AwesomeNotifications().listScheduledNotifications();
-    return scheduled.any((n) => n.content?.id == id);
+    return await _programedNotification(id: id);
   } catch (e, stackTrace) {
     LogKeeper.error('Error setting the reminder: $e');
     LogKeeper.error('StackTrace: $stackTrace');
@@ -155,5 +155,20 @@ Future<void> setupNotificationListeners() async {
   } catch (e, stackTrace) {
     LogKeeper.error('Error setting up notification listeners: $e');
     LogKeeper.error('StackTrace: $stackTrace');
+  }
+}
+
+Future<bool> _programedNotification({required int id}) async {
+  try {
+    final scheduled = await AwesomeNotifications().listScheduledNotifications();
+
+    return scheduled.any((n) => n.content?.id == id);
+  } catch (e, stackTrace) {
+    LogKeeper.error(
+      "Error checking whether the notification with ID '$id' is scheduled: $e",
+    );
+    LogKeeper.error('StackTrace: $stackTrace');
+
+    return false;
   }
 }
