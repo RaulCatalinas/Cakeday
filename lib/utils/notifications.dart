@@ -46,7 +46,9 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
     return;
   }
 
-  if (action.id == null) {
+  final notificationId = action.id;
+
+  if (notificationId == null) {
     LogKeeper.error(
       'Received notification action with null ID. Cannot proceed.',
     );
@@ -54,7 +56,10 @@ Future<void> onNotificationReceived(ReceivedAction action) async {
     return;
   }
 
-  final birthday = await DbManager.getBirthdayById(action.id!);
+  final birthdayId = notificationId >= previousDayNotificationIdOffset
+      ? notificationId - previousDayNotificationIdOffset
+      : notificationId;
+  final birthday = await DbManager.getBirthdayById(birthdayId);
 
   if (birthday == null) {
     LogKeeper.error('No birthday found for ID ${action.id}. Cannot proceed.');
