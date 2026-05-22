@@ -39,8 +39,10 @@ Future<bool> handleUpdateNotification({
     if (notifyDayBefore) {
       final dayBeforeScheduled = await scheduleDayBeforeNotification(
         id: birthdayId,
-        title: AppLocalizations.of(context)!.birthday_reminder_title,
-        msg: AppLocalizations.of(context)!.birthday_reminder_body(contactName),
+        title: AppLocalizations.of(context)!.birthday_reminder_day_before_title,
+        msg: AppLocalizations.of(
+          context,
+        )!.birthday_reminder_day_before_body(contactName),
         date: birthday,
         time: notificationTime,
       );
