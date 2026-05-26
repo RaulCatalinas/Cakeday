@@ -3,12 +3,7 @@ import 'package:flutter_contacts/flutter_contacts.dart'
     show ContactProperty, FlutterContacts;
 
 Future<ContactInfo?> pickContact() async {
-  final contactId = await FlutterContacts.native.showPicker();
-
-  if (contactId == null) return null;
-
-  final contact = await FlutterContacts.get(
-    contactId,
+  final contact = await FlutterContacts.native.showPicker(
     properties: {
       ContactProperty.name,
       ContactProperty.phone,
