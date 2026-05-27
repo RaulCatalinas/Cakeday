@@ -8,6 +8,7 @@ import 'package:cakeday/providers/birthdays_provider.dart';
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
+import 'package:cakeday/types/render_items.dart' show BirthdayItem, HeaderItem;
 import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:collection/collection.dart' show groupBy;
 import 'package:flutter/material.dart'
@@ -29,14 +30,15 @@ class RenderAllBirthdays extends ConsumerWidget {
       itemBuilder: (context, index) {
         final item = flatItems[index];
 
-        if (item is String) {
+        if (item is HeaderItem) {
           return Padding(
             padding: .only(top: 16, bottom: 8),
-            child: SectionTitle(text: item),
+            child: SectionTitle(text: item.title),
           );
         }
 
-        final birthdayData = item as BirthdayData;
+        final birthdayItem = item as BirthdayItem;
+        final birthdayData = birthdayItem.data;
 
         return ReminderCard(
           id: birthdayData.id,
@@ -108,8 +110,8 @@ class RenderAllBirthdays extends ConsumerWidget {
     final List<Object> flatItems = [];
 
     for (final entry in itemsGrouped.entries) {
-      flatItems.add(entry.key);
-      flatItems.addAll(entry.value);
+      flatItems.add(HeaderItem(entry.key));
+      flatItems.addAll(entry.value.map(BirthdayItem.new));
     }
 
     return flatItems;
