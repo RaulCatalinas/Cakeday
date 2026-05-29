@@ -31,7 +31,8 @@ dependencies:
   dropdown_button2: ^3.1.0
   flutter_native_splash: ^2.4.7
   ensure_visible_when_focused: ^1.2.0
-
+  characters: ^1.4.1
+  flutter_multi_select_items: ^0.4.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

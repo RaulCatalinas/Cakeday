@@ -15,6 +15,7 @@ import 'package:cakeday/providers/birthdays_provider.dart'
 import 'package:cakeday/screens/add_birthday.dart' show AddBirthdayScreen;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
+import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:flutter/material.dart'
     show
         BuildContext,
@@ -99,7 +100,7 @@ class ReminderCard extends ConsumerWidget {
                   child: photo == null
                       ? Text(
                           name.isNotEmpty
-                              ? name[0].toUpperCase()
+                              ? name.firstLetter.toUpperCase()
                               : AppLocalizations.of(
                                   context,
                                 )!.unknown_text[0].toUpperCase(),
