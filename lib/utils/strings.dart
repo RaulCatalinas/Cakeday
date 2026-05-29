@@ -10,7 +10,7 @@ extension StringNormalization on String {
     for (final char in trim().characters) {
       if (!letterRegex.hasMatch(char)) continue;
 
-      return char.toUpperCase();
+      return char;
     }
 
     return characters.first;
