@@ -163,7 +163,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                 notificationScheduled:
                     widget.birthdayToEdit?.notificationScheduled ?? false,
                 note: widget.birthdayToEdit?.note,
-                showOutline: false,
               ),
 
               const Padding(padding: .symmetric(vertical: 16)),

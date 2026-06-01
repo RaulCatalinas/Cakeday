@@ -31,7 +31,6 @@ import 'package:flutter/material.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerState, ConsumerStatefulWidget, WidgetRef;
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:logkeeper/logkeeper.dart';
 
 class ReminderCard extends ConsumerStatefulWidget {
   final ContactInfo? contactInfo;
@@ -40,7 +39,7 @@ class ReminderCard extends ConsumerStatefulWidget {
   final int? id;
   final VoidCallback? onRetryNotification;
   final String? note;
-  final bool? showOutline;
+  final bool isSelected;
 
   const ReminderCard({
     super.key,
@@ -50,7 +49,7 @@ class ReminderCard extends ConsumerStatefulWidget {
     this.useGradientCard = false,
     this.onRetryNotification,
     this.note,
-    this.showOutline,
+    this.isSelected = false,
   });
 
   @override
@@ -58,35 +57,15 @@ class ReminderCard extends ConsumerStatefulWidget {
 }
 
 class _ReminderCardState extends ConsumerState<ReminderCard> {
-  var isSelected = false;
-
   @override
   Widget build(BuildContext context) {
     return widget.useGradientCard
         ? GradientCard(child: _getCommonChild(context, ref))
         : AppCard(
             padding: 15.0,
-            isSelected: widget.showOutline ?? isSelected,
+            isSelected: widget.isSelected,
             child: _getCommonChild(context, ref),
           );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.microtask(() async {
-      try {
-        final selectionState = ref.read(selectionProvider);
-        final id = await _getReminderId();
-        final selected = selectionState.selectedIds.contains(id);
-
-        setState(() => isSelected = selected);
-      } catch (e, stackTrace) {
-        LogKeeper.error('Error retrieving the reminder ID: $e');
-        LogKeeper.error('StackTrace: $stackTrace');
-      }
-    });
   }
 
   Widget _getCommonChild(BuildContext context, WidgetRef ref) {
@@ -210,8 +189,6 @@ class _ReminderCardState extends ConsumerState<ReminderCard> {
 
     final selectionNotifier = ref.read(selectionProvider.notifier);
 
-    setState(() => isSelected = !isSelected);
-
     final id = await _getReminderId();
 
     selectionNotifier.enterMultiSelect(id);
@@ -226,8 +203,6 @@ class _ReminderCardState extends ConsumerState<ReminderCard> {
     if (!selectionState.multiSelectMode) return;
 
     final selectionNotifier = ref.read(selectionProvider.notifier);
-
-    setState(() => isSelected = !isSelected);
 
     final id = await _getReminderId();
 

@@ -5,6 +5,8 @@ import 'package:cakeday/db/db_manager.dart';
 import 'package:cakeday/handlers/notifications/handle_schedule_notification.dart'
     show handleScheduleNotification;
 import 'package:cakeday/providers/birthdays_provider.dart';
+import 'package:cakeday/providers/selection_provider.dart'
+    show selectionProvider;
 import 'package:cakeday/providers/settings_provider.dart'
     show appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
@@ -23,6 +25,7 @@ class RenderAllBirthdays extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectionState = ref.watch(selectionProvider);
     final flatItems = _prepareItemsToRender(items: allBirthdays);
 
     return ListView.builder(
@@ -45,6 +48,7 @@ class RenderAllBirthdays extends ConsumerWidget {
           contactInfo: birthdayData.contactInfo,
           notificationScheduled: birthdayData.notificationScheduled,
           note: birthdayData.note,
+          isSelected: selectionState.selectedIds.contains(birthdayData.id),
           onRetryNotification: () async {
             final settings = ref.read(appSettingsProvider);
 
