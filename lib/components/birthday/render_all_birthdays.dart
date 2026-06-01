@@ -97,9 +97,9 @@ class RenderAllBirthdays extends ConsumerWidget {
 
   List<Object> _prepareItemsToRender({required List<BirthdayData> items}) {
     items.sort((a, b) {
-      final nameA = a.contactInfo!.name.normalizedInitial;
-      final nameB = b.contactInfo!.name.normalizedInitial;
-      return nameA.toLowerCase().compareTo(nameB.toLowerCase());
+      final nameA = a.contactInfo!.name.normalized.toLowerCase();
+      final nameB = b.contactInfo!.name.normalized.toLowerCase();
+      return nameA.compareTo(nameB);
     });
 
     final itemsGrouped = groupBy(

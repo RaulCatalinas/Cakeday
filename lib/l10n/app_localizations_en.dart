@@ -212,7 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm_delete_birthday_dialog_content =>
-      'Are you sure you want to delete this reminder? This can\'t be undone.';
+      'Are you sure you want to delete the selected items? This can\'t be undone.';
 
   @override
   String get cancel_text => 'Cancel';

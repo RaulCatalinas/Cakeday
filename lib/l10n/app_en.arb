@@ -61,7 +61,7 @@
   "birthday_deleted_error": "We couldn''t delete the reminder. Please try again.",
   "retry_text": "Try again",
   "delete_text": "Delete",
-  "confirm_delete_birthday_dialog_content": "Are you sure you want to delete this reminder? This can''t be undone.",
+  "confirm_delete_birthday_dialog_content": "Are you sure you want to delete the selected items? This can''t be undone.",
   "cancel_text": "Cancel",
   "today_text": "Today",
   "tomorrow_text": "Tomorrow",

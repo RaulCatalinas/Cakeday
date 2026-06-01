@@ -213,7 +213,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get confirm_delete_birthday_dialog_content =>
-      '¿Seguro que quieres eliminar este recordatorio? Esta acción no se puede deshacer.';
+      '¿Seguro que quieres eliminar los elementos seleccionados? No podrás deshacer esta acción.';
 
   @override
   String get cancel_text => 'Cancelar';

@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirm_delete_birthday_dialog_content.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete this reminder? This can\'\'t be undone.'**
+  /// **'Are you sure you want to delete the selected items? This can\'\'t be undone.'**
   String get confirm_delete_birthday_dialog_content;
 
   /// No description provided for @cancel_text.

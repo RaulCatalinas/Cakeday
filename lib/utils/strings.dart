@@ -4,24 +4,69 @@ import 'package:cakeday/constants/strings.dart'
 import 'package:characters/characters.dart' show StringCharacters;
 
 extension StringNormalization on String {
-  String get firstLetter {
-    if (isEmpty) return '';
+  /// Strips lone UTF-16 surrogates so [Text] widgets can render safely.
+  String get safeForDisplay {
+    final buffer = StringBuffer();
+    final units = codeUnits;
 
-    for (final char in trim().characters) {
+    for (var i = 0; i < units.length; i++) {
+      final unit = units[i];
+
+      if (unit >= 0xD800 && unit <= 0xDBFF) {
+        if (i + 1 < units.length &&
+            units[i + 1] >= 0xDC00 &&
+            units[i + 1] <= 0xDFFF) {
+          buffer
+            ..writeCharCode(unit)
+            ..writeCharCode(units[++i]);
+        }
+      } else if (unit < 0xDC00 || unit > 0xDFFF) {
+        buffer.writeCharCode(unit);
+      }
+    }
+
+    return buffer.toString();
+  }
+
+  String get firstLetter {
+    final safe = safeForDisplay;
+    if (safe.isEmpty) return '';
+
+    for (final char in safe.trim().characters) {
       if (!letterRegex.hasMatch(char)) continue;
 
       return char;
     }
 
-    return characters.first;
+    return safe.trim().characters.first;
   }
 
   String get normalized {
-    return toUpperCase().split('').map((char) {
-      final index = charsWithAccents.indexOf(char);
-      return index != -1 ? charsWithoutAccents[index].toUpperCase() : char;
-    }).join();
+    final buffer = StringBuffer();
+
+    for (final char in safeForDisplay.characters) {
+      final upper = char.toUpperCase();
+      final index = charsWithAccents.indexOf(upper);
+      buffer.write(
+        index != -1 ? charsWithoutAccents[index].toUpperCase() : upper,
+      );
+    }
+
+    return buffer.toString();
   }
 
-  String get normalizedInitial => normalized[0];
+  String get normalizedInitial {
+    final safe = safeForDisplay.trim();
+    if (safe.isEmpty) return '#';
+
+    for (final char in safe.characters) {
+      if (!letterRegex.hasMatch(char)) continue;
+
+      final upper = char.toUpperCase();
+      final index = charsWithAccents.indexOf(upper);
+      return index != -1 ? charsWithoutAccents[index].toUpperCase() : upper;
+    }
+
+    return '#';
+  }
 }

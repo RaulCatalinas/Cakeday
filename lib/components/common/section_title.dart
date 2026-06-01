@@ -1,3 +1,4 @@
+import 'package:cakeday/utils/strings.dart' show StringNormalization;
 import 'package:flutter/material.dart'
     show BuildContext, StatelessWidget, Text, TextStyle, Widget, Padding, Color;
 
@@ -12,7 +13,7 @@ class SectionTitle extends StatelessWidget {
     return Padding(
       padding: .only(left: 4, bottom: 8, top: 16),
       child: Text(
-        text.toUpperCase(),
+        text.safeForDisplay.toUpperCase(),
         style: TextStyle(
           fontSize: fontSize,
           fontWeight: .w700,

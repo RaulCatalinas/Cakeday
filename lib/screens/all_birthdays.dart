@@ -7,6 +7,7 @@ import 'package:cakeday/components/birthday/render_all_birthdays.dart'
 import 'package:cakeday/components/common/app_search_bar.dart'
     show AppSearchBar;
 import 'package:cakeday/components/common/header.dart' show Header;
+import 'package:cakeday/components/common/task_bar.dart' show TaskBar;
 import 'package:cakeday/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:cakeday/providers/birthdays_provider.dart'
     show birthdaysListProvider;
@@ -42,6 +43,7 @@ class _AllBirthdaysScreenState extends ConsumerState<AllBirthdaysScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const TaskBar(),
       floatingActionButton: const CreateBirthdayButton(),
       body: SafeArea(
         child: Padding(
