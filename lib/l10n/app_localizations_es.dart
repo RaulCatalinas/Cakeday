@@ -336,4 +336,25 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get day_before_reminder_configuration_failed =>
       'No hemos podido programar el recordatorio del día anterior para este cumpleaños.';
+
+  @override
+  String get one_birthday_selected => '1 seleccionado';
+
+  @override
+  String multiple_birthdays_selected(int count) {
+    return '$count seleccionados';
+  }
+
+  @override
+  String get delete_all_reminders_button_text => 'Eliminar todos';
+
+  @override
+  String get edit_reminder_button_text => 'Editar';
+
+  @override
+  String get delete_reminder_button_text => 'Eliminar';
+
+  @override
+  String get delete_all_reminders_dialog_content =>
+      '¿Seguro que quieres eliminar todos los recordatorios? No podrás deshacer esta acción.';
 }

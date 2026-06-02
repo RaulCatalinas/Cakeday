@@ -93,6 +93,12 @@
   "birthday_reminder_day_before_body": "{name}''s birthday is tomorrow! 🎉",
   "day_before_reminder_configured_successfully": "Early reminder set! You''ll be notified the day before 🎂",
   "day_before_reminder_configuration_failed": "We couldn''t set the day-before reminder for this birthday.",
+  "one_birthday_selected": "1 birthday selected",
+  "multiple_birthdays_selected": "{count} selected",
+  "delete_all_reminders_button_text": "Delete all",
+  "edit_reminder_button_text": "Edit",
+  "delete_reminder_button_text": "Delete",
+  "delete_all_reminders_dialog_content": "Are you sure you want to delete all reminders? This can''t be undone.",
   "@add_birthday_header": {},
   "@information_section_title": {},
   "@select_contact": {},
@@ -252,5 +258,18 @@
     }
   },
   "@day_before_reminder_configured_successfully": {},
-  "@day_before_reminder_configuration_failed": {}
+  "@day_before_reminder_configuration_failed": {},
+  "@one_birthday_selected": {},
+  "@multiple_birthdays_selected": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of selected birthdays"
+      }
+    }
+  },
+  "@edit_reminder_button_text": {},
+  "@delete_reminder_button_text": {},
+  "@delete_all_reminders_button_text": {},
+  "@delete_all_reminders_dialog_content": {}
 }

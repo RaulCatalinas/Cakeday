@@ -335,4 +335,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get day_before_reminder_configuration_failed =>
       'We couldn\'t set the day-before reminder for this birthday.';
+
+  @override
+  String get one_birthday_selected => '1 birthday selected';
+
+  @override
+  String multiple_birthdays_selected(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get delete_all_reminders_button_text => 'Delete all';
+
+  @override
+  String get edit_reminder_button_text => 'Edit';
+
+  @override
+  String get delete_reminder_button_text => 'Delete';
+
+  @override
+  String get delete_all_reminders_dialog_content =>
+      'Are you sure you want to delete all reminders? This can\'t be undone.';
 }

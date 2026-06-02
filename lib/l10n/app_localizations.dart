@@ -655,6 +655,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'\'t set the day-before reminder for this birthday.'**
   String get day_before_reminder_configuration_failed;
+
+  /// No description provided for @one_birthday_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'1 birthday selected'**
+  String get one_birthday_selected;
+
+  /// No description provided for @multiple_birthdays_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String multiple_birthdays_selected(int count);
+
+  /// No description provided for @delete_all_reminders_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all'**
+  String get delete_all_reminders_button_text;
+
+  /// No description provided for @edit_reminder_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit_reminder_button_text;
+
+  /// No description provided for @delete_reminder_button_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete_reminder_button_text;
+
+  /// No description provided for @delete_all_reminders_dialog_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete all reminders? This can\'\'t be undone.'**
+  String get delete_all_reminders_dialog_content;
 }
 
 class _AppLocalizationsDelegate
