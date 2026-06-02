@@ -1,3 +1,7 @@
+import 'package:cakeday/components/common/selection_action_bar.dart'
+    show SelectionActionBar;
+import 'package:cakeday/providers/selection_provider.dart'
+    show selectionProvider;
 import 'package:cakeday/types/nav_item.dart' show NavItem;
 import 'package:flutter/material.dart'
     show
@@ -6,27 +10,31 @@ import 'package:flutter/material.dart'
         BuildContext,
         Icon,
         PopScope,
+        Positioned,
         Scaffold,
-        State,
-        StatefulWidget,
+        Stack,
         Theme,
         Widget;
 import 'package:flutter/services.dart' show SystemNavigator;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerState, ConsumerStatefulWidget;
 
-class MainTabScaffold extends StatefulWidget {
+class MainTabScaffold extends ConsumerStatefulWidget {
   final List<NavItem> tabs;
 
   const MainTabScaffold({super.key, required this.tabs});
 
   @override
-  State<MainTabScaffold> createState() => _MainTabScaffoldState();
+  ConsumerState<MainTabScaffold> createState() => _MainTabScaffoldState();
 }
 
-class _MainTabScaffoldState extends State<MainTabScaffold> {
+class _MainTabScaffoldState extends ConsumerState<MainTabScaffold> {
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final isInMultiSelectMode = ref.watch(selectionProvider).multiSelectMode;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
@@ -39,7 +47,18 @@ class _MainTabScaffoldState extends State<MainTabScaffold> {
         }
       },
       child: Scaffold(
-        body: widget.tabs[_currentIndex].screen,
+        body: Stack(
+          children: [
+            widget.tabs[_currentIndex].screen,
+            if (isInMultiSelectMode && _currentIndex == 1)
+              const Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: SelectionActionBar(),
+              ),
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           enableFeedback: true,
@@ -62,7 +81,6 @@ class _MainTabScaffoldState extends State<MainTabScaffold> {
   Future<bool> _onPopInvoked() async {
     if (_currentIndex != 0) {
       setState(() => _currentIndex--);
-
       return false;
     }
 
