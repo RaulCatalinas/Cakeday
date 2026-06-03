@@ -30,7 +30,7 @@ import 'package:cakeday/permissions/contacts.dart'
 import 'package:cakeday/providers/birthdays_provider.dart'
     show birthdaysListProvider;
 import 'package:cakeday/providers/settings_provider.dart'
-    show appSettingsProvider;
+    show AppSettings, appSettingsProvider;
 import 'package:cakeday/types/birthday_data.dart' show BirthdayData;
 import 'package:cakeday/types/contacts.dart' show ContactInfo;
 import 'package:cakeday/utils/contacts_list.dart' show pickContact;
@@ -67,6 +67,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerStatefulWidget, ConsumerState;
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:logkeeper/logkeeper.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddBirthdayScreen extends ConsumerStatefulWidget {
@@ -85,7 +86,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   late bool useNote;
   late bool includeYear;
   TimeOfDay? notificationTime;
-  int messageCharCount = 0;
+
+  var messageCharCount = 0;
+  var showScrollIndicator = true;
 
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
@@ -108,232 +111,259 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
     return Scaffold(
       body: SafeArea(
         minimum: .all(15.0),
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            mainAxisAlignment: .center,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    enableFeedback: true,
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.arrow_circle_left, size: 28),
-                  ),
-                  Header(
-                    text: AppLocalizations.of(context)!.add_birthday_header,
-                    fontSize: 18.0,
-                  ),
-                ],
-              ),
-              const Padding(padding: .symmetric(vertical: 16)),
-
-              SectionTitle(
-                text: AppLocalizations.of(context)!.information_section_title,
-              ),
-              ClickableCard(
-                color: const Color(0x33FF6B6B),
-                onTap: () async {
-                  final status = await requestContactListPermission(
-                    context: context,
-                  );
-
-                  if (!status.isGranted && !status.isLimited) return;
-
-                  final result = await pickContact();
-
-                  if (result == null) return;
-
-                  setState(() => contactInfo = result);
-                },
-                child: Row(
-                  children: [
-                    const Icon(Icons.person),
-                    const Padding(padding: .symmetric(horizontal: 8)),
-                    Expanded(
-                      child: Text(AppLocalizations.of(context)!.select_contact),
-                    ),
-                    const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                  ],
-                ),
-              ),
-              const Padding(padding: .symmetric(vertical: 8)),
-              ReminderCard(
-                contactInfo: contactInfo,
-                notificationScheduled:
-                    widget.birthdayToEdit?.notificationScheduled ?? false,
-                note: widget.birthdayToEdit?.note,
-              ),
-
-              const Padding(padding: .symmetric(vertical: 16)),
-
-              SectionTitle(
-                text: AppLocalizations.of(context)!.date_section_title,
-              ),
-              AppCard(
-                borderRadius: .vertical(top: .circular(25.0)),
-                child: InkWell(
-                  onTap: () async {
-                    final date = await selectDate(context: context);
-
-                    if (date == null) return;
-
-                    setState(() => birthday = date);
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(Icons.cake),
-                      const Padding(padding: .symmetric(horizontal: 8)),
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context)!.date_section_title,
-                        ),
-                      ),
-                      Text(formattedMonthAndDay),
-                      const Padding(padding: .symmetric(horizontal: 8)),
-                      const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                    ],
-                  ),
-                ),
-              ),
-              const Divider(thickness: 1, height: 1),
-              AppCard(
-                borderRadius: .zero,
-                child: Row(
-                  mainAxisAlignment: .center,
-                  crossAxisAlignment: .center,
-                  children: [
-                    const Icon(Icons.card_giftcard),
-                    const Padding(padding: .symmetric(horizontal: 8)),
-                    Expanded(
-                      child: Text(AppLocalizations.of(context)!.year_of_birth),
-                    ),
-                    Text(
-                      includeYear
-                          ? formattedYear
-                          : AppLocalizations.of(context)!.optional_text,
-                    ),
-                    AppCheckbox(
-                      defaultValue: includeYear,
-                      onChanged: (value) => setState(() => includeYear = value),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(thickness: 1, height: 1),
-              SelectReminderHour(
-                borderRadius: .vertical(bottom: .circular(25.0)),
-                initialHour:
-                    widget.birthdayToEdit?.notificationHour ??
-                    settings.notificationTime,
-                onSelectedHour: (hour) =>
-                    setState(() => notificationTime = hour),
-              ),
-
-              const Padding(padding: .symmetric(vertical: 16)),
-
-              SectionTitle(text: AppLocalizations.of(context)!.message),
-              AppCard(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
                 child: Column(
+                  mainAxisAlignment: .center,
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.chat_bubble_outline),
-                        const Padding(padding: .symmetric(horizontal: 8)),
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.personalized_message,
-                          ),
+                        IconButton(
+                          enableFeedback: true,
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(Icons.arrow_circle_left, size: 28),
                         ),
-                        AppCheckbox(
-                          defaultValue: usePersonalizedMessage,
-                          onChanged: (value) {
-                            setState(() => usePersonalizedMessage = value);
-
-                            if (value) messageFocusNode.requestFocus();
-                          },
+                        Header(
+                          text: AppLocalizations.of(
+                            context,
+                          )!.add_birthday_header,
+                          fontSize: 18.0,
                         ),
                       ],
                     ),
-                    Visibility(
-                      visible: usePersonalizedMessage,
-                      child: Column(
-                        crossAxisAlignment: .start,
+                    const Padding(padding: .symmetric(vertical: 16)),
+
+                    SectionTitle(
+                      text: AppLocalizations.of(
+                        context,
+                      )!.information_section_title,
+                    ),
+                    ClickableCard(
+                      color: const Color(0x33FF6B6B),
+                      onTap: () async {
+                        final status = await requestContactListPermission(
+                          context: context,
+                        );
+
+                        if (!status.isGranted && !status.isLimited) return;
+
+                        final result = await pickContact();
+
+                        if (result == null) return;
+
+                        setState(() => contactInfo = result);
+                      },
+                      child: Row(
                         children: [
-                          const Padding(padding: .symmetric(vertical: 8)),
-                          SizedBox(
-                            height: 100,
-                            child: Input(
-                              controller: messageController,
-                              focusNode: messageFocusNode,
-                              hintText: AppLocalizations.of(
-                                context,
-                              )!.personalized_message_input_hint_text,
-                              maxLines: 3,
-                              keyboardType: .multiline,
-                              onChanged: (value) => setState(
-                                () => messageCharCount = value.length,
+                          const Icon(Icons.person),
+                          const Padding(padding: .symmetric(horizontal: 8)),
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!.select_contact,
+                            ),
+                          ),
+                          const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                        ],
+                      ),
+                    ),
+                    const Padding(padding: .symmetric(vertical: 8)),
+                    ReminderCard(
+                      contactInfo: contactInfo,
+                      notificationScheduled:
+                          widget.birthdayToEdit?.notificationScheduled ?? false,
+                      note: widget.birthdayToEdit?.note,
+                    ),
+
+                    const Padding(padding: .symmetric(vertical: 16)),
+
+                    SectionTitle(
+                      text: AppLocalizations.of(context)!.date_section_title,
+                    ),
+                    AppCard(
+                      borderRadius: .vertical(top: .circular(25.0)),
+                      child: InkWell(
+                        onTap: () async {
+                          final date = await selectDate(context: context);
+
+                          if (date == null) return;
+
+                          setState(() => birthday = date);
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.cake),
+                            const Padding(padding: .symmetric(horizontal: 8)),
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.date_section_title,
                               ),
                             ),
+                            Text(formattedMonthAndDay),
+                            const Padding(padding: .symmetric(horizontal: 8)),
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Divider(thickness: 1, height: 1),
+                    AppCard(
+                      borderRadius: .zero,
+                      child: Row(
+                        mainAxisAlignment: .center,
+                        crossAxisAlignment: .center,
+                        children: [
+                          const Icon(Icons.card_giftcard),
+                          const Padding(padding: .symmetric(horizontal: 8)),
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!.year_of_birth,
+                            ),
                           ),
-                          const SizedBox(height: 4),
-                          CharacterCounter(
-                            count: messageCharCount,
-                            minimum: 10,
-                            label: AppLocalizations.of(
-                              context,
-                            )!.count_birthday_message_chars(messageCharCount),
+                          Text(
+                            includeYear
+                                ? formattedYear
+                                : AppLocalizations.of(context)!.optional_text,
+                          ),
+                          AppCheckbox(
+                            defaultValue: includeYear,
+                            onChanged: (value) =>
+                                setState(() => includeYear = value),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              const Padding(padding: .symmetric(vertical: 16)),
-
-              SectionTitle(
-                text: AppLocalizations.of(context)!.note_section_title,
-              ),
-              AppCard(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.edit_note),
-                        const Padding(padding: .symmetric(horizontal: 8)),
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.note_section_title,
-                          ),
-                        ),
-                        AppCheckbox(
-                          defaultValue: useNote,
-                          onChanged: (value) {
-                            setState(() => useNote = value);
-
-                            if (value) noteFocusNode.requestFocus();
-                          },
-                        ),
-                      ],
+                    const Divider(thickness: 1, height: 1),
+                    SelectReminderHour(
+                      borderRadius: .vertical(bottom: .circular(25.0)),
+                      initialHour:
+                          widget.birthdayToEdit?.notificationHour ??
+                          settings.notificationTime,
+                      onSelectedHour: (hour) =>
+                          setState(() => notificationTime = hour),
                     ),
-                    Visibility(
-                      visible: useNote,
+
+                    const Padding(padding: .symmetric(vertical: 16)),
+
+                    SectionTitle(text: AppLocalizations.of(context)!.message),
+                    AppCard(
                       child: Column(
                         children: [
-                          const Padding(padding: .symmetric(vertical: 8)),
-                          SizedBox(
-                            height: 100,
-                            child: Input(
-                              controller: noteController,
-                              focusNode: noteFocusNode,
-                              maxLength: 100,
-                              hintText: AppLocalizations.of(
-                                context,
-                              )!.note_input_hint_text,
-                              maxLines: 3,
-                              keyboardType: .multiline,
+                          Row(
+                            children: [
+                              const Icon(Icons.chat_bubble_outline),
+                              const Padding(padding: .symmetric(horizontal: 8)),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.personalized_message,
+                                ),
+                              ),
+                              AppCheckbox(
+                                defaultValue: usePersonalizedMessage,
+                                onChanged: (value) {
+                                  setState(
+                                    () => usePersonalizedMessage = value,
+                                  );
+
+                                  if (value) messageFocusNode.requestFocus();
+                                },
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: usePersonalizedMessage,
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                const Padding(padding: .symmetric(vertical: 8)),
+                                SizedBox(
+                                  height: 100,
+                                  child: Input(
+                                    controller: messageController,
+                                    focusNode: messageFocusNode,
+                                    hintText: AppLocalizations.of(
+                                      context,
+                                    )!.personalized_message_input_hint_text,
+                                    maxLines: 3,
+                                    keyboardType: .multiline,
+                                    onChanged: (value) => setState(
+                                      () => messageCharCount = value.length,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                CharacterCounter(
+                                  count: messageCharCount,
+                                  minimum: 10,
+                                  label: AppLocalizations.of(context)!
+                                      .count_birthday_message_chars(
+                                        messageCharCount,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Padding(padding: .symmetric(vertical: 16)),
+
+                    SectionTitle(
+                      text: AppLocalizations.of(context)!.note_section_title,
+                    ),
+                    AppCard(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.edit_note),
+                              const Padding(padding: .symmetric(horizontal: 8)),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.note_section_title,
+                                ),
+                              ),
+                              AppCheckbox(
+                                defaultValue: useNote,
+                                onChanged: (value) {
+                                  setState(() => useNote = value);
+
+                                  if (value) noteFocusNode.requestFocus();
+                                },
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: useNote,
+                            child: Column(
+                              children: [
+                                const Padding(padding: .symmetric(vertical: 8)),
+                                SizedBox(
+                                  height: 100,
+                                  child: Input(
+                                    controller: noteController,
+                                    focusNode: noteFocusNode,
+                                    maxLength: 100,
+                                    hintText: AppLocalizations.of(
+                                      context,
+                                    )!.note_input_hint_text,
+                                    maxLines: 3,
+                                    keyboardType: .multiline,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -342,170 +372,21 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                   ],
                 ),
               ),
+            ),
 
-              const Padding(padding: .symmetric(vertical: 15)),
+            Padding(
+              padding: .all(15.0),
 
-              GradientButton(
+              child: GradientButton(
                 label: AppLocalizations.of(
                   context,
                 )!.save_birthday_reminder_button_text,
                 colors: const [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
-                onTap: () async {
-                  if (widget.birthdayToEdit == null) {
-                    if (contactInfo == null) {
-                      showToast(
-                        type: .error,
-                        msg: AppLocalizations.of(
-                          context,
-                        )!.no_contact_selected_error,
-                      );
-
-                      return;
-                    }
-
-                    if (contactInfo?.phone == null) {
-                      showToast(
-                        type: .error,
-                        msg: AppLocalizations.of(
-                          context,
-                        )!.no_contact_phone_error,
-                      );
-
-                      return;
-                    }
-
-                    if (birthday == null) {
-                      showToast(
-                        type: .error,
-                        msg: AppLocalizations.of(
-                          context,
-                        )!.no_birthday_date_error,
-                      );
-
-                      return;
-                    }
-
-                    final existRecord = await DbManager.existsBirthday(
-                      name: contactInfo!.name,
-                      phone: contactInfo!.phone ?? '',
-                      date: birthday!,
-                    );
-
-                    if (existRecord) {
-                      showToast(
-                        type: .error,
-                        msg: AppLocalizations.of(
-                          context,
-                        )!.birthday_already_exists,
-                      );
-
-                      return;
-                    }
-
-                    final birthdayData = BirthdayData(
-                      contactInfo: contactInfo,
-                      birthday: birthday,
-                      includeYear: includeYear,
-                      customMessage: _trimmedOrNull(
-                        enabled: usePersonalizedMessage,
-                        text: messageController.text,
-                      ),
-                      note: _trimmedOrNull(
-                        enabled: useNote,
-                        text: noteController.text,
-                      ),
-                    );
-
-                    final (saved, id) = await handleSaveBirthday(
-                      birthdayData: birthdayData,
-                      enableNotifications: settings.enableNotifications,
-                      notificationTime:
-                          notificationTime ?? settings.notificationTime,
-                      context: context,
-                    );
-
-                    if (saved) {
-                      ref.invalidate(birthdaysListProvider);
-
-                      if (id == null) return;
-
-                      await handleScheduleNotification(
-                        contactName: contactInfo!.name,
-                        birthday: birthday!,
-                        notificationTime:
-                            notificationTime ?? settings.notificationTime,
-                        birthdayId: id,
-                        context: context,
-                      );
-
-                      if (settings.advanceNotice) {
-                        await handleScheduleDayBeforeNotification(
-                          contactName: contactInfo!.name,
-                          notificationTime:
-                              notificationTime ?? settings.notificationTime,
-                          birthday: birthday!,
-                          birthdayId: id,
-                          context: context,
-                        );
-                      }
-
-                      _resetState();
-                      _scrollToTop();
-                    }
-
-                    return;
-                  }
-
-                  var id = widget.birthdayToEdit!.id;
-
-                  if (id == null) {
-                    final birthdayId = await DbManager.getIdByInfo(
-                      name: contactInfo!.name,
-                      phone: contactInfo!.phone ?? '',
-                      date: birthday!,
-                    );
-
-                    id = birthdayId;
-                  }
-
-                  final saved = await handleUpdateBirthday(
-                    id: id!,
-                    name: contactInfo!.name,
-                    phone: contactInfo!.phone ?? '',
-                    day: birthday!.day,
-                    month: birthday!.month,
-                    year: includeYear ? birthday!.year : null,
-                    photo: contactInfo!.photo,
-                    customMessage: _trimmedOrNull(
-                      enabled: usePersonalizedMessage,
-                      text: messageController.text,
-                    ),
-                    note: _trimmedOrNull(
-                      enabled: useNote,
-                      text: noteController.text,
-                    ),
-                    notificationTime:
-                        notificationTime ?? settings.notificationTime,
-                    context: context,
-                  );
-
-                  if (saved) {
-                    ref.invalidate(birthdaysListProvider);
-
-                    await handleUpdateNotification(
-                      birthdayId: id,
-                      contactName: contactInfo!.name,
-                      birthday: birthday!,
-                      notificationTime:
-                          notificationTime ?? settings.notificationTime,
-                      context: context,
-                      notifyDayBefore: settings.advanceNotice,
-                    );
-                  }
-                },
+                onTap: () async =>
+                    await _saveBirthday(settings: settings, context: context),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -513,6 +394,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
   @override
   void dispose() {
+    scrollController.dispose();
     messageController.dispose();
     noteController.dispose();
     messageFocusNode.dispose();
@@ -523,6 +405,14 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   @override
   void initState() {
     super.initState();
+
+    scrollController.addListener(() {
+      final isAtBottom =
+          scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10;
+
+      setState(() => showScrollIndicator = !isAtBottom);
+    });
 
     useNote = false;
     usePersonalizedMessage = false;
@@ -573,6 +463,149 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
       useNote = false;
       noteController.text = '';
     });
+  }
+
+  Future<void> _saveBirthday({
+    required AppSettings settings,
+    required BuildContext context,
+  }) async {
+    try {
+      if (widget.birthdayToEdit == null) {
+        if (contactInfo == null) {
+          showToast(
+            type: .error,
+            msg: AppLocalizations.of(context)!.no_contact_selected_error,
+          );
+
+          return;
+        }
+
+        if (contactInfo?.phone == null) {
+          showToast(
+            type: .error,
+            msg: AppLocalizations.of(context)!.no_contact_phone_error,
+          );
+
+          return;
+        }
+
+        if (birthday == null) {
+          showToast(
+            type: .error,
+            msg: AppLocalizations.of(context)!.no_birthday_date_error,
+          );
+
+          return;
+        }
+
+        final existRecord = await DbManager.existsBirthday(
+          name: contactInfo!.name,
+          phone: contactInfo!.phone ?? '',
+          date: birthday!,
+        );
+
+        if (existRecord) {
+          showToast(
+            type: .error,
+            msg: AppLocalizations.of(context)!.birthday_already_exists,
+          );
+
+          return;
+        }
+
+        final birthdayData = BirthdayData(
+          contactInfo: contactInfo,
+          birthday: birthday,
+          includeYear: includeYear,
+          customMessage: _trimmedOrNull(
+            enabled: usePersonalizedMessage,
+            text: messageController.text,
+          ),
+          note: _trimmedOrNull(enabled: useNote, text: noteController.text),
+        );
+
+        final (saved, id) = await handleSaveBirthday(
+          birthdayData: birthdayData,
+          enableNotifications: settings.enableNotifications,
+          notificationTime: notificationTime ?? settings.notificationTime,
+          context: context,
+        );
+
+        if (saved) {
+          ref.invalidate(birthdaysListProvider);
+
+          if (id == null) return;
+
+          await handleScheduleNotification(
+            contactName: contactInfo!.name,
+            birthday: birthday!,
+            notificationTime: notificationTime ?? settings.notificationTime,
+            birthdayId: id,
+            context: context,
+          );
+
+          if (settings.advanceNotice) {
+            await handleScheduleDayBeforeNotification(
+              contactName: contactInfo!.name,
+              notificationTime: notificationTime ?? settings.notificationTime,
+              birthday: birthday!,
+              birthdayId: id,
+              context: context,
+            );
+          }
+
+          _resetState();
+          _scrollToTop();
+        }
+
+        return;
+      }
+
+      var id = widget.birthdayToEdit!.id;
+
+      if (id == null) {
+        final birthdayId = await DbManager.getIdByInfo(
+          name: contactInfo!.name,
+          phone: contactInfo!.phone ?? '',
+          date: birthday!,
+        );
+
+        id = birthdayId;
+      }
+
+      final saved = await handleUpdateBirthday(
+        id: id!,
+        name: contactInfo!.name,
+        phone: contactInfo!.phone ?? '',
+        day: birthday!.day,
+        month: birthday!.month,
+        year: includeYear ? birthday!.year : null,
+        photo: contactInfo!.photo,
+        customMessage: _trimmedOrNull(
+          enabled: usePersonalizedMessage,
+          text: messageController.text,
+        ),
+        note: _trimmedOrNull(enabled: useNote, text: noteController.text),
+        notificationTime: notificationTime ?? settings.notificationTime,
+        context: context,
+      );
+
+      if (saved) {
+        ref.invalidate(birthdaysListProvider);
+
+        await handleUpdateNotification(
+          birthdayId: id,
+          contactName: contactInfo!.name,
+          birthday: birthday!,
+          notificationTime: notificationTime ?? settings.notificationTime,
+          context: context,
+          notifyDayBefore: settings.advanceNotice,
+        );
+      }
+    } catch (e, stackTrace) {
+      LogKeeper.error('Error saving birthday: $e');
+      LogKeeper.error('StackTrace: $stackTrace');
+    }
   }
 
   void _scrollToTop() {
