@@ -10,6 +10,8 @@ import 'package:cakeday/components/common/gradient_button.dart'
     show GradientButton;
 import 'package:cakeday/components/common/header.dart' show Header;
 import 'package:cakeday/components/common/input.dart' show Input;
+import 'package:cakeday/components/common/scroll_indicator.dart'
+    show ScrollIndicator;
 import 'package:cakeday/components/common/section_title.dart' show SectionTitle;
 import 'package:cakeday/components/layout/clickable_card.dart'
     show ClickableCard;
@@ -38,6 +40,7 @@ import 'package:cakeday/utils/date.dart' show selectDate;
 import 'package:cakeday/utils/toast.dart' show showToast;
 import 'package:flutter/material.dart'
     show
+        Align,
         BuildContext,
         Color,
         Column,
@@ -58,6 +61,7 @@ import 'package:flutter/material.dart'
         ScrollController,
         SingleChildScrollView,
         SizedBox,
+        Stack,
         Text,
         TextEditingController,
         TimeOfDay,
@@ -67,7 +71,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerStatefulWidget, ConsumerState;
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:logkeeper/logkeeper.dart';
+import 'package:logkeeper/logkeeper.dart' show LogKeeper;
 import 'package:permission_handler/permission_handler.dart';
 
 class AddBirthdayScreen extends ConsumerStatefulWidget {
@@ -82,10 +86,11 @@ class AddBirthdayScreen extends ConsumerStatefulWidget {
 class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   ContactInfo? contactInfo;
   DateTime? birthday;
+  TimeOfDay? notificationTime;
+
   late bool usePersonalizedMessage;
   late bool useNote;
   late bool includeYear;
-  TimeOfDay? notificationTime;
 
   var messageCharCount = 0;
   var showScrollIndicator = true;
@@ -114,263 +119,297 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                controller: scrollController,
-                child: Column(
-                  mainAxisAlignment: .center,
-                  children: [
-                    Row(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      mainAxisAlignment: .center,
                       children: [
-                        IconButton(
-                          enableFeedback: true,
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.arrow_circle_left, size: 28),
-                        ),
-                        Header(
-                          text: AppLocalizations.of(
-                            context,
-                          )!.add_birthday_header,
-                          fontSize: 18.0,
-                        ),
-                      ],
-                    ),
-                    const Padding(padding: .symmetric(vertical: 16)),
-
-                    SectionTitle(
-                      text: AppLocalizations.of(
-                        context,
-                      )!.information_section_title,
-                    ),
-                    ClickableCard(
-                      color: const Color(0x33FF6B6B),
-                      onTap: () async {
-                        final status = await requestContactListPermission(
-                          context: context,
-                        );
-
-                        if (!status.isGranted && !status.isLimited) return;
-
-                        final result = await pickContact();
-
-                        if (result == null) return;
-
-                        setState(() => contactInfo = result);
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(Icons.person),
-                          const Padding(padding: .symmetric(horizontal: 8)),
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context)!.select_contact,
-                            ),
-                          ),
-                          const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                        ],
-                      ),
-                    ),
-                    const Padding(padding: .symmetric(vertical: 8)),
-                    ReminderCard(
-                      contactInfo: contactInfo,
-                      notificationScheduled:
-                          widget.birthdayToEdit?.notificationScheduled ?? false,
-                      note: widget.birthdayToEdit?.note,
-                    ),
-
-                    const Padding(padding: .symmetric(vertical: 16)),
-
-                    SectionTitle(
-                      text: AppLocalizations.of(context)!.date_section_title,
-                    ),
-                    AppCard(
-                      borderRadius: .vertical(top: .circular(25.0)),
-                      child: InkWell(
-                        onTap: () async {
-                          final date = await selectDate(context: context);
-
-                          if (date == null) return;
-
-                          setState(() => birthday = date);
-                        },
-                        child: Row(
+                        Row(
                           children: [
-                            const Icon(Icons.cake),
-                            const Padding(padding: .symmetric(horizontal: 8)),
-                            Expanded(
-                              child: Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!.date_section_title,
-                              ),
+                            IconButton(
+                              enableFeedback: true,
+                              onPressed: () => Navigator.of(context).pop(),
+                              icon: Icon(Icons.arrow_circle_left, size: 28),
                             ),
-                            Text(formattedMonthAndDay),
-                            const Padding(padding: .symmetric(horizontal: 8)),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 16,
+                            Header(
+                              text: AppLocalizations.of(
+                                context,
+                              )!.add_birthday_header,
+                              fontSize: 18.0,
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    const Divider(thickness: 1, height: 1),
-                    AppCard(
-                      borderRadius: .zero,
-                      child: Row(
-                        mainAxisAlignment: .center,
-                        crossAxisAlignment: .center,
-                        children: [
-                          const Icon(Icons.card_giftcard),
-                          const Padding(padding: .symmetric(horizontal: 8)),
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context)!.year_of_birth,
-                            ),
-                          ),
-                          Text(
-                            includeYear
-                                ? formattedYear
-                                : AppLocalizations.of(context)!.optional_text,
-                          ),
-                          AppCheckbox(
-                            defaultValue: includeYear,
-                            onChanged: (value) =>
-                                setState(() => includeYear = value),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(thickness: 1, height: 1),
-                    SelectReminderHour(
-                      borderRadius: .vertical(bottom: .circular(25.0)),
-                      initialHour:
-                          widget.birthdayToEdit?.notificationHour ??
-                          settings.notificationTime,
-                      onSelectedHour: (hour) =>
-                          setState(() => notificationTime = hour),
-                    ),
+                        const Padding(padding: .symmetric(vertical: 16)),
 
-                    const Padding(padding: .symmetric(vertical: 16)),
+                        SectionTitle(
+                          text: AppLocalizations.of(
+                            context,
+                          )!.information_section_title,
+                        ),
+                        ClickableCard(
+                          color: const Color(0x33FF6B6B),
+                          onTap: () async {
+                            final status = await requestContactListPermission(
+                              context: context,
+                            );
 
-                    SectionTitle(text: AppLocalizations.of(context)!.message),
-                    AppCard(
-                      child: Column(
-                        children: [
-                          Row(
+                            if (!status.isGranted && !status.isLimited) return;
+
+                            final result = await pickContact();
+
+                            if (result == null) return;
+
+                            setState(() => contactInfo = result);
+                          },
+                          child: Row(
                             children: [
-                              const Icon(Icons.chat_bubble_outline),
+                              const Icon(Icons.person),
                               const Padding(padding: .symmetric(horizontal: 8)),
                               Expanded(
                                 child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.personalized_message,
+                                  AppLocalizations.of(context)!.select_contact,
                                 ),
                               ),
-                              AppCheckbox(
-                                defaultValue: usePersonalizedMessage,
-                                onChanged: (value) {
-                                  setState(
-                                    () => usePersonalizedMessage = value,
-                                  );
-
-                                  if (value) messageFocusNode.requestFocus();
-                                },
+                              const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 16,
                               ),
                             ],
                           ),
-                          Visibility(
-                            visible: usePersonalizedMessage,
-                            child: Column(
-                              crossAxisAlignment: .start,
+                        ),
+                        const Padding(padding: .symmetric(vertical: 8)),
+                        ReminderCard(
+                          contactInfo: contactInfo,
+                          notificationScheduled:
+                              widget.birthdayToEdit?.notificationScheduled ??
+                              false,
+                          note: widget.birthdayToEdit?.note,
+                        ),
+
+                        const Padding(padding: .symmetric(vertical: 16)),
+
+                        SectionTitle(
+                          text: AppLocalizations.of(
+                            context,
+                          )!.date_section_title,
+                        ),
+                        AppCard(
+                          borderRadius: .vertical(top: .circular(25.0)),
+                          child: InkWell(
+                            onTap: () async {
+                              final date = await selectDate(context: context);
+
+                              if (date == null) return;
+
+                              setState(() => birthday = date);
+                            },
+                            child: Row(
                               children: [
-                                const Padding(padding: .symmetric(vertical: 8)),
-                                SizedBox(
-                                  height: 100,
-                                  child: Input(
-                                    controller: messageController,
-                                    focusNode: messageFocusNode,
-                                    hintText: AppLocalizations.of(
+                                const Icon(Icons.cake),
+                                const Padding(
+                                  padding: .symmetric(horizontal: 8),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    AppLocalizations.of(
                                       context,
-                                    )!.personalized_message_input_hint_text,
-                                    maxLines: 3,
-                                    keyboardType: .multiline,
-                                    onChanged: (value) => setState(
-                                      () => messageCharCount = value.length,
+                                    )!.date_section_title,
+                                  ),
+                                ),
+                                Text(formattedMonthAndDay),
+                                const Padding(
+                                  padding: .symmetric(horizontal: 8),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Divider(thickness: 1, height: 1),
+                        AppCard(
+                          borderRadius: .zero,
+                          child: Row(
+                            mainAxisAlignment: .center,
+                            crossAxisAlignment: .center,
+                            children: [
+                              const Icon(Icons.card_giftcard),
+                              const Padding(padding: .symmetric(horizontal: 8)),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(context)!.year_of_birth,
+                                ),
+                              ),
+                              Text(
+                                includeYear
+                                    ? formattedYear
+                                    : AppLocalizations.of(
+                                        context,
+                                      )!.optional_text,
+                              ),
+                              AppCheckbox(
+                                defaultValue: includeYear,
+                                onChanged: (value) =>
+                                    setState(() => includeYear = value),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(thickness: 1, height: 1),
+                        SelectReminderHour(
+                          borderRadius: .vertical(bottom: .circular(25.0)),
+                          initialHour:
+                              widget.birthdayToEdit?.notificationHour ??
+                              settings.notificationTime,
+                          onSelectedHour: (hour) =>
+                              setState(() => notificationTime = hour),
+                        ),
+
+                        const Padding(padding: .symmetric(vertical: 16)),
+
+                        SectionTitle(
+                          text: AppLocalizations.of(context)!.message,
+                        ),
+                        AppCard(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.chat_bubble_outline),
+                                  const Padding(
+                                    padding: .symmetric(horizontal: 8),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.personalized_message,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                CharacterCounter(
-                                  count: messageCharCount,
-                                  minimum: 10,
-                                  label: AppLocalizations.of(context)!
-                                      .count_birthday_message_chars(
-                                        messageCharCount,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                                  AppCheckbox(
+                                    defaultValue: usePersonalizedMessage,
+                                    onChanged: (value) {
+                                      setState(
+                                        () => usePersonalizedMessage = value,
+                                      );
 
-                    const Padding(padding: .symmetric(vertical: 16)),
-
-                    SectionTitle(
-                      text: AppLocalizations.of(context)!.note_section_title,
-                    ),
-                    AppCard(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.edit_note),
-                              const Padding(padding: .symmetric(horizontal: 8)),
-                              Expanded(
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.note_section_title,
-                                ),
+                                      if (value)
+                                        messageFocusNode.requestFocus();
+                                    },
+                                  ),
+                                ],
                               ),
-                              AppCheckbox(
-                                defaultValue: useNote,
-                                onChanged: (value) {
-                                  setState(() => useNote = value);
-
-                                  if (value) noteFocusNode.requestFocus();
-                                },
+                              Visibility(
+                                visible: usePersonalizedMessage,
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    const Padding(
+                                      padding: .symmetric(vertical: 8),
+                                    ),
+                                    SizedBox(
+                                      height: 100,
+                                      child: Input(
+                                        controller: messageController,
+                                        focusNode: messageFocusNode,
+                                        hintText: AppLocalizations.of(
+                                          context,
+                                        )!.personalized_message_input_hint_text,
+                                        maxLines: 3,
+                                        keyboardType: .multiline,
+                                        onChanged: (value) => setState(
+                                          () => messageCharCount = value.length,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    CharacterCounter(
+                                      count: messageCharCount,
+                                      minimum: 10,
+                                      label: AppLocalizations.of(context)!
+                                          .count_birthday_message_chars(
+                                            messageCharCount,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          Visibility(
-                            visible: useNote,
-                            child: Column(
-                              children: [
-                                const Padding(padding: .symmetric(vertical: 8)),
-                                SizedBox(
-                                  height: 100,
-                                  child: Input(
-                                    controller: noteController,
-                                    focusNode: noteFocusNode,
-                                    maxLength: 100,
-                                    hintText: AppLocalizations.of(
-                                      context,
-                                    )!.note_input_hint_text,
-                                    maxLines: 3,
-                                    keyboardType: .multiline,
+                        ),
+
+                        const Padding(padding: .symmetric(vertical: 16)),
+
+                        SectionTitle(
+                          text: AppLocalizations.of(
+                            context,
+                          )!.note_section_title,
+                        ),
+                        AppCard(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.edit_note),
+                                  const Padding(
+                                    padding: .symmetric(horizontal: 8),
                                   ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.note_section_title,
+                                    ),
+                                  ),
+                                  AppCheckbox(
+                                    defaultValue: useNote,
+                                    onChanged: (value) {
+                                      setState(() => useNote = value);
+
+                                      if (value) noteFocusNode.requestFocus();
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Visibility(
+                                visible: useNote,
+                                child: Column(
+                                  children: [
+                                    const Padding(
+                                      padding: .symmetric(vertical: 8),
+                                    ),
+                                    SizedBox(
+                                      height: 100,
+                                      child: Input(
+                                        controller: noteController,
+                                        focusNode: noteFocusNode,
+                                        maxLength: 100,
+                                        hintText: AppLocalizations.of(
+                                          context,
+                                        )!.note_input_hint_text,
+                                        maxLines: 3,
+                                        keyboardType: .multiline,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+
+                  Align(
+                    alignment: .bottomCenter,
+                    child: ScrollIndicator(controller: scrollController),
+                  ),
+                ],
               ),
             ),
 
