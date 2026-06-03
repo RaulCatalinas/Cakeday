@@ -93,7 +93,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   late bool includeYear;
 
   var messageCharCount = 0;
-  var showScrollIndicator = true;
 
   final messageFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
@@ -433,7 +432,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
   @override
   void dispose() {
-    scrollController.dispose();
     messageController.dispose();
     noteController.dispose();
     messageFocusNode.dispose();
@@ -444,14 +442,6 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
   @override
   void initState() {
     super.initState();
-
-    scrollController.addListener(() {
-      final isAtBottom =
-          scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 10;
-
-      setState(() => showScrollIndicator = !isAtBottom);
-    });
 
     useNote = false;
     usePersonalizedMessage = false;
