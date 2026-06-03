@@ -61,7 +61,6 @@ import 'package:flutter/material.dart'
         ScrollController,
         SingleChildScrollView,
         SizedBox,
-        Stack,
         Text,
         TextEditingController,
         TimeOfDay,
@@ -118,7 +117,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
         child: Column(
           children: [
             Expanded(
-              child: Stack(
+              child: Column(
                 children: [
                   SingleChildScrollView(
                     controller: scrollController,
@@ -130,7 +129,10 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                             IconButton(
                               enableFeedback: true,
                               onPressed: () => Navigator.of(context).pop(),
-                              icon: Icon(Icons.arrow_circle_left, size: 28),
+                              icon: const Icon(
+                                Icons.arrow_circle_left,
+                                size: 28,
+                              ),
                             ),
                             Header(
                               text: AppLocalizations.of(
@@ -296,8 +298,9 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
                                         () => usePersonalizedMessage = value,
                                       );
 
-                                      if (value)
+                                      if (value) {
                                         messageFocusNode.requestFocus();
+                                      }
                                     },
                                   ),
                                 ],
