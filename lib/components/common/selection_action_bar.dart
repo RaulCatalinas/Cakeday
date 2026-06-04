@@ -43,7 +43,7 @@ class SelectionActionBar extends ConsumerWidget {
       padding: const .symmetric(horizontal: 16, vertical: 12),
       color: Theme.of(
         context,
-      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.1),
+      ).colorScheme.surfaceContainerHigh.withValues(alpha: 0.9),
       child: Row(
         mainAxisAlignment: .spaceEvenly,
         children: [
@@ -54,9 +54,10 @@ class SelectionActionBar extends ConsumerWidget {
                 context: context,
                 selectedIds: selectedIds,
               ),
-              icon: const Icon(Icons.edit),
+              icon: const Icon(Icons.edit, color: Colors.blue),
               label: Text(
                 AppLocalizations.of(context)!.edit_reminder_button_text,
+                style: const TextStyle(color: Colors.blue),
               ),
             ),
 

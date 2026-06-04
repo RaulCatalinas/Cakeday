@@ -52,9 +52,7 @@ class _TaskBarState extends ConsumerState<TaskBar> {
     final selectedIds = selectionState.selectedIds;
 
     return AppBar(
-      backgroundColor: Theme.of(
-        context,
-      ).colorScheme.surfaceContainerLow.withValues(alpha: 0.4),
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: Text(
         selectedIds.length == 1
             ? AppLocalizations.of(context)!.one_birthday_selected
