@@ -66,7 +66,8 @@ import 'package:flutter/material.dart'
         TimeOfDay,
         Visibility,
         Widget,
-        WidgetsBinding;
+        WidgetsBinding,
+        Stack;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerStatefulWidget, ConsumerState;
 import 'package:intl/intl.dart' show DateFormat;
@@ -117,7 +118,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
         child: Column(
           children: [
             Expanded(
-              child: Column(
+              child: Stack(
                 children: [
                   SingleChildScrollView(
                     controller: scrollController,
