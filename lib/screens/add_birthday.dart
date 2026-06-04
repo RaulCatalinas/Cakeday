@@ -436,6 +436,7 @@ class _AddBirthdayScreenState extends ConsumerState<AddBirthdayScreen> {
 
   @override
   void dispose() {
+    scrollController.dispose();
     messageController.dispose();
     noteController.dispose();
     messageFocusNode.dispose();

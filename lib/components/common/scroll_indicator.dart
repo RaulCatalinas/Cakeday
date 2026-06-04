@@ -68,12 +68,6 @@ class _ScrollIndicatorState extends State<ScrollIndicator> {
   }
 
   @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
 
