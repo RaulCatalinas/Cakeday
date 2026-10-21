@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.raulcatalinas.cakeday"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId = "com.raulcatalinas.cakeday"
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 37
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -52,10 +52,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            optimization {
-                enable = true
-            }
         }
     }
 }
