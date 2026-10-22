@@ -1,64 +1,77 @@
 # Cakeday
 
-Flutter app to save birthdays from your contacts, keep notes and custom messages, and get **local reminders** so you do not miss a cake day.
+Native Android app (Kotlin + Jetpack Compose) to save birthdays from your contacts, keep notes and
+custom messages, and get **local reminders** so you do not miss a cake day. Tap the notification and
+WhatsApp opens with the birthday message already written: you only have to hit send.
 
 ## Features
 
-- Pick a contact from the device address book (with permission handling)
-- Store name, phone, date (optional year), photo, custom message, and note in a **local SQLite** database ([Drift](https://pub.dev/packages/drift))
-- **Scheduled notifications** ([awesome_notifications](https://pub.dev/packages/awesome_notifications)) with app-wide defaults and per-birthday message when set
-- **Light / dark** theme ([flutter_themed](https://pub.dev/packages/flutter_themed))
+- Pick a contact from the device address book (with runtime permission handling)
+- Store name, phone, date (optional year), photo, custom message, and note in a **local SQLite**
+  database ([Room](https://developer.android.com/training/data-storage/room))
+- **Scheduled reminders** (`AlarmManager` + `NotificationCompat`) on the day and, optionally, the
+  day before, at the time you choose
+- **WhatsApp shortcut**: tapping the notification opens the contact's chat with the message
+  pre-filled
+- **Global message** with a `{name}` placeholder, plus an optional **custom message per birthday**
+- **Light / dark** theme with Material 3
 - Search and grouped list of all birthdays
-- State and cache refresh with [Riverpod](https://pub.dev/packages/flutter_riverpod)
+- English and Spanish
 
 ## Requirements
 
-- [Flutter](https://docs.flutter.dev/get-started/install) (SDK **^3.11**)
-- Android / iOS device or emulator (primary targets; desktop may work for local DB debugging)
+- [Android Studio](https://developer.android.com/studio) (latest stable)
+- JDK 17 or newer (the one bundled with Android Studio works)
+- Android device or emulator
 
 ## Getting started
 
 ```bash
-git clone <https://github.com/RaulCatalinas/Cakeday>
-cd cakeday
-flutter pub get
+git clone https://github.com/RaulCatalinas/Cakeday
+cd Cakeday
 ```
 
-### Drift code generation
+Open the folder in Android Studio and let Gradle sync.
 
-If you change `lib/db/db.dart` (tables or queries), regenerate:
+### Room code generation
 
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
+Room generates its code at build time with KSP, so there is no separate generation step. If you
+change the entities or DAOs, just rebuild the project.
 
 ## Run
 
+From Android Studio, pick a device and press **Run** on the `app` configuration, or from the
+terminal:
+
 ```bash
-flutter run
+./gradlew installDebug
 ```
 
-Pick a device with `flutter devices`.
+On Windows use `gradlew.bat installDebug`.
 
 ## Tech stack
 
-| Area        | Packages / notes        |
-|------------|-------------------------|
-| UI         | Material 3, Flutter     |
-| Persistence | Drift + `sqlite3_flutter_libs` |
-| DI / state | flutter_riverpod        |
-| Contacts   | flutter_contacts        |
-| Notifications | awesome_notifications |
-| Preferences | shared_preferences     |
+| Area          | Libraries / notes                                         |
+|---------------|-----------------------------------------------------------|
+| Language      | Kotlin                                                    |
+| UI            | Jetpack Compose, Material 3                               |
+| Persistence   | Room (SQLite)                                             |
+| Preferences   | Jetpack DataStore                                         |
+| State         | `ViewModel` + `StateFlow`                                 |
+| Contacts      | `ContactsContract` / `ActivityResultContracts`            |
+| Notifications | `AlarmManager`, `BroadcastReceiver`, `NotificationCompat` |
+| Localization  | Android string resources (`values/`, `values-es/`)        |
 
 ## Project layout (high level)
 
-- `lib/main.dart` — app entry, theme bootstrap
-- `lib/screens/` — screens (home, all birthdays, add birthday, settings)
-- `lib/components/` — reusable widgets
-- `lib/db/` — database and Drift-generated `db.g.dart`
-- `lib/providers/` — Riverpod providers
-- `lib/handlers/` — save flows and side effects
+- `app/src/main/java/com/raulcatalinas/cakeday/`
+    - `MainActivity.kt` — app entry, theme and navigation host
+    - `ui/` — Compose screens (home, all birthdays, add birthday, settings) and reusable components
+    - `data/` — Room database, entities, DAOs and repositories
+    - `notifications/` — alarm scheduling, receivers (alarm, boot, time change) and WhatsApp intent
+      building
+    - `viewmodel/` — `ViewModel` classes exposing UI state
+- `app/src/main/res/` — strings, themes, icons and splash resources
 
 ---
 
