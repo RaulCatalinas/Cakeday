@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation -->
+    <string name="home_route">Inicio</string>
+    <string name="settings_route">Ajustes</string>
+    <string name="all_birthdays_route">Cumpleaños</string>
+
+    <!-- Settings -->
+    <string name="language">Idioma</string>
+    <string name="theme">Apariencia</string>
+    <string name="english">Inglés</string>
+    <string name="spanish">Español</string>
+    <string name="system">Sistema</string>
+    <string name="light_theme">Claro</string>
+    <string name="dark_theme">Oscuro</string>
+    <string name="default_global_message">¡Feliz cumpleaños, %1$s! 🎂🎉 ¡Espero que estés pasando un día increíble!</string>
+    <string name="appearance_section_title">Apariencia</string>
+    <string name="notifications_section_title">Recordatorios</string>
+    <string name="enable_notifications">Activar recordatorios</string>
+    <string name="enable_notifications_subtitle">El día del cumpleaños</string>
+    <string name="advance_notice">Recordatorio anticipado</string>
+    <string name="advance_notice_subtitle">También el día anterior</string>
+    <string name="notification_time">Hora del recordatorio</string>
+    <string name="notification_time_subtitle">Para todos los cumpleaños</string>
+    <string name="language_section_title">Idioma</string>
+</resources>
