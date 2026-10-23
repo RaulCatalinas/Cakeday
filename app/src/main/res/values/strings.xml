@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">Cakeday</string>
 
+    <!-- Common -->
+    <string name="save_button_text">Save</string>
+
     <!-- Navigation -->
     <string name="home_route">Home</string>
     <string name="settings_route">Settings</string>
@@ -14,7 +17,7 @@
     <string name="system">System</string>
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
-    <string name="default_global_message">Happy birthday, %1$s! 🎂🎉 Hope you\'re having an incredible day!</string>
+    <string name="default_global_message">Happy birthday, {name}! 🎂🎉 Hope you\'re having an incredible day!</string>
     <string name="appearance_section_title">Appearance</string>
     <string name="notifications_section_title">Reminders</string>
     <string name="enable_notifications">Enable reminders</string>
@@ -24,4 +27,9 @@
     <string name="notification_time">Reminder time</string>
     <string name="notification_time_subtitle">For all birthdays</string>
     <string name="language_section_title">Language</string>
+    <string name="global_message_section_title">Global message</string>
+    <string name="edit_message_button_text">Edit message</string>
+    <string name="global_birthday_input_hint_text">Write your birthday message…</string>
+    <string name="name_placeholder_info">is replaced with the contact\'s name</string>
+    <string name="preview_whatsapp_text">PREVIEW · WHATSAPP</string>
 </resources>

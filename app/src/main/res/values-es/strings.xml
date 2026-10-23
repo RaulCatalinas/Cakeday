@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common -->
+    <string name="save_button_text">Guardar</string>
+
     <!-- Navigation -->
     <string name="home_route">Inicio</string>
     <string name="settings_route">Ajustes</string>
@@ -13,7 +16,7 @@
     <string name="system">Sistema</string>
     <string name="light_theme">Claro</string>
     <string name="dark_theme">Oscuro</string>
-    <string name="default_global_message">¡Feliz cumpleaños, %1$s! 🎂🎉 ¡Espero que estés pasando un día increíble!</string>
+    <string name="default_global_message">¡Feliz cumpleaños, {name}! 🎂🎉 ¡Espero que estés pasando un día increíble!</string>
     <string name="appearance_section_title">Apariencia</string>
     <string name="notifications_section_title">Recordatorios</string>
     <string name="enable_notifications">Activar recordatorios</string>
@@ -23,4 +26,9 @@
     <string name="notification_time">Hora del recordatorio</string>
     <string name="notification_time_subtitle">Para todos los cumpleaños</string>
     <string name="language_section_title">Idioma</string>
+    <string name="global_message_section_title">Mensaje global</string>
+    <string name="edit_message_button_text">Editar mensaje</string>
+    <string name="global_birthday_input_hint_text">Escribe tu mensaje de felicitación…</string>
+    <string name="name_placeholder_info">se sustituye por el nombre del contacto</string>
+    <string name="preview_whatsapp_text">VISTA PREVIA · WHATSAPP</string>
 </resources>

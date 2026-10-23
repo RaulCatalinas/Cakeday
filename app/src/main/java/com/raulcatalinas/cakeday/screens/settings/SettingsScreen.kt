@@ -41,6 +41,7 @@ import com.raulcatalinas.cakeday.screens.settings.enums.ThemeOptions
 import com.raulcatalinas.cakeday.screens.settings.viewmodels.SettingsViewModel
 import com.raulcatalinas.cakeday.shared.components.AppSwitch
 import com.raulcatalinas.cakeday.shared.components.AppTimePicker
+import com.raulcatalinas.cakeday.shared.components.MessagePreview
 import com.raulcatalinas.cakeday.shared.components.SectionHeader
 import com.raulcatalinas.cakeday.shared.components.SegmentedButton
 import com.raulcatalinas.cakeday.shared.components.Subtitle
@@ -66,6 +67,16 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            SectionHeader(stringResource(R.string.global_message_section_title))
+
+            MessagePreview(
+                initialMessage =
+                    settings.globalMessage
+                        ?: stringResource(R.string.default_global_message)
+            ) {
+                viewModel.setGlobalMessage(it)
+            }
+
             SectionHeader(stringResource(R.string.notifications_section_title))
 
             Card(
