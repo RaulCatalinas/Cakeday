@@ -16,6 +16,14 @@ class BirthdayDateFormatter(locale: Locale) {
         DateFormat.getBestDateTimePattern(locale, "dMMMM"), locale
     )
 
+    private val numericWithYear = DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(locale, "ddMMyyyy"), locale
+    )
+    private val numericWithoutYear = DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(locale, "ddMM"), locale
+    )
+
+
     fun format(birthday: Instant, includeYear: Boolean): String {
         val date =
             birthday
@@ -26,6 +34,19 @@ class BirthdayDateFormatter(locale: Locale) {
         return date.format(
             if (includeYear) withYear
             else withoutYear
+        )
+    }
+
+    fun formatNumeric(birthday: Instant, includeYear: Boolean): String {
+        val date =
+            birthday
+                .toLocalDateTime(TimeZone.UTC)
+                .date
+                .toJavaLocalDate()
+
+        return date.format(
+            if (includeYear) numericWithYear
+            else numericWithoutYear
         )
     }
 }

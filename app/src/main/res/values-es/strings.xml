@@ -31,4 +31,10 @@
     <string name="global_birthday_input_hint_text">Escribe tu mensaje de felicitación…</string>
     <string name="name_placeholder_info">se sustituye por el nombre del contacto</string>
     <string name="preview_whatsapp_text">VISTA PREVIA · WHATSAPP</string>
+
+    <!-- All birthdays -->
+    <string name="search_birthdays_hint">Buscar por nombre o fecha</string>
+    <string name="clear_search">Borrar búsqueda</string>
+    <string name="no_search_results">No hay resultados para \"%1$s\"</string>
+    <string name="no_birthdays_yet">Aún no has añadido ningún cumpleaños</string>
 </resources>

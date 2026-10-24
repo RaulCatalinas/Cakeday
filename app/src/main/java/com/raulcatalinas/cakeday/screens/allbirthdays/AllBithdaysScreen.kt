@@ -9,18 +9,30 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.raulcatalinas.cakeday.R
+import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayEntry
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayItem
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.HeaderItem
 import com.raulcatalinas.cakeday.screens.allbirthdays.utils.BirthdayDateFormatter
+import com.raulcatalinas.cakeday.shared.components.AppSearchBar
+import com.raulcatalinas.cakeday.shared.extensions.normalized
 import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
 import com.raulcatalinas.cakeday.shared.extensions.verticalScrollbar
 import com.raulcatalinas.cakeday.shared.types.BirthdayData
@@ -28,7 +40,8 @@ import com.raulcatalinas.cakeday.shared.types.ContactInfo
 import java.text.Collator
 import kotlin.time.Instant
 
-val testBirthdays = listOf(
+// TODO: replace with Room
+private val testBirthdays = listOf(
     BirthdayData(
         id = 1,
         contactInfo = ContactInfo("Ana García", "600000001"),
@@ -140,26 +153,56 @@ fun AllBirthdaysScreen() {
 
     val locale = LocalConfiguration.current.locales[0]
 
-    val listItems = remember(testBirthdays, locale) {
-        val collator = Collator.getInstance(locale).apply { strength = Collator.PRIMARY }
+    var query by rememberSaveable { mutableStateOf("") }
+
+    val entries = remember(testBirthdays, locale) {
+        val collator =
+            Collator
+                .getInstance(locale)
+                .apply { strength = Collator.PRIMARY }
         val dateFormatter = BirthdayDateFormatter(locale)
 
+        testBirthdays
+            .map { it to collator.getCollationKey(it.contactInfo.name) }
+            .sortedBy { it.second }
+            .map { (data, _) ->
+                val name = data.contactInfo.name
+                val dateText = dateFormatter.format(
+                    data.birthday,
+                    data.includeYear
+                )
+                val numericDate = dateFormatter.formatNumeric(
+                    data.birthday,
+                    data.includeYear
+                )
+
+                BirthdayEntry(
+                    data = data,
+                    initial = name.normalizedInitial,
+                    dateText = dateText,
+                    searchText = "$name $dateText $numericDate".normalized
+                )
+            }
+    }
+
+    val listItems = remember(entries, query) {
+        val tokens =
+            query
+                .normalized
+                .split(' ')
+                .filter { it.isNotEmpty() }
+
         buildList {
-            testBirthdays
-                .map { it to collator.getCollationKey(it.contactInfo.name) }
-                .sortedBy { it.second }
-                .map { it.first }
-                .groupBy { it.contactInfo.name.normalizedInitial }
-                .forEach { (letter, birthdays) ->
+            entries
+                .filter { entry -> tokens.all { entry.searchText.contains(it) } }
+                .groupBy { it.initial }
+                .forEach { (letter, group) ->
                     add(HeaderItem(letter))
-                    birthdays.forEach {
+                    group.forEach {
                         add(
                             BirthdayItem(
-                                it,
-                                dateFormatter.format(
-                                    it.birthday,
-                                    it.includeYear
-                                )
+                                it.data,
+                                it.dateText
                             )
                         )
                     }
@@ -176,7 +219,9 @@ fun AllBirthdaysScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // TODO: Add search bar
+            AppSearchBar {
+                query = it
+            }
 
             LazyColumn(
                 modifier =
@@ -186,6 +231,26 @@ fun AllBirthdaysScreen() {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 state = listState,
             ) {
+                if (listItems.isEmpty()) {
+                    item {
+                        Text(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 48.dp),
+                            text = stringResource(
+                                R.string.no_search_results,
+                                query
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+
                 items(
                     items = listItems,
                     key = { it.key },

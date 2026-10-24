@@ -32,4 +32,10 @@
     <string name="global_birthday_input_hint_text">Write your birthday message…</string>
     <string name="name_placeholder_info">is replaced with the contact\'s name</string>
     <string name="preview_whatsapp_text">PREVIEW · WHATSAPP</string>
+
+    <!-- All birthdays -->
+    <string name="search_birthdays_hint">Search by name or date</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_search_results">No results for \"%1$s\"</string>
+    <string name="no_birthdays_yet">No birthdays added yet</string>
 </resources>
