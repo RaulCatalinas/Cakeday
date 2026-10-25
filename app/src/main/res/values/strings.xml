@@ -42,6 +42,6 @@
 
     <!-- Create birthday -->
     <string name="pick_contact">Choose from my contacts</string>
-    <string name="contacts_permission_denied">Cakeday necesita acceso a tus contactos para rellenar los datos.</string>
-    <string name="open_settings">Abrir ajustes</string>
+    <string name="contacts_permission_denied">Cakeday needs access to your contacts to fill in the details.</string>
+    <string name="open_settings">Open settings</string>
 </resources>
