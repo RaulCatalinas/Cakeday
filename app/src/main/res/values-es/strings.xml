@@ -2,6 +2,7 @@
 <resources>
     <!-- Common -->
     <string name="save_button_text">Guardar</string>
+    <string name="add_birthday">Añadir cumpleaños</string>
 
     <!-- Navigation -->
     <string name="home_route">Inicio</string>

@@ -2,6 +2,7 @@ package com.raulcatalinas.cakeday.screens.allbirthdays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayEntry
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayItem
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.HeaderItem
 import com.raulcatalinas.cakeday.screens.allbirthdays.utils.BirthdayDateFormatter
+import com.raulcatalinas.cakeday.shared.components.AppFloatingActionButton
 import com.raulcatalinas.cakeday.shared.components.AppSearchBar
 import com.raulcatalinas.cakeday.shared.extensions.normalized
 import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
@@ -148,7 +150,7 @@ private val testBirthdays = listOf(
 )
 
 @Composable
-fun AllBirthdaysScreen() {
+fun AllBirthdaysScreen(onCreateBirthday: () -> Unit) {
     val listState = rememberLazyListState()
 
     val locale = LocalConfiguration.current.locales[0]
@@ -210,7 +212,16 @@ fun AllBirthdaysScreen() {
         }
     }
 
-    Scaffold { paddingValues ->
+    Scaffold(
+        floatingActionButton = {
+            AppFloatingActionButton(
+                contentDescription =
+                    stringResource(R.string.add_birthday)
+            ) {
+                onCreateBirthday()
+            }
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -230,6 +241,7 @@ fun AllBirthdaysScreen() {
                         .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 state = listState,
+                contentPadding = PaddingValues(bottom = 88.dp),
             ) {
                 if (listItems.isEmpty()) {
                     item {

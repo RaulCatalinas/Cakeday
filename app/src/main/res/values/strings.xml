@@ -3,6 +3,7 @@
 
     <!-- Common -->
     <string name="save_button_text">Save</string>
+    <string name="add_birthday">Add birthday</string>
 
     <!-- Navigation -->
     <string name="home_route">Home</string>
