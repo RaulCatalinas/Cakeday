@@ -38,4 +38,9 @@
     <string name="clear_search">Borrar búsqueda</string>
     <string name="no_search_results">No hay resultados para \"%1$s\"</string>
     <string name="no_birthdays_yet">Aún no has añadido ningún cumpleaños</string>
+
+    <!-- Create birthday -->
+    <string name="pick_contact">Elegir de mis contactos</string>
+    <string name="contacts_permission_denied">Cakeday needs access to your contacts to fill in the details.</string>
+    <string name="open_settings">Open settings</string>
 </resources>

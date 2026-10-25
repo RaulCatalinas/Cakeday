@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,6 +35,8 @@ import com.raulcatalinas.cakeday.screens.createbirthday.CreateBirthdayScreen
 import com.raulcatalinas.cakeday.screens.home.HomeScreen
 import com.raulcatalinas.cakeday.screens.settings.SettingsScreen
 import com.raulcatalinas.cakeday.screens.settings.viewmodels.SettingsViewModel
+import com.raulcatalinas.cakeday.shared.utils.LocalSnackbarController
+import com.raulcatalinas.cakeday.shared.utils.rememberSnackbarController
 import com.raulcatalinas.cakeday.ui.theme.CakedayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 @PreviewScreenSizes
 @Composable
 fun CakedayApp() {
+    val snackbarController = rememberSnackbarController()
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -73,62 +77,64 @@ fun CakedayApp() {
             currentRoute
         }
 
-    NavigationSuiteScaffold(
-        navigationSuiteItems = {
-            AppDestinations.entries.forEach { destination ->
-                item(
-                    icon = {
-                        Icon(
-                            imageVector = destination.icon,
-                            contentDescription = stringResource(destination.labelRes),
-                            modifier = Modifier.size(destination.iconSize.dp)
-                        )
-                    },
-                    label = { Text(stringResource(destination.labelRes)) },
-                    selected = selectedRoute == destination.name,
-                    onClick = {
-                        when {
-                            // Already on that screen: nothing to do.
-                            currentRoute == destination.name -> return@item
+    CompositionLocalProvider(LocalSnackbarController provides snackbarController) {
+        NavigationSuiteScaffold(
+            navigationSuiteItems = {
+                AppDestinations.entries.forEach { destination ->
+                    item(
+                        icon = {
+                            Icon(
+                                imageVector = destination.icon,
+                                contentDescription = stringResource(destination.labelRes),
+                                modifier = Modifier.size(destination.iconSize.dp)
+                            )
+                        },
+                        label = { Text(stringResource(destination.labelRes)) },
+                        selected = selectedRoute == destination.name,
+                        onClick = {
+                            when {
+                                // Already on that screen: nothing to do.
+                                currentRoute == destination.name -> return@item
 
-                            // On the create screen, tapping its tab of origin leaves it.
-                            currentRoute == CREATE_BIRTHDAY_ROUTE &&
-                                    selectedRoute == destination.name ->
-                                navController.popBackStack(
-                                    destination.name,
-                                    inclusive = false
-                                )
+                                // On the create screen, tapping its tab of origin leaves it.
+                                currentRoute == CREATE_BIRTHDAY_ROUTE &&
+                                        selectedRoute == destination.name ->
+                                    navController.popBackStack(
+                                        destination.name,
+                                        inclusive = false
+                                    )
 
-                            else -> navController.navigate(destination.name) {
-                                popUpTo(
-                                    navController
-                                        .graph
-                                        .findStartDestination()
-                                        .id
-                                ) {
-                                    saveState = true
+                                else -> navController.navigate(destination.name) {
+                                    popUpTo(
+                                        navController
+                                            .graph
+                                            .findStartDestination()
+                                            .id
+                                    ) {
+                                        saveState = true
+                                    }
+
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
-        }
-    ) {
-        NavHost(
-            navController = navController,
-            startDestination = AppDestinations.HOME.name
         ) {
-            composable(CREATE_BIRTHDAY_ROUTE) {
-                CreateBirthdayScreen()
-            }
+            NavHost(
+                navController = navController,
+                startDestination = AppDestinations.HOME.name
+            ) {
+                composable(CREATE_BIRTHDAY_ROUTE) {
+                    CreateBirthdayScreen()
+                }
 
-            AppDestinations.entries.forEach { destination ->
-                composable(destination.name) {
-                    destination.content(navController)
+                AppDestinations.entries.forEach { destination ->
+                    composable(destination.name) {
+                        destination.content(navController)
+                    }
                 }
             }
         }
