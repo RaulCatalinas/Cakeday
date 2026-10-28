@@ -31,7 +31,6 @@ import com.raulcatalinas.cakeday.R
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayEntry
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.BirthdayItem
 import com.raulcatalinas.cakeday.screens.allbirthdays.types.HeaderItem
-import com.raulcatalinas.cakeday.screens.allbirthdays.utils.BirthdayDateFormatter
 import com.raulcatalinas.cakeday.shared.components.AppFloatingActionButton
 import com.raulcatalinas.cakeday.shared.components.AppSearchBar
 import com.raulcatalinas.cakeday.shared.extensions.normalized
@@ -39,6 +38,7 @@ import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
 import com.raulcatalinas.cakeday.shared.extensions.verticalScrollbar
 import com.raulcatalinas.cakeday.shared.types.BirthdayData
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
+import com.raulcatalinas.cakeday.shared.utils.BirthdayDateFormatter
 import java.text.Collator
 import kotlin.time.Instant
 

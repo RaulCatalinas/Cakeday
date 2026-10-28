@@ -44,4 +44,23 @@
     <string name="pick_contact">Choose from my contacts</string>
     <string name="contacts_permission_denied">Cakeday needs access to your contacts to fill in the details.</string>
     <string name="open_settings">Open settings</string>
+    <string name="change_contact">Change</string>
+    <string name="change_contact_description">Change contact</string>
+    <string name="no_phone_number">No phone number</string>
+    <string name="no_contact_selected">No contact</string>
+    <string name="choose">Choose</string>
+    <string name="choose_contact_description">Choose contact</string>
+    <string name="previous_month">Previous month</string>
+    <string name="next_month">Next month</string>
+    <string name="previous_year">Previous year</string>
+    <string name="next_year">Next year</string>
+    <string name="select_year">Select year</string>
+    <string name="date">Date</string>
+    <string name="year_of_birth">Year</string>
+    <string name="hidden_year_text">Optional</string>
+    <string name="personalised_message">Personalised message</string>
+    <string name="note">Note</string>
+    <string name="note_input_hint_text">E.g.: She loves chocolate cake</string>
+    <string name="personalized_message_input_hint_text">Write a personal birthday message…</string>
+    <string name="btn_save_birthday">Save birthday</string>
 </resources>

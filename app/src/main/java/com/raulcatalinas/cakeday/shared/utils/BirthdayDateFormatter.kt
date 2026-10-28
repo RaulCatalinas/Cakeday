@@ -1,9 +1,10 @@
-package com.raulcatalinas.cakeday.screens.allbirthdays.utils
+package com.raulcatalinas.cakeday.shared.utils
 
 import android.text.format.DateFormat
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Instant
@@ -37,6 +38,13 @@ class BirthdayDateFormatter(locale: Locale) {
         )
     }
 
+    fun format(birthday: LocalDate, includeYear: Boolean): String {
+        return birthday.format(
+            if (includeYear) withYear
+            else withoutYear
+        )
+    }
+
     fun formatNumeric(birthday: Instant, includeYear: Boolean): String {
         val date =
             birthday
@@ -45,6 +53,13 @@ class BirthdayDateFormatter(locale: Locale) {
                 .toJavaLocalDate()
 
         return date.format(
+            if (includeYear) numericWithYear
+            else numericWithoutYear
+        )
+    }
+
+    fun formatNumeric(birthday: LocalDate, includeYear: Boolean): String {
+        return birthday.format(
             if (includeYear) numericWithYear
             else numericWithoutYear
         )

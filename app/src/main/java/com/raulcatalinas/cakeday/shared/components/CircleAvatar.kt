@@ -6,6 +6,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +30,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CircleAvatar(
     imageByteArray: ByteArray?,
-    defaultChar: Char,
+    defaultChar: Char?,
     modifier: Modifier = Modifier,
     size: Dp = 96.dp,
 ) {
@@ -47,25 +50,30 @@ fun CircleAvatar(
 
     val color = MaterialTheme.colorScheme.outline
 
-    val circle =
-        modifier
-            .size(size)
-            .clip(CircleShape)
-            .border(
-                2.dp,
-                color,
-                CircleShape
-            )
+    val circle = modifier
+        .size(size)
+        .clip(CircleShape)
+        .border(2.dp, color, CircleShape)
 
     val image = bitmap
 
     if (image == null) {
         Box(contentAlignment = Alignment.Center, modifier = circle) {
-            Text(
-                text = defaultChar.toString(),
-                color = color,
-                fontSize = (size.value * 0.4f).sp
-            )
+            if (defaultChar != null) {
+                Text(
+                    text = defaultChar.toString(),
+                    color = color,
+                    fontSize = (size.value * 0.4f).sp
+                )
+            } else {
+                // No initial to show (no contact yet): generic person silhouette.
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(size * 0.5f)
+                )
+            }
         }
 
         return
