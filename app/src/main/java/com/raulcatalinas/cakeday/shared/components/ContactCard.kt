@@ -2,7 +2,6 @@ package com.raulcatalinas.cakeday.shared.components
 
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,27 +21,25 @@ fun ContactCard(
     onLongClick: () -> Unit = {},
     content: @Composable RowScope.() -> Unit
 ) {
-    Box(modifier) {
-        Card(
+    Card(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick
+                ),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 56.dp)
-                    .combinedClickable(
-                        onClick = onClick,
-                        onLongClick = onLongClick
-                    ),
-            shape = RoundedCornerShape(16.dp),
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                content = content
-            )
-        }
+                    .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            content = content
+        )
     }
 }
