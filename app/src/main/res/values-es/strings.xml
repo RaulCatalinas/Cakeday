@@ -3,6 +3,10 @@
     <!-- Common -->
     <string name="save_button_text">Guardar</string>
     <string name="add_birthday">Añadir cumpleaños</string>
+    <string name="edit_btn">Editar</string>
+    <string name="delete_btn">Eliminar</string>
+    <string name="yes_btn">Sí</string>
+    <string name="no_btn">No</string>
 
     <!-- Navigation -->
     <string name="home_route">Inicio</string>
@@ -37,7 +41,11 @@
     <string name="search_birthdays_hint">Buscar por nombre o fecha</string>
     <string name="clear_search">Borrar búsqueda</string>
     <string name="no_search_results">No hay resultados para \"%1$s\"</string>
-    <string name="no_birthdays_yet">Aún no has añadido ningún cumpleaños</string>
+    <string name="no_birthdays_yet">No tienes cumpleaños guardados. Pulsa + para añadir uno</string>
+    <string name="error_deleting_birthday">Error borrando el cumpleaños</string>
+    <string name="birthday_not_found">No hemos encontrado ningún cumpleaños para ese recordatorio</string>
+    <string name="error_loading_birthday">Error cargando el cumpleaños</string>
+    <string name="error_loading_birthdays">Error cargando los cumpleaños</string>
 
     <!-- Create birthday -->
     <string name="pick_contact">Elegir de mis contactos</string>
@@ -62,4 +70,14 @@
     <string name="note_input_hint_text">Por ejemplo: Le encanta la tarta de chocolate</string>
     <string name="personalized_message_input_hint_text">Escribe un mensaje de cumpleaños personal…</string>
     <string name="btn_save_birthday">Guardar cumpleaños</string>
+    <string name="reminder_saved">Aviso programado</string>
+    <string name="birthday_saved">Cumpleaños guardado</string>
+    <string name="birthday_not_saved">No se ha podido guardar el cumpleaños</string>
+    <string name="reminder_not_saved">No se ha podido programar el vaiso</string>
+
+    <!--Birthdays-->
+    <string name="keep_birthday_btn">Conservar Cumpleaños</string>
+    <string name="delete_birthday">Eliminar cumpleaños</string>
+    <string name="delete_birthday_confirm_dialog_body">¿Eliminar \"%1$s\"? No se puede deshacer.</string>
+    <string name="deleted_birthday">Cumpleaños eliminado</string>
 </resources>

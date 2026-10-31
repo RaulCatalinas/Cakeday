@@ -3,6 +3,7 @@ package com.raulcatalinas.cakeday.shared.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,11 +24,11 @@ import androidx.compose.ui.unit.dp
 fun GradientButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    text: String,
     colors: List<Color>,
     borderRadius: Dp = 25.dp,
     verticalPadding: Dp = 15.dp,
     onClick: () -> Unit,
+    content:  @Composable (BoxScope.() -> Unit),
 ) {
     Box(
         modifier = modifier
@@ -49,13 +50,7 @@ fun GradientButton(
                 enabled = enabled
             )
             .padding(vertical = verticalPadding),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = Color.White,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-    }
+        contentAlignment = Alignment.Center,
+        content = content
+    )
 }

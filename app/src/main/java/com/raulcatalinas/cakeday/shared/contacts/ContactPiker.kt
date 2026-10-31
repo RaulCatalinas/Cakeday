@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
 import com.raulcatalinas.cakeday.shared.permissions.rememberPermissionRequester
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
 import kotlinx.coroutines.Dispatchers
@@ -92,23 +91,13 @@ private suspend fun readContact(context: Context, uri: Uri): ContactInfo? =
                     val name = cursor.getString(0) ?: return@use null
                     val phone = cursor.getString(1)
 
-                    // A photo that cannot be read is not an error: the avatar
-                    // falls back to the contact's initial.
-                    val photo = cursor.getString(2)?.let { photoUri ->
-                        runCatching {
-                            resolver
-                                .openInputStream(photoUri.toUri())
-                                ?.use { it.readBytes() }
-                        }.getOrNull()
-                    }
-
-                    ContactInfo(name = name, phone = phone, photo = photo)
+                    ContactInfo(name = name, phone = phone)
                 }
         }
             .onFailure {
                 Log.e(
                     "ContactPicker",
-                    "Could not read the picked contact",
+                    "Couldn't read the picked contact",
                     it
                 )
             }

@@ -4,6 +4,10 @@
     <!-- Common -->
     <string name="save_button_text">Save</string>
     <string name="add_birthday">Add birthday</string>
+    <string name="edit_btn">Edit</string>
+    <string name="delete_btn">Delete</string>
+    <string name="yes_btn">Yes</string>
+    <string name="no_btn">No</string>
 
     <!-- Navigation -->
     <string name="home_route">Home</string>
@@ -38,7 +42,11 @@
     <string name="search_birthdays_hint">Search by name or date</string>
     <string name="clear_search">Clear search</string>
     <string name="no_search_results">No results for \"%1$s\"</string>
-    <string name="no_birthdays_yet">No birthdays added yet</string>
+    <string name="no_birthdays_yet">You don\'t have any birthdays saved. Tap + to add one.</string>
+    <string name="error_deleting_birthday">Error deleting birthday</string>
+    <string name="birthday_not_found">We haven\'t found any birthdays for that reminder</string>
+    <string name="error_loading_birthday">Error loading birthday</string>
+    <string name="error_loading_birthdays">Error loading birthdays</string>
 
     <!-- Create birthday -->
     <string name="pick_contact">Choose from my contacts</string>
@@ -63,4 +71,14 @@
     <string name="note_input_hint_text">E.g.: She loves chocolate cake</string>
     <string name="personalized_message_input_hint_text">Write a personal birthday message…</string>
     <string name="btn_save_birthday">Save birthday</string>
+    <string name="reminder_saved">Reminder scheduled</string>
+    <string name="birthday_saved">Birthday saved</string>
+    <string name="birthday_not_saved">It wasn\'t possible to save the birthday</string>
+    <string name="reminder_not_saved">It wasn\'t possible to scheduled the reminder</string>
+
+    <!--Birthdays-->
+    <string name="keep_birthday_btn">Keep birthday</string>
+    <string name="delete_birthday">Delete birthday</string>
+    <string name="delete_birthday_confirm_dialog_body">Delete \"%1$s\"? This can\'t be undone.</string>
+    <string name="deleted_birthday">Birthday deleted</string>
 </resources>

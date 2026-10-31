@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -21,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Cake
 import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.MarkUnreadChatAlt
@@ -29,6 +32,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -53,13 +58,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raulcatalinas.cakeday.R
+import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
+import com.raulcatalinas.cakeday.core.birthdays.viewmodels.BirthdayViewModel
 import com.raulcatalinas.cakeday.screens.createbirthday.constants.ContactButtonRed
+import com.raulcatalinas.cakeday.screens.settings.viewmodels.SettingsViewModel
 import com.raulcatalinas.cakeday.shared.components.AppCheckbox
 import com.raulcatalinas.cakeday.shared.components.AppDatePicker
 import com.raulcatalinas.cakeday.shared.components.AppScaffold
 import com.raulcatalinas.cakeday.shared.components.AppSwitch
+import com.raulcatalinas.cakeday.shared.components.AppTimePicker
 import com.raulcatalinas.cakeday.shared.components.CircleAvatar
+import com.raulcatalinas.cakeday.shared.components.ContactCard
 import com.raulcatalinas.cakeday.shared.components.GradientButton
 import com.raulcatalinas.cakeday.shared.components.Input
 import com.raulcatalinas.cakeday.shared.contacts.rememberContactPicker
@@ -78,18 +90,23 @@ private val DateIconColor = Color(0xFFFF9500)
 private val YearIconColor = Color(0xFFFF6B6B)
 
 @Composable
-fun CreateBirthdayScreen() {
+fun CreateBirthdayScreen(
+    viewModel: BirthdayViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val snackbar = LocalSnackbarController.current
+    val resources = LocalResources.current
 
     val scrollState = rememberScrollState()
 
     val locale = LocalConfiguration.current.locales[0]
 
-    val dateFormatter = remember(locale) { BirthdayDateFormatter(locale) }
+    val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
+    val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
 
-    // null until the user picks a contact, so there is nothing to draw before.
-    var contact by remember { mutableStateOf<ContactInfo?>(null) }
+    val dateFormatter = remember(locale) { BirthdayDateFormatter(locale) }
+    var contactInfo by remember { mutableStateOf<ContactInfo?>(null) }
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     var includeYear by remember { mutableStateOf(false) }
     var hasPersonalisedMessage by remember { mutableStateOf(false) }
@@ -98,6 +115,7 @@ fun CreateBirthdayScreen() {
     var note by remember { mutableStateOf<String?>(null) }
     var noteMinimumCharsReached by remember { mutableStateOf(false) }
     var personalisedMessageMinimumCharsReached by remember { mutableStateOf(false) }
+    var notificationTime by remember { mutableStateOf(settings.notificationTime) }
 
     val contactsPermissionDeniedMessage =
         stringResource(R.string.contacts_permission_denied)
@@ -127,7 +145,7 @@ fun CreateBirthdayScreen() {
             )
         }
     ) {
-        contact = it
+        contactInfo = it
     }
 
     AppScaffold { paddingValues ->
@@ -135,6 +153,7 @@ fun CreateBirthdayScreen() {
             modifier =
                 Modifier
                     .padding(paddingValues)
+                    .imePadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
                     .verticalScrollbar(scrollState)
                     .verticalScroll(scrollState)
@@ -179,14 +198,11 @@ fun CreateBirthdayScreen() {
                 }
             }
 
-            // The preview is always on screen so the layout does not jump.
-            // Until a contact is picked it shows placeholder texts.
-            val picked = contact
+            val picked = contactInfo
 
             ContactCard {
                 CircleAvatar(
-                    imageByteArray = picked?.photo,
-                    defaultChar = picked?.name?.normalizedInitial,
+                    nameInitialChar = picked?.name?.normalizedInitial,
                     size = 48.dp
                 )
 
@@ -207,8 +223,7 @@ fun CreateBirthdayScreen() {
 
                     if (picked != null) {
                         Text(
-                            text = picked.phone
-                                ?: stringResource(R.string.no_phone_number),
+                            text = picked.phone,
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -289,14 +304,50 @@ fun CreateBirthdayScreen() {
                 }
             }
 
+            AppTimePicker(
+                initialTime = notificationTime,
+                trigger = { open ->
+                    FormCard {
+                        FormRow(
+                            modifier = Modifier.clickable(onClick = open),
+                            icon = Icons.Default.Alarm,
+                            iconTint = Color(0xFFFF3B30),
+                            label = stringResource(R.string.notification_time)
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "%02d:%02d".format(
+                                        notificationTime.hour,
+                                        notificationTime.minute
+                                    )
+                                )
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowForwardIos,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                }
+            ) {
+                notificationTime = it
+            }
+
             FormCard {
                 FormRow(
                     icon = Icons.Default.MarkUnreadChatAlt,
-                    iconTint = Color.White,
+                    iconTint = MaterialTheme.colorScheme.onSurface,
                     label = stringResource(R.string.personalised_message)
                 ) {
+                    Spacer(Modifier.weight(1f))
+
                     AppSwitch {
                         hasPersonalisedMessage = it
+
+                        if (!it) personalisedMessage = null
                     }
                 }
 
@@ -321,11 +372,15 @@ fun CreateBirthdayScreen() {
             FormCard {
                 FormRow(
                     icon = Icons.Default.NoteAlt,
-                    iconTint = Color.White,
+                    iconTint = MaterialTheme.colorScheme.onSurface,
                     label = stringResource(R.string.note)
                 ) {
+                    Spacer(Modifier.weight(1f))
+
                     AppSwitch {
                         hasNote = it
+
+                        if (!it) note = null
                     }
                 }
 
@@ -349,47 +404,63 @@ fun CreateBirthdayScreen() {
 
             GradientButton(
                 enabled =
-                    contact != null
+                    !isSaving
+                            && contactInfo != null
                             && selectedDate != null
                             && (!hasPersonalisedMessage || personalisedMessageMinimumCharsReached)
                             && (!hasNote || noteMinimumCharsReached),
-                text = stringResource(
-                    R.string.btn_save_birthday
-                ),
                 colors = listOf(
                     Color(0xFFFF6B6B),
                     Color(0xFFFF8E53)
-                )
+                ),
+                onClick = {
+                    viewModel.saveBirthday(
+                        birthday = selectedDate!!,
+                        contactInfo = contactInfo!!,
+                        notificationTime = notificationTime,
+                        personalisedMessage = personalisedMessage,
+                        note = note
+                    ) {
+                        when (it) {
+                            is UiResult.Success -> {
+                                snackbar.show(
+                                    resources.getString(
+                                        R.string.birthday_saved
+                                    )
+                                )
+
+                                contactInfo = null
+                                selectedDate = null
+                                notificationTime = settings.notificationTime
+                            }
+
+                            is UiResult.Error -> snackbar.show(
+                                resources.getString(it.messageRes)
+                            )
+
+                        }
+                    }
+                }
             ) {
-                // TODO(placeholder): replace with the real logic
-                //  (save to Room and schedule the reminder)
-                Log.i(
-                    "CreateBirthdayScreen",
-                    "Saving birthday reminder..."
+                if (isSaving) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp
+                    )
+
+                    return@GradientButton
+                }
+
+                Text(
+                    text = stringResource(
+                        R.string.btn_save_birthday
+                    ),
+                    color = Color.White,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ContactCard(content: @Composable RowScope.() -> Unit) {
-    Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .heightIn(min = 56.dp),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            content = content
-        )
     }
 }
 
