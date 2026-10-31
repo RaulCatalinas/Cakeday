@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -24,7 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,6 +67,7 @@ fun AllBirthdaysScreen(
 ) {
     val snackbar = LocalSnackbarController.current
     val resources = LocalResources.current
+    val hapticFeedback = LocalHapticFeedback.current
 
     val birthdaysState by viewModel.birthdays.collectAsStateWithLifecycle()
 
@@ -108,6 +113,7 @@ fun AllBirthdaysScreen(
 
                     BirthdaysList(
                         birthdays = state.data,
+                        hapticFeedback = hapticFeedback,
                         onEditBirthday = { id ->
                             println("Editing birthday $id")
                         },
@@ -138,6 +144,7 @@ fun AllBirthdaysScreen(
 @Composable
 private fun BirthdaysList(
     birthdays: List<BirthdayModel>,
+    hapticFeedback: HapticFeedback,
     onEditBirthday: (Int) -> Unit,
     onDeleteBirthday: (Int) -> Unit
 ) {
@@ -262,11 +269,27 @@ private fun BirthdaysList(
                             isDestructiveAction = true,
                             onConfirm = { onDeleteBirthday(item.data.id) },
                             trigger = { openDialog ->
-                                EditDeleteMenu(
-                                    onEdit = { onEditBirthday(item.data.id) },
-                                    onDelete = openDialog,
-                                    trigger = { openMenu ->
-                                        ContactCard(onLongClick = openMenu) {
+                                var menuExpanded by remember { mutableStateOf(false) }
+
+                                ContactCard(
+                                    onLongClick = {
+                                        hapticFeedback.performHapticFeedback(
+                                            HapticFeedbackType.LongPress
+                                        )
+
+                                        menuExpanded = true
+                                    }
+                                ) {
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                                        horizontalAlignment = Alignment.Start
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                        ) {
                                             val contactInfo = item.data.contactInfo
 
                                             CircleAvatar(
@@ -297,8 +320,15 @@ private fun BirthdaysList(
                                                 )
                                             }
                                         }
+
+                                        EditDeleteMenu(
+                                            expanded = menuExpanded,
+                                            onEdit = { onEditBirthday(item.data.id) },
+                                            onDelete = openDialog,
+                                            onDismiss = { menuExpanded = false },
+                                        )
                                     }
-                                )
+                                }
                             }
                         )
                     }
