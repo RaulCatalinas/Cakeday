@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -24,7 +23,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
@@ -270,64 +268,52 @@ private fun BirthdaysList(
                             onConfirm = { onDeleteBirthday(item.data.id) },
                             trigger = { openDialog ->
                                 var menuExpanded by remember { mutableStateOf(false) }
+                                val contactInfo = item.data.contactInfo
 
-                                ContactCard(
-                                    onLongClick = {
-                                        hapticFeedback.performHapticFeedback(
-                                            HapticFeedbackType.LongPress
-                                        )
-
-                                        menuExpanded = true
-                                    }
-                                ) {
-                                    Column(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                                        horizontalAlignment = Alignment.Start
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                        ) {
-                                            val contactInfo = item.data.contactInfo
-
-                                            CircleAvatar(
-                                                nameInitialChar =
-                                                    contactInfo
-                                                        .name
-                                                        .normalizedInitial,
-                                                size = 48.dp
+                                Box(modifier = Modifier.fillMaxWidth()) {
+                                    ContactCard(
+                                        onLongClick = {
+                                            hapticFeedback.performHapticFeedback(
+                                                HapticFeedbackType.LongPress
                                             )
 
-                                            Column(
-                                                modifier = Modifier.weight(1f),
-                                                verticalArrangement = Arrangement.spacedBy(4.dp)
-                                            ) {
-                                                Text(
-                                                    text =
-                                                        contactInfo
-                                                            .name
-                                                            .safeForDisplay,
-                                                    fontSize = 16.sp,
-                                                    color = Color.Unspecified
-                                                )
-
-                                                Text(
-                                                    text = contactInfo.phone,
-                                                    fontSize = 14.sp,
-                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                )
-                                            }
+                                            menuExpanded = true
                                         }
-
-                                        EditDeleteMenu(
-                                            expanded = menuExpanded,
-                                            onEdit = { onEditBirthday(item.data.id) },
-                                            onDelete = openDialog,
-                                            onDismiss = { menuExpanded = false },
+                                    ) {
+                                        CircleAvatar(
+                                            nameInitialChar =
+                                                contactInfo
+                                                    .name
+                                                    .normalizedInitial,
+                                            size = 48.dp
                                         )
+
+                                        Column(
+                                            modifier = Modifier.weight(1f),
+                                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            Text(
+                                                text =
+                                                    contactInfo
+                                                        .name
+                                                        .safeForDisplay,
+                                                fontSize = 16.sp
+                                            )
+
+                                            Text(
+                                                text = contactInfo.phone,
+                                                fontSize = 14.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
                                     }
+
+                                    EditDeleteMenu(
+                                        expanded = menuExpanded,
+                                        onEdit = { onEditBirthday(item.data.id) },
+                                        onDelete = openDialog,
+                                        onDismiss = { menuExpanded = false }
+                                    )
                                 }
                             }
                         )
