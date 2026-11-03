@@ -134,6 +134,10 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
+    fun refresh() {
+        refreshTrigger.update { it + 1 }
+    }
+
     private suspend fun <T> attempt(
         @StringRes errorRes: Int,
         block: suspend () -> T
@@ -151,9 +155,5 @@ class BirthdayViewModel @Inject constructor(
 
             UiResult.Error(errorRes)
         }
-    }
-
-    private fun refresh() {
-        refreshTrigger.update { it + 1 }
     }
 }

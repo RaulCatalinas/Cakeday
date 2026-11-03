@@ -80,4 +80,5 @@
     <string name="delete_birthday">Eliminar cumpleaños</string>
     <string name="delete_birthday_confirm_dialog_body">¿Eliminar el cumpleaños de %1$s? No se puede deshacer.</string>
     <string name="deleted_birthday">Cumpleaños eliminado</string>
+    <string name="retry">Reintentar</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -94,8 +95,9 @@ fun AllBirthdaysScreen(
                     strokeWidth = 2.dp
                 )
 
-                is UiState.Error -> CenteredMessage(
-                    stringResource(state.messageRes)
+                is UiState.Error -> ErrorMessage(
+                    text = stringResource(state.messageRes),
+                    onRetry = viewModel::refresh
                 )
 
                 is UiState.Success -> {
@@ -336,5 +338,28 @@ private fun CenteredMessage(text: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Composable
+private fun ErrorMessage(text: String, onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(
+            16.dp,
+            Alignment.CenterVertically
+        )
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center
+        )
+
+        Button(onClick = onRetry) {
+            Text(stringResource(R.string.retry))
+        }
     }
 }
