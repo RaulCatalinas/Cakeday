@@ -13,13 +13,16 @@ import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalTime
 import java.time.LocalDate
@@ -29,29 +32,41 @@ import javax.inject.Inject
 class BirthdayViewModel @Inject constructor(
     private val repository: BirthdayRepository
 ) : ViewModel() {
+    private val refreshTrigger = MutableStateFlow(0)
 
-    val birthdays =
-        flow {
-            emit(UiState.Loading)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val birthdays: StateFlow<UiState<List<BirthdayModel>>> =
+        refreshTrigger
+            .flatMapLatest {
+                flow {
+                    if (birthdays.value is UiState.Error) emit(UiState.Loading)
 
-            val result = repository.getAllBirthdays()
+                    val birthdays = repository.getAllBirthdays()
 
-            emit(UiState.Success(result))
-        }.catch { e ->
-            if (e is CancellationException) throw e
+                    emit(
+                        UiState.Success(birthdays)
+                    )
+                }.catch { e ->
+                    if (e is CancellationException) throw e
 
-            Log.e(
-                BIRTHDAY_VIEW_MODEL_TAG,
-                "Error loading birthdays: ${e.message}",
-                e
+                    Log.e(
+                        BIRTHDAY_VIEW_MODEL_TAG,
+                        "Error loading birthdays: ${e.message}",
+                        e
+                    )
+
+                    emit(
+                        UiState.Error(
+                            R.string.error_loading_birthdays
+                        )
+                    )
+                }
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(0),
+                initialValue = UiState.Loading
             )
-
-            emit(UiState.Error(R.string.error_loading_birthdays))
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = UiState.Loading
-        )
 
     private val _isSaving = MutableStateFlow(false)
     val isSaving: StateFlow<Boolean> = _isSaving.asStateFlow()
@@ -78,16 +93,15 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun deleteBirthday(
-        id: Int,
-        onResult: (UiResult<Int>) -> Unit
-    ) {
+    fun deleteBirthday(id: Int, onResult: (UiResult<Int>) -> Unit) {
         viewModelScope.launch {
-            onResult(
-                attempt(R.string.error_deleting_birthday) {
-                    repository.deleteBirthday(id)
-                }
-            )
+            val result = attempt(R.string.error_deleting_birthday) {
+                repository.deleteBirthday(id)
+            }
+
+            if (result is UiResult.Success) refresh()
+
+            onResult(result)
         }
     }
 
@@ -123,8 +137,8 @@ class BirthdayViewModel @Inject constructor(
     private suspend fun <T> attempt(
         @StringRes errorRes: Int,
         block: suspend () -> T
-    ): UiResult<T> =
-        try {
+    ): UiResult<T> {
+        return try {
             UiResult.Success(block())
         } catch (e: CancellationException) {
             throw e
@@ -137,4 +151,9 @@ class BirthdayViewModel @Inject constructor(
 
             UiResult.Error(errorRes)
         }
+    }
+
+    private fun refresh() {
+        refreshTrigger.update { it + 1 }
+    }
 }
