@@ -303,8 +303,15 @@ private fun BirthdaysList(
                                             )
 
                                             Text(
-                                                text = contactInfo.phone,
+                                                text = item.dateText,
                                                 fontSize = 14.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                            if (item.data.note == null) return@ContactCard
+
+                                            Text(
+                                                text = item.data.note,
+                                                fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }

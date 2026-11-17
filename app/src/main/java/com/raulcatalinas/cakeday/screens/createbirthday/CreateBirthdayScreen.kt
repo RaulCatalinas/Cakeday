@@ -425,7 +425,7 @@ fun CreateBirthdayScreen(
                             is UiResult.Success -> {
                                 snackbar.show(
                                     resources.getString(
-                                        R.string.birthday_saved
+                                        R.string.birthday_saved_with_reminder
                                     )
                                 )
 
@@ -437,7 +437,6 @@ fun CreateBirthdayScreen(
                             is UiResult.Error -> snackbar.show(
                                 resources.getString(it.messageRes)
                             )
-
                         }
                     }
                 }

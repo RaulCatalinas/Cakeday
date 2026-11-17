@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raulcatalinas.cakeday.R
 import com.raulcatalinas.cakeday.core.birthdays.constants.BIRTHDAY_VIEW_MODEL_TAG
+import com.raulcatalinas.cakeday.core.birthdays.models.SaveBirthdayData
 import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
 import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
 import com.raulcatalinas.cakeday.core.birthdays.types.UiState
+import com.raulcatalinas.cakeday.core.reminders.repositories.ReminderRepository
 import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +32,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BirthdayViewModel @Inject constructor(
-    private val repository: BirthdayRepository
+    private val repository: BirthdayRepository,
+    private val reminderRepository: ReminderRepository
 ) : ViewModel() {
     private val refreshTrigger = MutableStateFlow(0)
 
@@ -98,6 +101,8 @@ class BirthdayViewModel @Inject constructor(
             val result = attempt(R.string.error_deleting_birthday) {
                 repository.deleteBirthday(id)
             }
+            
+            reminderRepository.deleteReminder(id)
 
             if (result is UiResult.Success) refresh()
 
@@ -111,23 +116,48 @@ class BirthdayViewModel @Inject constructor(
         personalisedMessage: String?,
         notificationTime: LocalTime,
         note: String?,
-        onResult: (UiResult<Long>) -> Unit
+        onResult: (UiResult<SaveBirthdayData>) -> Unit
     ) {
         viewModelScope.launch {
             _isSaving.value = true
 
             try {
-                onResult(
-                    attempt(R.string.birthday_not_saved) {
-                        repository.createBirthday(
-                            birthday = birthday,
-                            contactInfo = contactInfo,
-                            notificationTime = notificationTime,
-                            personalisedMessage = personalisedMessage,
-                            note = note
+                val saveResult = attempt(R.string.birthday_not_saved) {
+                    repository.createBirthday(
+                        birthday = birthday,
+                        contactInfo = contactInfo,
+                        notificationTime = notificationTime,
+                        personalisedMessage = personalisedMessage,
+                        note = note
+                    )
+                }
+
+                val finalResult = when (saveResult) {
+                    is UiResult.Success -> {
+                        val birthdayId = saveResult.data
+
+                        val reminderResult = attempt(
+                            R.string.birthday_saved_without_reminder
+                        ) {
+                            reminderRepository.showNotification(
+                                id = birthdayId.toInt(),
+                                title = "Birthday Reminder",
+                                message = "It's ${contactInfo.name}'s birthday today!"
+                            )
+                        }
+
+                        UiResult.Success(
+                            SaveBirthdayData(
+                                birthdayId = birthdayId,
+                                reminderScheduled = reminderResult is UiResult.Success
+                            )
                         )
                     }
-                )
+
+                    is UiResult.Error -> saveResult
+                }
+
+                onResult(finalResult)
             } finally {
                 _isSaving.value = false
             }

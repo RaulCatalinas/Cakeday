@@ -70,10 +70,9 @@
     <string name="note_input_hint_text">Por ejemplo: Le encanta la tarta de chocolate</string>
     <string name="personalized_message_input_hint_text">Escribe un mensaje de cumpleaños personal…</string>
     <string name="btn_save_birthday">Guardar cumpleaños</string>
-    <string name="reminder_saved">Aviso programado</string>
-    <string name="birthday_saved">Cumpleaños guardado</string>
+    <string name="birthday_saved_with_reminder">Cumpleaños guardado y recordatorio programado</string>
     <string name="birthday_not_saved">No se ha podido guardar el cumpleaños</string>
-    <string name="reminder_not_saved">No se ha podido programar el vaiso</string>
+    <string name="birthday_saved_without_reminder">Cumpleaños guardado, pero no se pudo programar el recordatorio.</string>
 
     <!--Birthdays-->
     <string name="keep_birthday_btn">Conservar</string>
@@ -81,4 +80,8 @@
     <string name="delete_birthday_confirm_dialog_body">¿Eliminar el cumpleaños de %1$s? No se puede deshacer.</string>
     <string name="deleted_birthday">Cumpleaños eliminado</string>
     <string name="retry">Reintentar</string>
+
+    <!-- Alarm receiver -->
+    <string name="birthday_notification_title">Cumpleaños</string>
+    <string name="advance_notice_message">Mañana es el cumpleaños de {name}, no olvides felicitarlo</string>
 </resources>
