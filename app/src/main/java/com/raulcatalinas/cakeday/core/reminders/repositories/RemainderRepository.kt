@@ -13,6 +13,8 @@ import com.raulcatalinas.cakeday.core.reminders.constants.REMAINDER_REPOSITORY_T
 import com.raulcatalinas.cakeday.core.reminders.constants.REMINDER_NOTIFICATIONS_CHANNEL_ID
 import com.raulcatalinas.cakeday.services.AppAlarmManager
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 
 class ReminderRepository @Inject constructor(
@@ -21,6 +23,20 @@ class ReminderRepository @Inject constructor(
 ) {
     fun deleteReminder(id: Int) {
         alarmManager.cancelAlarms(id)
+    }
+
+    fun scheduleReminder(
+        id: Int,
+        date: LocalDate,
+        time: LocalTime,
+        advanceNotice: Boolean
+    ): Boolean {
+        return alarmManager.setAlarm(
+            id = id,
+            date = date,
+            time = time,
+            advanceNotice = advanceNotice
+        )
     }
 
     fun showNotification(

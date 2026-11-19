@@ -6,10 +6,12 @@ import android.content.Intent
 import android.util.Log
 import com.raulcatalinas.cakeday.R
 import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
+import com.raulcatalinas.cakeday.core.reminders.constants.NOTIFICATION_ID_OFFSET
 import com.raulcatalinas.cakeday.core.reminders.repositories.ReminderRepository
 import com.raulcatalinas.cakeday.screens.settings.repositories.SettingsRepository
 import com.raulcatalinas.cakeday.services.constants.ALARM_RECEIVER_TAG
 import com.raulcatalinas.cakeday.services.constants.EXTRA_BIRTHDAY_ID
+import com.raulcatalinas.cakeday.services.constants.EXTRA_IS_ADVANCE_NOTICE
 import com.raulcatalinas.cakeday.services.constants.NAME_PLACEHOLDER
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -20,7 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalTime
+import java.time.LocalTime
 
 // What the receiver needs from Hilt. It is asked for explicitly, so the
 // receiver does not depend on a generated base class.
@@ -45,6 +47,11 @@ class AlarmReceiver : BroadcastReceiver() {
 
         if (id == -1) return
 
+        val isAdvanceNotice = intent.getBooleanExtra(
+            EXTRA_IS_ADVANCE_NOTICE,
+            false
+        )
+
         val entryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
             AlarmReceiverEntryPoint::class.java
@@ -56,7 +63,12 @@ class AlarmReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                handle(context, id, entryPoint)
+                handle(
+                    context = context,
+                    id = id,
+                    isAdvanceNotice = isAdvanceNotice,
+                    entryPoint = entryPoint
+                )
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -74,6 +86,7 @@ class AlarmReceiver : BroadcastReceiver() {
     private suspend fun handle(
         context: Context,
         id: Int,
+        isAdvanceNotice: Boolean,
         entryPoint: AlarmReceiverEntryPoint
     ) {
         val birthday =
@@ -81,7 +94,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 .birthdayRepository()
                 .getBirthdayById(id)
 
-        // It was deleted after the alarm was set: there is nothing to show.
         if (birthday == null) {
             Log.w(
                 ALARM_RECEIVER_TAG,
@@ -91,47 +103,58 @@ class AlarmReceiver : BroadcastReceiver() {
             return
         }
 
-        val settings =
-            entryPoint
-                .settingsRepository()
-                .getSettings()
-                .first()
+        val settings = entryPoint
+            .settingsRepository()
+            .getSettings()
+            .first()
 
-        // Reminders are off in the settings: no notification and no next year.
         if (!settings.notificationsEnabled) return
 
-        // The next year goes first, so a failure while showing this one does
-        // not break the chain of alarms.
-        entryPoint
-            .appAlarmManager()
-            .setAlarm(
-                id = id,
-                date = birthday.birthday,
-                time = LocalTime(
-                    birthday.notificationHour,
-                    birthday.notificationMinute,
-                    0
+        // Only the main alarm should schedule the next annual cycle.
+        // The advance notice is scheduled together with the main alarm.
+        if (!isAdvanceNotice) {
+            entryPoint
+                .appAlarmManager()
+                .setAlarm(
+                    id = id,
+                    date = birthday.birthday,
+                    time = LocalTime.of(
+                        birthday.notificationHour,
+                        birthday.notificationMinute,
+                        0
+                    ),
+                    advanceNotice = settings.advanceNotice
                 )
-            )
+        }
 
         val name = birthday.contactInfo.name
 
-        // The message is chosen now, so a change in the settings is used.
-        val template =
-            birthday.personalisedMessage
-                ?: settings.globalMessage
-                ?: context.getString(
-                    R.string.default_global_message
-                )
+        val birthdayMessage = birthday.personalisedMessage
+            ?: settings.globalMessage
+            ?: context.getString(R.string.default_global_message)
+
+        val notificationId = if (isAdvanceNotice) {
+            id + NOTIFICATION_ID_OFFSET
+        } else {
+            id
+        }
+
+        val finalMessage = if (isAdvanceNotice) {
+            context.getString(
+                R.string.advance_notice_message
+            )
+        } else {
+            birthdayMessage
+        }
 
         entryPoint
             .reminderRepository()
             .showNotification(
-                id = id,
+                id = notificationId,
                 title = context.getString(
                     R.string.birthday_notification_title
                 ),
-                message = template.replace(
+                message = finalMessage.replace(
                     NAME_PLACEHOLDER,
                     name
                 )

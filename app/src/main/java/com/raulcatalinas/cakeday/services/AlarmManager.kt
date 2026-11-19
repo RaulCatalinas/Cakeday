@@ -8,10 +8,10 @@ import android.util.Log
 import com.raulcatalinas.cakeday.core.reminders.constants.NOTIFICATION_ID_OFFSET
 import com.raulcatalinas.cakeday.services.constants.ALARM_MANAGER_TAG
 import com.raulcatalinas.cakeday.services.constants.EXTRA_BIRTHDAY_ID
+import com.raulcatalinas.cakeday.services.constants.EXTRA_IS_ADVANCE_NOTICE
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.toJavaLocalTime
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -22,68 +22,114 @@ class AppAlarmManager @Inject constructor(
 ) {
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    fun setAlarm(id: Int, date: LocalDate, time: LocalTime): Boolean {
+    fun setAlarm(
+        id: Int,
+        date: LocalDate,
+        time: LocalTime,
+        advanceNotice: Boolean
+    ): Boolean {
         if (!alarmManager.canScheduleExactAlarms()) {
             Log.w(
                 ALARM_MANAGER_TAG,
                 "Exact alarms not allowed: alarm for $id not scheduled"
             )
-
             return false
         }
 
-        val triggerAtMillis =
-            nextOccurrence(
-                date,
-                time,
-                ZonedDateTime.now(
-                    ZoneId.systemDefault()
-                )
-            )
-                .toInstant()
-                .toEpochMilli()
+        val now = ZonedDateTime.now(
+            ZoneId.systemDefault()
+        )
+
+        val triggerAtMillis = nextOccurrence(
+            date,
+            time,
+            now
+        )
+            .toInstant()
+            .toEpochMilli()
 
         return try {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 triggerAtMillis,
-                pendingIntent(id)
+                pendingIntent(
+                    birthdayId = id,
+                    requestCode = id,
+                    isAdvanceNotice = false
+                )
             )
+
+            if (advanceNotice) {
+                val triggerAdvanceAtMillis = nextAdvanceOccurrence(
+                    date,
+                    time,
+                    now
+                )
+                    .toInstant()
+                    .toEpochMilli()
+
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    triggerAdvanceAtMillis,
+                    pendingIntent(
+                        birthdayId = id,
+                        requestCode = id + NOTIFICATION_ID_OFFSET,
+                        isAdvanceNotice = true
+                    )
+                )
+            } else {
+                alarmManager.cancel(
+                    pendingIntent(
+                        birthdayId = id,
+                        requestCode = id + NOTIFICATION_ID_OFFSET,
+                        isAdvanceNotice = true
+                    )
+                )
+            }
 
             true
         } catch (e: SecurityException) {
-            // The permission was taken away between the check and the call.
             Log.e(
                 ALARM_MANAGER_TAG,
                 "Couldn't schedule the alarm for $id: ${e.message}",
                 e
             )
-
             false
         }
     }
 
     fun cancelAlarms(id: Int) {
         alarmManager.cancel(
-            pendingIntent(id)
+            pendingIntent(
+                birthdayId = id,
+                requestCode = id,
+                isAdvanceNotice = false
+            )
         )
+
         alarmManager.cancel(
-            pendingIntent(id + NOTIFICATION_ID_OFFSET)
+            pendingIntent(
+                birthdayId = id,
+                requestCode = id + NOTIFICATION_ID_OFFSET,
+                isAdvanceNotice = true
+            )
         )
     }
 
-    // The id is the request code, so each birthday has its own alarm: calling
-    // setAlarm again for the same id replaces it, and cancelAlarms finds it.
-    // The receiver only gets the id and reads the rest from the database.
-    private fun pendingIntent(id: Int): PendingIntent =
+    private fun pendingIntent(
+        birthdayId: Int,
+        requestCode: Int,
+        isAdvanceNotice: Boolean
+    ): PendingIntent =
         PendingIntent.getBroadcast(
             context,
-            id,
+            requestCode,
             Intent(
                 context,
                 AlarmReceiver::class.java
             )
-                .putExtra(EXTRA_BIRTHDAY_ID, id),
+                .putExtra(EXTRA_BIRTHDAY_ID, birthdayId)
+                .putExtra(EXTRA_IS_ADVANCE_NOTICE, isAdvanceNotice),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 }
@@ -94,8 +140,6 @@ internal fun nextOccurrence(
     time: LocalTime,
     now: ZonedDateTime
 ): ZonedDateTime {
-    val javaTime = time.toJavaLocalTime()
-
     // This year if it has not passed yet, and next year otherwise.
     for (year in now.year..now.year + 1) {
         val yearMonth = YearMonth.of(year, birthday.month)
@@ -103,11 +147,35 @@ internal fun nextOccurrence(
         // A 29 of February is celebrated on the 28th in years that are not leap.
         val day = minOf(birthday.dayOfMonth, yearMonth.lengthOfMonth())
 
-        val candidate = ZonedDateTime.of(yearMonth.atDay(day), javaTime, now.zone)
+        val candidate = ZonedDateTime.of(
+            yearMonth.atDay(day),
+            time,
+            now.zone
+        )
 
         if (candidate.isAfter(now)) return candidate
     }
 
     // Not reachable: next year is always in the future.
     error("No next occurrence found for $birthday")
+}
+
+internal fun nextAdvanceOccurrence(
+    birthday: LocalDate,
+    time: LocalTime,
+    now: ZonedDateTime
+): ZonedDateTime {
+    val nextBirthday = nextOccurrence(birthday, time, now)
+
+    val advanceOccurrence = nextBirthday.minusDays(1)
+
+    return if (advanceOccurrence.isAfter(now)) {
+        advanceOccurrence
+    } else {
+        nextOccurrence(
+            birthday,
+            time,
+            nextBirthday
+        ).minusDays(1)
+    }
 }

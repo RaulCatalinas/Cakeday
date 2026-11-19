@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.toJavaLocalTime
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -101,7 +102,7 @@ class BirthdayViewModel @Inject constructor(
             val result = attempt(R.string.error_deleting_birthday) {
                 repository.deleteBirthday(id)
             }
-            
+
             reminderRepository.deleteReminder(id)
 
             if (result is UiResult.Success) refresh()
@@ -116,6 +117,7 @@ class BirthdayViewModel @Inject constructor(
         personalisedMessage: String?,
         notificationTime: LocalTime,
         note: String?,
+        advanceNotice: Boolean,
         onResult: (UiResult<SaveBirthdayData>) -> Unit
     ) {
         viewModelScope.launch {
@@ -139,17 +141,20 @@ class BirthdayViewModel @Inject constructor(
                         val reminderResult = attempt(
                             R.string.birthday_saved_without_reminder
                         ) {
-                            reminderRepository.showNotification(
+                            reminderRepository.scheduleReminder(
                                 id = birthdayId.toInt(),
-                                title = "Birthday Reminder",
-                                message = "It's ${contactInfo.name}'s birthday today!"
+                                date = birthday,
+                                time = notificationTime.toJavaLocalTime(),
+                                advanceNotice = advanceNotice
                             )
                         }
 
                         UiResult.Success(
                             SaveBirthdayData(
                                 birthdayId = birthdayId,
-                                reminderScheduled = reminderResult is UiResult.Success
+                                reminderScheduled =
+                                    reminderResult is UiResult.Success
+                                            && reminderResult.data
                             )
                         )
                     }

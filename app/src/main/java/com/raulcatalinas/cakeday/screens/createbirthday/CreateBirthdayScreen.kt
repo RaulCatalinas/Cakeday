@@ -419,7 +419,8 @@ fun CreateBirthdayScreen(
                         contactInfo = contactInfo!!,
                         notificationTime = notificationTime,
                         personalisedMessage = personalisedMessage,
-                        note = note
+                        note = note,
+                        advanceNotice = settings.advanceNotice
                     ) {
                         when (it) {
                             is UiResult.Success -> {
