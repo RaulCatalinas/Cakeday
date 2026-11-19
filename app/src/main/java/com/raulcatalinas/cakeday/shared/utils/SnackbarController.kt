@@ -29,7 +29,7 @@ class SnackbarController(
             val result = hostState.showSnackbar(
                 message = message,
                 actionLabel = actionLabel,
-                duration = SnackbarDuration.Long,
+                duration = SnackbarDuration.Short,
                 withDismissAction = true
             )
 
