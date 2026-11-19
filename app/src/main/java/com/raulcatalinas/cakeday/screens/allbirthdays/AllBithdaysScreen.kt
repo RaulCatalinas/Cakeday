@@ -299,7 +299,9 @@ private fun BirthdaysList(
                                                     contactInfo
                                                         .name
                                                         .safeForDisplay,
-                                                fontSize = 16.sp
+                                                fontSize = 16.sp,
+                                                overflow = TextOverflow.Ellipsis,
+                                                maxLines = 1
                                             )
 
                                             Text(
