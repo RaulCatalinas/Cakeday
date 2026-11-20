@@ -20,7 +20,9 @@ import javax.inject.Inject
 class AppAlarmManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val alarmManager = context.getSystemService(AlarmManager::class.java)
+    private val alarmManager = context.getSystemService(
+        AlarmManager::class.java
+    )
 
     fun setAlarm(
         id: Int,
@@ -28,14 +30,6 @@ class AppAlarmManager @Inject constructor(
         time: LocalTime,
         advanceNotice: Boolean
     ): Boolean {
-        if (!alarmManager.canScheduleExactAlarms()) {
-            Log.w(
-                ALARM_MANAGER_TAG,
-                "Exact alarms not allowed: alarm for $id not scheduled"
-            )
-            return false
-        }
-
         val now = ZonedDateTime.now(
             ZoneId.systemDefault()
         )
@@ -116,12 +110,16 @@ class AppAlarmManager @Inject constructor(
         )
     }
 
+    fun canScheduleExactAlarms(): Boolean {
+        return alarmManager.canScheduleExactAlarms()
+    }
+
     private fun pendingIntent(
         birthdayId: Int,
         requestCode: Int,
         isAdvanceNotice: Boolean
-    ): PendingIntent =
-        PendingIntent.getBroadcast(
+    ): PendingIntent {
+        return PendingIntent.getBroadcast(
             context,
             requestCode,
             Intent(
@@ -132,6 +130,7 @@ class AppAlarmManager @Inject constructor(
                 .putExtra(EXTRA_IS_ADVANCE_NOTICE, isAdvanceNotice),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+    }
 }
 
 // First moment after [now] in which the day and month of [birthday] come at [time].

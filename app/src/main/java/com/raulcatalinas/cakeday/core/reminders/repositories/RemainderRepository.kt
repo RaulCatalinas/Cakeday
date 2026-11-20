@@ -37,6 +37,15 @@ class ReminderRepository @Inject constructor(
         time: LocalTime,
         advanceNotice: Boolean
     ): Boolean {
+        if (!alarmManager.canScheduleExactAlarms()) {
+            Log.w(
+                REMAINDER_REPOSITORY_TAG,
+                "Exact alarms not allowed: alarm for $id not scheduled"
+            )
+
+            return false
+        }
+
         return alarmManager.setAlarm(
             id = id,
             date = date,
