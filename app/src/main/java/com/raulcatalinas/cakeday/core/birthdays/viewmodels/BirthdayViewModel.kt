@@ -11,6 +11,7 @@ import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
 import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
 import com.raulcatalinas.cakeday.core.birthdays.types.UiState
 import com.raulcatalinas.cakeday.core.reminders.repositories.ReminderRepository
+import com.raulcatalinas.cakeday.services.AppAlarmManager
 import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BirthdayViewModel @Inject constructor(
     private val repository: BirthdayRepository,
-    private val reminderRepository: ReminderRepository
+    private val reminderRepository: ReminderRepository,
+    private val appAlarmManager: AppAlarmManager
 ) : ViewModel() {
     private val refreshTrigger = MutableStateFlow(0)
 
@@ -104,6 +106,7 @@ class BirthdayViewModel @Inject constructor(
             }
 
             reminderRepository.deleteReminder(id)
+            appAlarmManager.cancelAlarms(id)
 
             if (result is UiResult.Success) refresh()
 
