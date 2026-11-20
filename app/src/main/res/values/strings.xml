@@ -84,8 +84,8 @@
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Birthday</string>
-    <string name="advance_notice_message">Tomorrow is {name}\'s birthday, don\'t forget to wish him a happy birthday</string>
-
+    <string name="advance_notice_message">{name}\'s birthday is tomorrow</string>
+    <string name="birthday_notification_message">Today is {name}\'s birthday. Tap to send your wishes</string>
     <!-- WhatsApp -->
     <string name="whatsapp_unavailable">Couldn\'t open WhatsApp. Make sure it\'s installed.</string>
 </resources>

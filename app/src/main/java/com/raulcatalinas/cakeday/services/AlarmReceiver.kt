@@ -144,7 +144,9 @@ class AlarmReceiver : BroadcastReceiver() {
                 R.string.advance_notice_message
             )
         } else {
-            birthdayMessage
+            context.getString(
+                R.string.birthday_notification_message
+            )
         }
 
         entryPoint
@@ -154,10 +156,11 @@ class AlarmReceiver : BroadcastReceiver() {
                 title = context.getString(
                     R.string.birthday_notification_title
                 ),
-                message = finalMessage.replace(
+                notificationMessage = finalMessage.replace(
                     NAME_PLACEHOLDER,
                     name
                 ),
+                whatsAppMessage = birthdayMessage,
                 phone = birthday.contactInfo.phone,
                 name = name
             )

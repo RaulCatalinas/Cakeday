@@ -48,7 +48,8 @@ class ReminderRepository @Inject constructor(
     fun showNotification(
         id: Int,
         title: String,
-        message: String,
+        notificationMessage: String,
+        whatsAppMessage: String,
         phone: String,
         name: String
     ): Boolean {
@@ -71,7 +72,7 @@ class ReminderRepository @Inject constructor(
         val openWhatsApp =
             Intent(context, OpenWhatsAppActivity::class.java)
                 .putExtra(EXTRA_PHONE, phone)
-                .putExtra(EXTRA_MESSAGE, message)
+                .putExtra(EXTRA_MESSAGE, whatsAppMessage)
                 .putExtra(EXTRA_NAME, name)
 
         val contentIntent = PendingIntent.getActivity(
@@ -89,7 +90,7 @@ class ReminderRepository @Inject constructor(
                 )
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
-                .setContentText(message)
+                .setContentText(notificationMessage)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
