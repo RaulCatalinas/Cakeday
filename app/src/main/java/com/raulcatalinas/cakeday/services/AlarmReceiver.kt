@@ -157,7 +157,9 @@ class AlarmReceiver : BroadcastReceiver() {
                 message = finalMessage.replace(
                     NAME_PLACEHOLDER,
                     name
-                )
+                ),
+                phone = birthday.contactInfo.phone,
+                name = name
             )
     }
 }

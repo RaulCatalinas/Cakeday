@@ -84,4 +84,7 @@
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Cumpleaños</string>
     <string name="advance_notice_message">Mañana es el cumpleaños de {name}, no olvides felicitarlo</string>
+
+    <!-- WhatsApp -->
+    <string name="whatsapp_unavailable">No se ha podido abrir WhatsApp. Comprueba que está instalado.</string>
 </resources>

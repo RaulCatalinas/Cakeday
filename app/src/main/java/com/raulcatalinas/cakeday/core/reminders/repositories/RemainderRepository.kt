@@ -1,7 +1,9 @@
 package com.raulcatalinas.cakeday.core.reminders.repositories
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -12,6 +14,10 @@ import com.raulcatalinas.cakeday.R
 import com.raulcatalinas.cakeday.core.reminders.constants.REMAINDER_REPOSITORY_TAG
 import com.raulcatalinas.cakeday.core.reminders.constants.REMINDER_NOTIFICATIONS_CHANNEL_ID
 import com.raulcatalinas.cakeday.services.AppAlarmManager
+import com.raulcatalinas.cakeday.services.OpenWhatsAppActivity
+import com.raulcatalinas.cakeday.services.constants.EXTRA_MESSAGE
+import com.raulcatalinas.cakeday.services.constants.EXTRA_NAME
+import com.raulcatalinas.cakeday.services.constants.EXTRA_PHONE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalTime
@@ -42,7 +48,9 @@ class ReminderRepository @Inject constructor(
     fun showNotification(
         id: Int,
         title: String,
-        message: String
+        message: String,
+        phone: String,
+        name: String
     ): Boolean {
         if (
             Build.VERSION.SDK_INT
@@ -60,6 +68,19 @@ class ReminderRepository @Inject constructor(
             return false
         }
 
+        val openWhatsApp =
+            Intent(context, OpenWhatsAppActivity::class.java)
+                .putExtra(EXTRA_PHONE, phone)
+                .putExtra(EXTRA_MESSAGE, message)
+                .putExtra(EXTRA_NAME, name)
+
+        val contentIntent = PendingIntent.getActivity(
+            context,
+            id,
+            openWhatsApp,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification =
             NotificationCompat
                 .Builder(
@@ -70,6 +91,7 @@ class ReminderRepository @Inject constructor(
                 .setContentTitle(title)
                 .setContentText(message)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .build()
 
