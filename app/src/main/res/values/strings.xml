@@ -80,6 +80,7 @@
     <string name="delete_birthday">Delete birthday</string>
     <string name="delete_birthday_confirm_dialog_body">Delete the birthday of %1$s? This can\'t be undone.</string>
     <string name="deleted_birthday">Birthday deleted</string>
+    <string name="birthday_already_exists">A birthday for that contact and date already exists</string>
     <string name="retry">Try again</string>
 
     <!-- Alarm receiver -->

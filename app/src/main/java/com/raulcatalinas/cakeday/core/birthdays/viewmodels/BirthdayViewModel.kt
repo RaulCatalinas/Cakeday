@@ -127,6 +127,23 @@ class BirthdayViewModel @Inject constructor(
             _isSaving.value = true
 
             try {
+                val existsBirthday = repository.existsBirthday(
+                    name = contactInfo.name,
+                    phone = contactInfo.phone,
+                    day = birthday.dayOfMonth,
+                    month = birthday.monthValue
+                )
+
+                if (existsBirthday) {
+                    onResult(
+                        UiResult.Error(
+                            R.string.birthday_already_exists
+                        )
+                    )
+
+                    return@launch
+                }
+
                 val saveResult = attempt(R.string.birthday_not_saved) {
                     repository.createBirthday(
                         birthday = birthday,
