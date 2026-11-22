@@ -20,7 +20,8 @@ fun AppSwitch(
     preOnChanged: (suspend () -> Boolean)? = null,
     onChanged: (Boolean) -> Unit,
 ) {
-    var activated by rememberSaveable { mutableStateOf(initialValue) }
+    var activated by rememberSaveable(initialValue) { mutableStateOf(initialValue) }
+
     val scope = rememberCoroutineScope()
 
     Switch(

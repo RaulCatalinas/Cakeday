@@ -298,7 +298,7 @@ fun CreateBirthdayScreen(
                         modifier = Modifier.weight(1f)
                     )
 
-                    AppCheckbox {
+                    AppCheckbox(initialValue = includeYear) {
                         includeYear = it
                     }
                 }
@@ -344,7 +344,7 @@ fun CreateBirthdayScreen(
                 ) {
                     Spacer(Modifier.weight(1f))
 
-                    AppSwitch {
+                    AppSwitch(initialValue = hasPersonalisedMessage) {
                         hasPersonalisedMessage = it
 
                         if (!it) personalisedMessage = null
@@ -377,7 +377,7 @@ fun CreateBirthdayScreen(
                 ) {
                     Spacer(Modifier.weight(1f))
 
-                    AppSwitch {
+                    AppSwitch(initialValue = hasNote) {
                         hasNote = it
 
                         if (!it) note = null
@@ -414,6 +414,10 @@ fun CreateBirthdayScreen(
                     Color(0xFFFF8E53)
                 ),
                 onClick = {
+                    if (!includeYear) {
+                        selectedDate = selectedDate?.withYear(0)
+                    }
+
                     viewModel.saveBirthday(
                         birthday = selectedDate!!,
                         contactInfo = contactInfo!!,
@@ -433,6 +437,11 @@ fun CreateBirthdayScreen(
                                 contactInfo = null
                                 selectedDate = null
                                 notificationTime = settings.notificationTime
+                                note = null
+                                personalisedMessage = null
+                                hasPersonalisedMessage = false
+                                hasNote = false
+                                includeYear = false
                             }
 
                             is UiResult.Error -> snackbar.show(
