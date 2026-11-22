@@ -81,6 +81,11 @@
     <string name="deleted_birthday">Cumpleaños eliminado</string>
     <string name="retry">Reintentar</string>
     <string name="birthday_already_exists">El cumpleaños para ese contacto y esa fecha ya existe</string>
+    <string name="birthday_today">Hoy</string>
+    <string name="birthday_tomorrow">Mañana</string>
+    <string name="time_until_birthday_in_days">en %1$d días</string>
+    <string name="time_until_birthday_in_months">en %1$d mes/es</string>
+    <string name="years_old">%1$d años</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Cumpleaños</string>

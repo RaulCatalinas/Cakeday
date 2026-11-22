@@ -82,11 +82,17 @@
     <string name="deleted_birthday">Birthday deleted</string>
     <string name="birthday_already_exists">A birthday for that contact and date already exists</string>
     <string name="retry">Try again</string>
+    <string name="birthday_today">Today</string>
+    <string name="birthday_tomorrow">Tomorrow</string>
+    <string name="time_until_birthday_in_days">in %1$d days</string>
+    <string name="time_until_birthday_in_months">in %1$d month(s)</string>
+    <string name="years_old">%1$d years</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Birthday</string>
     <string name="advance_notice_message">{name}\'s birthday is tomorrow</string>
     <string name="birthday_notification_message">Today is {name}\'s birthday. Tap to send your wishes</string>
+
     <!-- WhatsApp -->
     <string name="whatsapp_unavailable">Couldn\'t open WhatsApp. Make sure it\'s installed.</string>
 </resources>

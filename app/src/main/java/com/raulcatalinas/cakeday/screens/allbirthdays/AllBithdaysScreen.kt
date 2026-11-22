@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -24,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
@@ -50,6 +52,7 @@ import com.raulcatalinas.cakeday.shared.components.CircleAvatar
 import com.raulcatalinas.cakeday.shared.components.ConfirmDialog
 import com.raulcatalinas.cakeday.shared.components.ContactCard
 import com.raulcatalinas.cakeday.shared.components.EditDeleteMenu
+import com.raulcatalinas.cakeday.shared.components.StatusPill
 import com.raulcatalinas.cakeday.shared.extensions.normalized
 import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
 import com.raulcatalinas.cakeday.shared.extensions.safeForDisplay
@@ -57,7 +60,9 @@ import com.raulcatalinas.cakeday.shared.extensions.verticalScrollbar
 import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.utils.BirthdayDateFormatter
 import com.raulcatalinas.cakeday.shared.utils.LocalSnackbarController
+import com.raulcatalinas.cakeday.shared.utils.timeUntilBirthday
 import java.text.Collator
+import java.time.LocalDate
 
 @Composable
 fun AllBirthdaysScreen(
@@ -150,6 +155,10 @@ private fun BirthdaysList(
 ) {
     val listState = rememberLazyListState()
     val locale = LocalConfiguration.current.locales[0]
+
+    val formatter = BirthdayDateFormatter(locale)
+
+    val currentYear = LocalDate.now().year
 
     var query by rememberSaveable { mutableStateOf("") }
 
@@ -304,19 +313,86 @@ private fun BirthdaysList(
                                                 maxLines = 1
                                             )
 
-                                            Text(
-                                                text = item.dateText,
-                                                fontSize = 14.sp,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                            if (item.data.note == null) return@ContactCard
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            ) {
+                                                val birthdayYear = item.data.birthday.year
 
-                                            Text(
-                                                text = item.data.note,
-                                                fontSize = 12.sp,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
+                                                Text(
+                                                    text =
+                                                        if (birthdayYear != 0) formatter.formatShort(
+                                                            item.data.birthday
+                                                        )
+                                                        else formatter.format(
+                                                            birthday = item.data.birthday,
+                                                            includeYear = false
+                                                        ),
+                                                    fontSize = 14.sp,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+
+                                                if (birthdayYear != 0) {
+                                                    Text(
+                                                        text = "•",
+                                                        fontSize = 12.sp,
+                                                        color = MaterialTheme
+                                                            .colorScheme
+                                                            .onSurfaceVariant
+                                                    )
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.years_old,
+                                                            currentYear - birthdayYear
+                                                        ),
+                                                        fontSize = 12.sp,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
+                                            }
+
+                                            if (item.data.note != null) {
+                                                Text(
+                                                    text = item.data.note,
+                                                    fontSize = 12.sp,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+                                            }
                                         }
+
+                                        val daysUntilBirthday = timeUntilBirthday(
+                                            item.data.birthday.dayOfMonth,
+                                            item.data.birthday.monthValue
+                                        )
+
+                                        val statusText = when (daysUntilBirthday) {
+                                            0 -> stringResource(R.string.birthday_today)
+                                            1 -> stringResource(R.string.birthday_tomorrow)
+                                            in 2..30 -> stringResource(
+                                                R.string.time_until_birthday_in_days,
+                                                daysUntilBirthday
+                                            )
+
+                                            else -> {
+                                                val monthsUntilBirthday = timeUntilBirthday(
+                                                    item.data.birthday.dayOfMonth,
+                                                    item.data.birthday.monthValue,
+                                                    inMonths = true
+                                                )
+
+                                                stringResource(
+                                                    R.string.time_until_birthday_in_months,
+                                                    monthsUntilBirthday
+                                                )
+                                            }
+                                        }
+
+                                        StatusPill(
+                                            text = statusText,
+                                            color =
+                                                if (daysUntilBirthday <= 3) Color.Red
+                                                else MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
                                     }
 
                                     EditDeleteMenu(

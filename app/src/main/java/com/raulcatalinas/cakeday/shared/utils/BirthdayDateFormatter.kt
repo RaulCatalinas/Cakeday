@@ -11,19 +11,46 @@ import kotlin.time.Instant
 
 class BirthdayDateFormatter(locale: Locale) {
     private val withYear = DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(locale, "dMMMMy"), locale
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "dMMMMy"
+        ),
+
+        locale
     )
     private val withoutYear = DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(locale, "dMMMM"), locale
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "dMMMM"
+        ),
+
+        locale
     )
 
     private val numericWithYear = DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(locale, "ddMMyyyy"), locale
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "ddMMyyyy"
+        ),
+
+        locale
     )
     private val numericWithoutYear = DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(locale, "ddMM"), locale
-    )
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "ddMM"
+        ),
 
+        locale
+    )
+    private val short = DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            locale,
+            "dMMM"
+        ),
+
+        locale
+    )
 
     fun format(birthday: Instant, includeYear: Boolean): String {
         val date =
@@ -63,5 +90,18 @@ class BirthdayDateFormatter(locale: Locale) {
             if (includeYear) numericWithYear
             else numericWithoutYear
         )
+    }
+
+    fun formatShort(birthday: Instant): String {
+        val date = birthday
+            .toLocalDateTime(TimeZone.UTC)
+            .date
+            .toJavaLocalDate()
+
+        return date.format(short)
+    }
+
+    fun formatShort(birthday: LocalDate): String {
+        return birthday.format(short)
     }
 }
