@@ -92,13 +92,11 @@ fun CakedayApp() {
                         label = { Text(stringResource(destination.labelRes)) },
                         selected = selectedRoute == destination.name,
                         onClick = {
-                            when {
-                                // Already on that screen: nothing to do.
-                                currentRoute == destination.name -> return@item
+                            when (currentRoute) {
+                                destination.name -> return@item
 
                                 // On the create screen, tapping its tab of origin leaves it.
-                                currentRoute == CREATE_BIRTHDAY_ROUTE &&
-                                        selectedRoute == destination.name ->
+                                CREATE_BIRTHDAY_ROUTE if selectedRoute == destination.name ->
                                     navController.popBackStack(
                                         destination.name,
                                         inclusive = false
