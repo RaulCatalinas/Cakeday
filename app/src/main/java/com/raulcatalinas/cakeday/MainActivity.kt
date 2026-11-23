@@ -26,10 +26,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.raulcatalinas.cakeday.screens.allbirthdays.AllBirthdaysScreen
 import com.raulcatalinas.cakeday.screens.createbirthday.CreateBirthdayScreen
 import com.raulcatalinas.cakeday.screens.home.HomeScreen
@@ -129,6 +131,22 @@ fun CakedayApp() {
                     CreateBirthdayScreen()
                 }
 
+                composable(
+                    route = "$CREATE_BIRTHDAY_ROUTE/{id}",
+                    arguments = listOf(
+                        navArgument("id") {
+                            type = NavType.IntType
+                        }
+                    )
+                ) { backStackEntry ->
+                    val id = backStackEntry.arguments?.getInt("id")
+
+                    CreateBirthdayScreen(
+                        birthdayId = id,
+                        onNavigateBack = navController::popBackStack
+                    )
+                }
+
                 AppDestinations.entries.forEach { destination ->
                     composable(destination.name) {
                         destination.content(navController)
@@ -158,9 +176,16 @@ enum class AppDestinations(
         labelRes = R.string.all_birthdays_route,
         icon = Icons.Default.People,
         content = {
-            AllBirthdaysScreen {
-                it.navigate(CREATE_BIRTHDAY_ROUTE) { launchSingleTop = true }
-            }
+            AllBirthdaysScreen(
+                onEditBirthday = { id ->
+                    it.navigate("$CREATE_BIRTHDAY_ROUTE/$id") {
+                        launchSingleTop = true
+                    }
+                },
+                onCreateBirthday = {
+                    it.navigate(CREATE_BIRTHDAY_ROUTE) { launchSingleTop = true }
+                }
+            )
         }
     ),
     SETTINGS(

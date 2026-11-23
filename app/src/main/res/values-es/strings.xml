@@ -86,6 +86,7 @@
     <string name="time_until_birthday_in_days">en %1$d días</string>
     <string name="time_until_birthday_in_months">en %1$d mes/es</string>
     <string name="years_old">%1$d años</string>
+    <string name="birthday_updated_with_reminder">Cumpleaños actualizado correctamente. ¡Tu recordatorio está listo!</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Cumpleaños</string>

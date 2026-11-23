@@ -11,6 +11,7 @@ import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
 import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
 import com.raulcatalinas.cakeday.core.birthdays.types.UiState
 import com.raulcatalinas.cakeday.core.reminders.repositories.ReminderRepository
+import com.raulcatalinas.cakeday.screens.settings.repositories.SettingsRepository
 import com.raulcatalinas.cakeday.services.AppAlarmManager
 import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
@@ -36,7 +38,8 @@ import javax.inject.Inject
 class BirthdayViewModel @Inject constructor(
     private val repository: BirthdayRepository,
     private val reminderRepository: ReminderRepository,
-    private val appAlarmManager: AppAlarmManager
+    private val appAlarmManager: AppAlarmManager,
+    private val settingsRepoistory: SettingsRepository
 ) : ViewModel() {
     private val refreshTrigger = MutableStateFlow(0)
 
@@ -180,6 +183,66 @@ class BirthdayViewModel @Inject constructor(
                     }
 
                     is UiResult.Error -> saveResult
+                }
+
+                onResult(finalResult)
+            } finally {
+                _isSaving.value = false
+            }
+        }
+    }
+
+    fun updateBirthday(
+        id: Int,
+        birthday: LocalDate,
+        personalisedMessage: String?,
+        notificationTime: LocalTime,
+        note: String?,
+        onResult: (UiResult<SaveBirthdayData>) -> Unit
+    ) {
+        viewModelScope.launch {
+            _isSaving.value = true
+
+            try {
+                val updateResult = attempt(R.string.birthday_not_saved) {
+                    repository.updateBirthday(
+                        id = id,
+                        day = birthday.dayOfMonth,
+                        month = birthday.monthValue,
+                        year = birthday.year,
+                        personalisedMessage = personalisedMessage,
+                        note = note
+                    )
+                }
+
+                val finalResult = when (updateResult) {
+                    is UiResult.Success -> {
+                        val reminderResult = attempt(
+                            R.string.birthday_saved_without_reminder
+                        ) {
+                            reminderRepository.scheduleReminder(
+                                id = id,
+                                date = birthday,
+                                time = notificationTime.toJavaLocalTime(),
+                                advanceNotice =
+                                    settingsRepoistory
+                                        .getSettings()
+                                        .first()
+                                        .advanceNotice
+                            )
+                        }
+
+                        UiResult.Success(
+                            SaveBirthdayData(
+                                birthdayId = id.toLong(),
+                                reminderScheduled =
+                                    reminderResult is UiResult.Success
+                                            && reminderResult.data
+                            )
+                        )
+                    }
+
+                    is UiResult.Error -> updateResult
                 }
 
                 onResult(finalResult)

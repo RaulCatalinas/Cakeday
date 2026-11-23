@@ -39,7 +39,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -63,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raulcatalinas.cakeday.R
 import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
 import com.raulcatalinas.cakeday.core.birthdays.viewmodels.BirthdayViewModel
+import com.raulcatalinas.cakeday.screens.createbirthday.constants.CREATE_BIRTHDAY_SCREEN_TAG
 import com.raulcatalinas.cakeday.screens.createbirthday.constants.ContactButtonRed
 import com.raulcatalinas.cakeday.screens.settings.viewmodels.SettingsViewModel
 import com.raulcatalinas.cakeday.shared.components.AppCheckbox
@@ -79,20 +82,93 @@ import com.raulcatalinas.cakeday.shared.extensions.findActivity
 import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
 import com.raulcatalinas.cakeday.shared.extensions.openAppSettings
 import com.raulcatalinas.cakeday.shared.extensions.verticalScrollbar
-import com.raulcatalinas.cakeday.shared.types.ContactInfo
+import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.utils.BirthdayDateFormatter
 import com.raulcatalinas.cakeday.shared.utils.LocalSnackbarController
-import java.time.LocalDate
-
-private const val TAG = "CreateBirthdayScreen"
+import kotlinx.datetime.LocalTime
 
 private val DateIconColor = Color(0xFFFF9500)
 private val YearIconColor = Color(0xFFFF6B6B)
 
 @Composable
 fun CreateBirthdayScreen(
+    birthdayId: Int? = null,
+    onNavigateBack: () -> Unit = {},
     viewModel: BirthdayViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel()
+) {
+    var birthdayModel by remember(birthdayId) {
+        mutableStateOf<BirthdayModel?>(null)
+    }
+    var isLoading by remember(birthdayId) {
+        mutableStateOf(birthdayId != null)
+    }
+    var errorMessageRes by remember(birthdayId) {
+        mutableStateOf<Int?>(null)
+    }
+
+    LaunchedEffect(birthdayId) {
+        if (birthdayId == null) return@LaunchedEffect
+
+        viewModel.getBirthdayById(birthdayId) { result ->
+            when (result) {
+                is UiResult.Success -> {
+                    birthdayModel = result.data
+                    isLoading = false
+                }
+
+                is UiResult.Error -> {
+                    errorMessageRes = result.messageRes
+                    isLoading = false
+                }
+            }
+        }
+    }
+
+    when {
+        isLoading -> {
+            AppScaffold {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+
+        errorMessageRes != null -> {
+            AppScaffold {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = stringResource(errorMessageRes!!))
+                }
+            }
+        }
+
+        else -> {
+            key(birthdayId) {
+                BirthdayForm(
+                    birthdayModel = birthdayModel,
+                    viewModel = viewModel,
+                    settingsViewModel = settingsViewModel,
+                    onNavigateBack = onNavigateBack
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BirthdayForm(
+    birthdayModel: BirthdayModel?,
+    viewModel: BirthdayViewModel,
+    settingsViewModel: SettingsViewModel,
+    onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val snackbar = LocalSnackbarController.current
@@ -106,16 +182,40 @@ fun CreateBirthdayScreen(
     val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
 
     val dateFormatter = remember(locale) { BirthdayDateFormatter(locale) }
-    var contactInfo by remember { mutableStateOf<ContactInfo?>(null) }
-    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    var includeYear by remember { mutableStateOf(false) }
-    var hasPersonalisedMessage by remember { mutableStateOf(false) }
-    var personalisedMessage by remember { mutableStateOf<String?>(null) }
-    var hasNote by remember { mutableStateOf(false) }
-    var note by remember { mutableStateOf<String?>(null) }
+
+    var contactInfo by remember { mutableStateOf(birthdayModel?.contactInfo) }
+    var selectedDate by remember { mutableStateOf(birthdayModel?.birthday) }
+    var includeYear by remember {
+        mutableStateOf(
+            birthdayModel
+                ?.birthday
+                ?.year
+                ?.let { it != 0 }
+                ?: false
+        )
+    }
+    var hasPersonalisedMessage by remember {
+        mutableStateOf(
+            birthdayModel?.personalisedMessage != null
+        )
+    }
+    var personalisedMessage by remember {
+        mutableStateOf(
+            birthdayModel?.personalisedMessage
+        )
+    }
+    var hasNote by remember { mutableStateOf(birthdayModel?.note != null) }
+    var note by remember { mutableStateOf(birthdayModel?.note) }
     var noteMinimumCharsReached by remember { mutableStateOf(false) }
     var personalisedMessageMinimumCharsReached by remember { mutableStateOf(false) }
-    var notificationTime by remember { mutableStateOf(settings.notificationTime) }
+    var notificationTime by remember {
+        mutableStateOf(
+            LocalTime(
+                birthdayModel?.notificationHour ?: settings.notificationTime.hour,
+                birthdayModel?.notificationMinute ?: settings.notificationTime.minute
+            )
+        )
+    }
 
     val contactsPermissionDeniedMessage =
         stringResource(R.string.contacts_permission_denied)
@@ -127,7 +227,10 @@ fun CreateBirthdayScreen(
 
     val pickContact = rememberContactPicker(
         onPermissionDenied = {
-            Log.w(TAG, "READ_CONTACTS denied: contact not read")
+            Log.w(
+                CREATE_BIRTHDAY_SCREEN_TAG,
+                "READ_CONTACTS denied: contact not read"
+            )
 
             // Asked and denied, yet no reason to ask again means that Android
             // will not show the dialog anymore: only the settings can fix it.
@@ -161,40 +264,41 @@ fun CreateBirthdayScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Button(
-                onClick = pickContact,
-                modifier =
-                    Modifier
+            if (birthdayModel == null) {
+                Button(
+                    onClick = pickContact,
+                    modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 56.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ContactButtonRed.copy(alpha = 0.12f),
-                    contentColor = ContactButtonRed
-                )
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ContactButtonRed.copy(alpha = 0.12f),
+                        contentColor = ContactButtonRed
+                    )
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
 
-                    Text(
-                        text = stringResource(R.string.pick_contact),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f)
-                    )
+                        Text(
+                            text = stringResource(R.string.pick_contact),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.weight(1f)
+                        )
 
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
             }
 
@@ -230,21 +334,23 @@ fun CreateBirthdayScreen(
                     }
                 }
 
-                TextButton(
-                    onClick = pickContact,
-                    modifier = Modifier.semantics {
-                        contentDescription =
-                            if (picked == null) chooseContactDescription
-                            else changeContactDescription
+                if (birthdayModel == null) {
+                    TextButton(
+                        onClick = pickContact,
+                        modifier = Modifier.semantics {
+                            contentDescription =
+                                if (picked == null) chooseContactDescription
+                                else changeContactDescription
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(
+                                if (picked == null) R.string.choose
+                                else R.string.change_contact
+                            ),
+                            color = ContactButtonRed
+                        )
                     }
-                ) {
-                    Text(
-                        text = stringResource(
-                            if (picked == null) R.string.choose
-                            else R.string.change_contact
-                        ),
-                        color = ContactButtonRed
-                    )
                 }
             }
 
@@ -355,6 +461,7 @@ fun CreateBirthdayScreen(
 
                 FormRow {
                     Input(
+                        initialValue = personalisedMessage ?: "",
                         isOutlined = true,
                         showCharacterCounter = true,
                         minimumCharacterCount = 5,
@@ -388,6 +495,7 @@ fun CreateBirthdayScreen(
 
                 FormRow {
                     Input(
+                        initialValue = note ?: "",
                         isOutlined = true,
                         showCharacterCounter = true,
                         minimumCharacterCount = 5,
@@ -413,9 +521,37 @@ fun CreateBirthdayScreen(
                     Color(0xFFFF6B6B),
                     Color(0xFFFF8E53)
                 ),
-                onClick = {
+                onClick = onClick@{
                     if (!includeYear) {
                         selectedDate = selectedDate?.withYear(0)
+                    }
+
+                    if (birthdayModel != null) {
+                        viewModel.updateBirthday(
+                            id = birthdayModel.id,
+                            birthday = selectedDate!!,
+                            notificationTime = notificationTime,
+                            personalisedMessage = personalisedMessage,
+                            note = note,
+                        ) {
+                            when (it) {
+                                is UiResult.Success -> {
+                                    snackbar.show(
+                                        resources.getString(
+                                            R.string.birthday_updated_with_reminder
+                                        )
+                                    )
+
+                                    onNavigateBack()
+                                }
+
+                                is UiResult.Error -> snackbar.show(
+                                    resources.getString(it.messageRes)
+                                )
+                            }
+                        }
+
+                        return@onClick
                     }
 
                     viewModel.saveBirthday(

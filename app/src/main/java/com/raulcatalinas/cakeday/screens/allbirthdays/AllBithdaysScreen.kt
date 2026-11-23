@@ -67,6 +67,7 @@ import java.time.LocalDate
 @Composable
 fun AllBirthdaysScreen(
     viewModel: BirthdayViewModel = hiltViewModel(),
+    onEditBirthday: (Int) -> Unit,
     onCreateBirthday: () -> Unit
 ) {
     val snackbar = LocalSnackbarController.current
@@ -120,7 +121,17 @@ fun AllBirthdaysScreen(
                         birthdays = state.data,
                         hapticFeedback = hapticFeedback,
                         onEditBirthday = { id ->
-                            println("Editing birthday $id")
+                            viewModel.getBirthdayById(id) {
+                                when (it) {
+                                    is UiResult.Error -> snackbar.show(
+                                        resources.getString(
+                                            it.messageRes
+                                        )
+                                    )
+
+                                    is UiResult.Success -> onEditBirthday(it.data.id)
+                                }
+                            }
                         },
                         onDeleteBirthday = { id ->
                             viewModel.deleteBirthday(id) {

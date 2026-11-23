@@ -87,6 +87,7 @@
     <string name="time_until_birthday_in_days">in %1$d days</string>
     <string name="time_until_birthday_in_months">in %1$d month(s)</string>
     <string name="years_old">%1$d years</string>
+    <string name="birthday_updated_with_reminder">Birthday updated successfully. Your reminder is ready!</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Birthday</string>
