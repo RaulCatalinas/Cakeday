@@ -234,8 +234,13 @@ private fun BirthdayForm(
     var notificationTime by remember {
         mutableStateOf(
             LocalTime(
-                birthdayModel?.notificationHour ?: settings.notificationTime.hour,
-                birthdayModel?.notificationMinute ?: settings.notificationTime.minute
+                hour =
+                    birthdayModel?.notificationHour
+                        ?: settings.notificationTime.hour,
+                minute =
+                    birthdayModel?.notificationMinute
+                        ?: settings.notificationTime.minute,
+                second = 0
             )
         )
     }
