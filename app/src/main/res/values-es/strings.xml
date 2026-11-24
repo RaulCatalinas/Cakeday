@@ -73,6 +73,7 @@
     <string name="birthday_saved_with_reminder">Cumpleaños guardado y recordatorio programado</string>
     <string name="birthday_not_saved">No se ha podido guardar el cumpleaños</string>
     <string name="birthday_saved_without_reminder">Cumpleaños guardado, pero no se pudo programar el recordatorio.</string>
+    <string name="include_year_description">Permite calcular la edad</string>
 
     <!--Birthdays-->
     <string name="keep_birthday_btn">Conservar</string>

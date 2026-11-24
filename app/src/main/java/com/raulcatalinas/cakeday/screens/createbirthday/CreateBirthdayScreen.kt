@@ -57,6 +57,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -181,10 +182,20 @@ private fun BirthdayForm(
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
 
-    val dateFormatter = remember(locale) { BirthdayDateFormatter(locale) }
+    val dateFormatter = remember(locale) {
+        BirthdayDateFormatter(locale)
+    }
 
-    var contactInfo by remember { mutableStateOf(birthdayModel?.contactInfo) }
-    var selectedDate by remember { mutableStateOf(birthdayModel?.birthday) }
+    var contactInfo by remember {
+        mutableStateOf(
+            birthdayModel?.contactInfo
+        )
+    }
+    var selectedDate by remember {
+        mutableStateOf(
+            birthdayModel?.birthday
+        )
+    }
     var includeYear by remember {
         mutableStateOf(
             birthdayModel
@@ -204,10 +215,22 @@ private fun BirthdayForm(
             birthdayModel?.personalisedMessage
         )
     }
-    var hasNote by remember { mutableStateOf(birthdayModel?.note != null) }
-    var note by remember { mutableStateOf(birthdayModel?.note) }
-    var noteMinimumCharsReached by remember { mutableStateOf(false) }
-    var personalisedMessageMinimumCharsReached by remember { mutableStateOf(false) }
+    var hasNote by remember {
+        mutableStateOf(
+            birthdayModel?.note != null
+        )
+    }
+    var note by remember {
+        mutableStateOf(
+            birthdayModel?.note
+        )
+    }
+    var noteMinimumCharsReached by remember {
+        mutableStateOf(false)
+    }
+    var personalisedMessageMinimumCharsReached by remember {
+        mutableStateOf(false)
+    }
     var notificationTime by remember {
         mutableStateOf(
             LocalTime(
@@ -218,7 +241,9 @@ private fun BirthdayForm(
     }
 
     val contactsPermissionDeniedMessage =
-        stringResource(R.string.contacts_permission_denied)
+        stringResource(
+            R.string.contacts_permission_denied
+        )
     val openSettingsMessage = stringResource(R.string.open_settings)
     val changeContactDescription =
         stringResource(R.string.change_contact_description)
@@ -234,12 +259,16 @@ private fun BirthdayForm(
 
             // Asked and denied, yet no reason to ask again means that Android
             // will not show the dialog anymore: only the settings can fix it.
-            val blocked = context.findActivity()?.let {
-                !ActivityCompat.shouldShowRequestPermissionRationale(
-                    it,
-                    Manifest.permission.READ_CONTACTS
-                )
-            } ?: true
+            val blocked =
+                context
+                    .findActivity()
+                    ?.let {
+                        !ActivityCompat.shouldShowRequestPermissionRationale(
+                            it,
+                            Manifest.permission.READ_CONTACTS
+                        )
+                    }
+                    ?: true
 
             snackbar.show(
                 message = contactsPermissionDeniedMessage,
@@ -267,9 +296,10 @@ private fun BirthdayForm(
             if (birthdayModel == null) {
                 Button(
                     onClick = pickContact,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 56.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 56.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = ContactButtonRed.copy(alpha = 0.12f),
@@ -288,13 +318,22 @@ private fun BirthdayForm(
                         )
 
                         Text(
-                            text = stringResource(R.string.pick_contact),
-                            style = MaterialTheme.typography.titleMedium,
+                            text = stringResource(
+                                R.string.pick_contact
+                            ),
+                            style =
+                                MaterialTheme
+                                    .typography
+                                    .titleMedium,
                             modifier = Modifier.weight(1f)
                         )
 
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            imageVector =
+                                Icons
+                                    .AutoMirrored
+                                    .Filled
+                                    .ArrowForwardIos,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )
@@ -306,7 +345,10 @@ private fun BirthdayForm(
 
             ContactCard {
                 CircleAvatar(
-                    nameInitialChar = picked?.name?.normalizedInitial,
+                    nameInitialChar =
+                        picked
+                            ?.name
+                            ?.normalizedInitial,
                     size = 48.dp
                 )
 
@@ -315,11 +357,15 @@ private fun BirthdayForm(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = picked?.name
-                            ?: stringResource(R.string.no_contact_selected),
+                        text =
+                            picked
+                                ?.name
+                                ?: stringResource(R.string.no_contact_selected),
                         fontSize = 16.sp,
                         color = if (picked == null) {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            MaterialTheme
+                                .colorScheme
+                                .onSurfaceVariant
                         } else {
                             Color.Unspecified
                         }
@@ -329,7 +375,10 @@ private fun BirthdayForm(
                         Text(
                             text = picked.phone,
                             fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color =
+                                MaterialTheme
+                                    .colorScheme
+                                    .onSurfaceVariant
                         )
                     }
                 }
@@ -367,19 +416,29 @@ private fun BirthdayForm(
                         ) {
                             ValueText(
                                 text = if (date != null) {
-                                    dateFormatter.format(date, includeYear = false)
+                                    dateFormatter.format(
+                                        birthday = date,
+                                        includeYear = false
+                                    )
                                 } else {
                                     stringResource(R.string.choose)
                                 },
-                                hasValue = date != null,
+                                useBold = date != null,
                                 modifier = Modifier.weight(1f)
                             )
 
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                                imageVector =
+                                    Icons
+                                        .AutoMirrored
+                                        .Filled
+                                        .ArrowForwardIos,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                    .copy(alpha = 0.5f),
+                                tint =
+                                    MaterialTheme
+                                        .colorScheme
+                                        .onSurfaceVariant
+                                        .copy(alpha = 0.5f),
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -388,19 +447,30 @@ private fun BirthdayForm(
                     selectedDate = it
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(start = 68.dp, end = 16.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(
+                        start = 68.dp,
+                        end = 16.dp
+                    )
+                )
 
-                val yearText = date?.takeIf { includeYear }?.year?.toString()
+                val yearText =
+                    date
+                        ?.takeIf { includeYear }
+                        ?.year
+                        ?.toString()
 
                 FormRow(
                     icon = Icons.Default.CardGiftcard,
                     iconTint = YearIconColor,
-                    label = stringResource(R.string.year_of_birth),
+                    label = stringResource(
+                        R.string.year_of_birth
+                    ),
                     dimmed = !includeYear
                 ) {
                     ValueText(
                         text = yearText ?: stringResource(R.string.hidden_year_text),
-                        hasValue = yearText != null,
+                        useBold = yearText != null,
                         modifier = Modifier.weight(1f)
                     )
 
@@ -408,6 +478,22 @@ private fun BirthdayForm(
                         includeYear = it
                     }
                 }
+
+                Text(
+                    text = stringResource(
+                        R.string.include_year_description
+                    ),
+                    fontSize = 12.sp,
+                    color =
+                        MaterialTheme
+                            .colorScheme
+                            .onSurfaceVariant,
+                    modifier = Modifier.padding(
+                        start = 68.dp,
+                        end = 16.dp,
+                        bottom = 12.dp
+                    )
+                )
             }
 
             AppTimePicker(
@@ -610,7 +696,6 @@ private fun BirthdayForm(
     }
 }
 
-// One card that holds several rows separated by lines.
 @Composable
 private fun FormCard(content: @Composable ColumnScope.() -> Unit) {
     Card(
@@ -638,7 +723,10 @@ private fun FormRow(
                 else Modifier
             )
             .heightIn(min = 56.dp)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(
+                horizontal = 16.dp,
+                vertical = 12.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -647,7 +735,10 @@ private fun FormRow(
                 Modifier
                     .size(40.dp)
                     .alpha(if (dimmed) 0.5f else 1f)
-                    .background(iconTint.copy(alpha = 0.15f), RoundedCornerShape(10.dp)),
+                    .background(
+                        iconTint.copy(alpha = 0.15f),
+                        RoundedCornerShape(10.dp)
+                    ),
             contentAlignment = Alignment.Center
         ) {
             Icon(imageVector = icon, contentDescription = null, tint = iconTint)
@@ -673,32 +764,34 @@ private fun FormRow(
     content: @Composable RowScope.() -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         content = content
     )
 }
 
-// Bold when there is a value, gray and regular when it is only a hint.
 @Composable
 private fun ValueText(
     text: String,
-    hasValue: Boolean,
+    useBold: Boolean,
     modifier: Modifier = Modifier,
+    fontSize: TextUnit = TextUnit.Unspecified,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleMedium,
         fontWeight =
-            if (hasValue) FontWeight.Bold
+            if (useBold) FontWeight.Bold
             else FontWeight.Normal,
         color =
-            if (hasValue) Color.Unspecified
+            if (useBold) Color.Unspecified
             else MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier
+        modifier = modifier,
+        fontSize = fontSize
     )
 }
