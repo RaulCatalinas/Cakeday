@@ -143,6 +143,8 @@ fun HomeScreen(
                                     }
 
                                     is UiResult.Success -> {
+                                        viewModel.refreshUpcomingBirthdays()
+
                                         snackbar.show(
                                             resources.getString(
                                                 R.string.deleted_birthday
@@ -235,13 +237,13 @@ fun HomeScreen(
                                             }
 
                                             is UiResult.Success -> {
+                                                viewModel.refreshUpcomingBirthdays()
+
                                                 snackbar.show(
                                                     resources.getString(
                                                         R.string.deleted_birthday
                                                     )
                                                 )
-
-                                                viewModel.refreshUpcomingBirthdays()
                                             }
                                         }
                                     }
