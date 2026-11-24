@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -162,9 +163,9 @@ fun AllBirthdaysScreen(
                                 id = birthday.id,
                                 birthday = birthday.birthday,
                                 notificationTime = LocalTime(
-                                    birthday.notificationHour,
-                                    birthday.notificationMinute,
-                                    0
+                                    hour = birthday.notificationHour,
+                                    minute = birthday.notificationMinute,
+                                    second = 0
                                 )
                             ) { result ->
                                 when (result) {
@@ -437,8 +438,9 @@ private fun BirthdaysList(
                                                     inMonths = true
                                                 )
 
-                                                stringResource(
-                                                    R.string.time_until_birthday_in_months,
+                                                pluralStringResource(
+                                                    id = R.plurals.time_until_birthday_in_months,
+                                                    count = monthsUntilBirthday,
                                                     monthsUntilBirthday
                                                 )
                                             }

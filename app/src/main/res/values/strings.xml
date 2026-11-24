@@ -86,7 +86,10 @@
     <string name="birthday_today">Today</string>
     <string name="birthday_tomorrow">Tomorrow</string>
     <string name="time_until_birthday_in_days">in %1$d days</string>
-    <string name="time_until_birthday_in_months">in %1$d month(s)</string>
+    <plurals name="time_until_birthday_in_months">
+        <item quantity="one">in %1$d month</item>
+        <item quantity="other">in %1$d months</item>
+    </plurals>
     <string name="years_old">%1$d years</string>
     <string name="birthday_updated_with_reminder">Birthday updated successfully. Your reminder is ready!</string>
     <string name="upcoming_birthdays_load_error">Couldn\'t load upcoming birthdays. Please try again</string>

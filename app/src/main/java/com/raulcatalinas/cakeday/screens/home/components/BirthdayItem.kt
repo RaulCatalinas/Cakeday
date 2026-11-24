@@ -153,10 +153,12 @@ fun BirthdayItem(
                                 Text(
                                     text = resources.getString(
                                         R.string.years_old,
-                                        Period.between(
-                                            birthday.birthday,
-                                            currentDate
-                                        ).years
+                                        Period
+                                            .between(
+                                                birthday.birthday,
+                                                currentDate
+                                            )
+                                            .years
                                     ),
                                     fontSize = 12.sp,
                                     color = secondaryTextColor
@@ -195,8 +197,9 @@ fun BirthdayItem(
                                 inMonths = true
                             )
 
-                            resources.getString(
-                                R.string.time_until_birthday_in_months,
+                            resources.getQuantityString(
+                                R.plurals.time_until_birthday_in_months,
+                                monthsUntilBirthday,
                                 monthsUntilBirthday
                             )
                         }

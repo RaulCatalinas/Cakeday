@@ -85,7 +85,11 @@
     <string name="birthday_today">Hoy</string>
     <string name="birthday_tomorrow">Mañana</string>
     <string name="time_until_birthday_in_days">en %1$d días</string>
-    <string name="time_until_birthday_in_months">en %1$d mes/es</string>
+    <plurals name="time_until_birthday_in_months">
+        <item quantity="one">dentro de %1$d mes</item>
+        <item quantity="many">dentro de %1$d meses</item>
+        <item quantity="other">dentro de %1$d meses</item>
+    </plurals>
     <string name="years_old">%1$d años</string>
     <string name="birthday_updated_with_reminder">Cumpleaños actualizado correctamente. ¡Tu recordatorio está listo!</string>
     <string name="upcoming_birthdays_load_error">No se han podido cargar los próximos cumpleaños. Inténtalo de nuevo</string>
