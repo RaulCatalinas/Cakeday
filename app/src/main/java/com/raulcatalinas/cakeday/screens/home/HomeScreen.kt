@@ -240,6 +240,8 @@ fun HomeScreen(
                                                         R.string.deleted_birthday
                                                     )
                                                 )
+
+                                                viewModel.refreshUpcomingBirthdays()
                                             }
                                         }
                                     }
