@@ -113,7 +113,7 @@ class AlarmReceiver : BroadcastReceiver() {
         // Only the main alarm should schedule the next annual cycle.
         // The advance notice is scheduled together with the main alarm.
         if (!isAdvanceNotice) {
-            entryPoint
+            val programmedRemainder = entryPoint
                 .appAlarmManager()
                 .setAlarm(
                     id = id,
@@ -124,6 +124,13 @@ class AlarmReceiver : BroadcastReceiver() {
                         0
                     ),
                     advanceNotice = settings.advanceNotice
+                )
+
+            entryPoint
+                .birthdayRepository()
+                .updateNotificationScheduled(
+                    id = id,
+                    scheduled = programmedRemainder
                 )
         }
 

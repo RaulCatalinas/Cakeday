@@ -1,5 +1,8 @@
 package com.raulcatalinas.cakeday.screens.allbirthdays
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -61,6 +65,7 @@ import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.utils.BirthdayDateFormatter
 import com.raulcatalinas.cakeday.shared.utils.LocalSnackbarController
 import com.raulcatalinas.cakeday.shared.utils.timeUntilBirthday
+import kotlinx.datetime.LocalTime
 import java.text.Collator
 import java.time.LocalDate
 
@@ -73,6 +78,7 @@ fun AllBirthdaysScreen(
     val snackbar = LocalSnackbarController.current
     val resources = LocalResources.current
     val hapticFeedback = LocalHapticFeedback.current
+    val context = LocalContext.current
 
     val birthdaysState by viewModel.birthdays.collectAsStateWithLifecycle()
 
@@ -149,6 +155,43 @@ fun AllBirthdaysScreen(
                                     )
                                 }
                             }
+                        },
+                        onNotScheduleReminder = { birthday ->
+                            viewModel.scheduleReminder(
+                                id = birthday.id,
+                                birthday = birthday.birthday,
+                                notificationTime = LocalTime(
+                                    birthday.notificationHour,
+                                    birthday.notificationMinute
+                                )
+                            ) { result ->
+                                when (result) {
+                                    is UiResult.Success -> snackbar.show(
+                                        resources.getString(
+                                            R.string.reminder_scheduled
+                                        )
+                                    )
+
+                                    is UiResult.Error -> snackbar.show(
+                                        message = resources.getString(result.messageRes),
+                                        actionLabel = resources.getString(
+                                            R.string.open_settings
+                                        ),
+                                        onAction = {
+                                            val intent = Intent(
+                                                Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                                Uri
+                                                    .Builder()
+                                                    .scheme("package")
+                                                    .authority(context.packageName)
+                                                    .build()
+                                            )
+
+                                            context.startActivity(intent)
+                                        }
+                                    )
+                                }
+                            }
                         }
                     )
                 }
@@ -162,7 +205,8 @@ private fun BirthdaysList(
     birthdays: List<BirthdayModel>,
     hapticFeedback: HapticFeedback,
     onEditBirthday: (Int) -> Unit,
-    onDeleteBirthday: (Int) -> Unit
+    onDeleteBirthday: (Int) -> Unit,
+    onNotScheduleReminder: (BirthdayModel) -> Unit
 ) {
     val listState = rememberLazyListState()
     val locale = LocalConfiguration.current.locales[0]
@@ -398,12 +442,32 @@ private fun BirthdaysList(
                                             }
                                         }
 
-                                        StatusPill(
-                                            text = statusText,
-                                            color =
-                                                if (daysUntilBirthday <= 3) Color.Red
-                                                else MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                        Column(
+                                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            StatusPill(
+                                                text = statusText,
+                                                color =
+                                                    if (daysUntilBirthday <= 3) Color.Red
+                                                    else MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+
+                                            if (!item.data.notificationScheduled) {
+                                                Button(
+                                                    onClick = {
+                                                        onNotScheduleReminder(item.data)
+                                                    }
+                                                ) {
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.retry
+                                                        ),
+                                                        fontSize = 16.sp
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
 
                                     EditDeleteMenu(

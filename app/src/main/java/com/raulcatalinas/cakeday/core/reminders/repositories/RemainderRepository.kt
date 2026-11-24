@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.raulcatalinas.cakeday.R
+import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
 import com.raulcatalinas.cakeday.core.reminders.constants.REMAINDER_REPOSITORY_TAG
 import com.raulcatalinas.cakeday.core.reminders.constants.REMINDER_NOTIFICATIONS_CHANNEL_ID
 import com.raulcatalinas.cakeday.services.AppAlarmManager
@@ -25,13 +26,14 @@ import javax.inject.Inject
 
 class ReminderRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val alarmManager: AppAlarmManager
+    private val alarmManager: AppAlarmManager,
+    private val birthdayRepository: BirthdayRepository
 ) {
     fun deleteReminder(id: Int) {
         alarmManager.cancelAlarms(id)
     }
 
-    fun scheduleReminder(
+    suspend fun scheduleReminder(
         id: Int,
         date: LocalDate,
         time: LocalTime,
@@ -46,12 +48,19 @@ class ReminderRepository @Inject constructor(
             return false
         }
 
-        return alarmManager.setAlarm(
+        val programmedReminder = alarmManager.setAlarm(
             id = id,
             date = date,
             time = time,
             advanceNotice = advanceNotice
         )
+
+        val affectedRows = birthdayRepository.updateNotificationScheduled(
+            id = id,
+            scheduled = programmedReminder
+        )
+
+        return affectedRows != 0
     }
 
     fun showNotification(

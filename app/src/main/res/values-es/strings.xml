@@ -95,4 +95,9 @@
 
     <!-- WhatsApp -->
     <string name="whatsapp_unavailable">No se ha podido abrir WhatsApp. Comprueba que está instalado.</string>
+
+    <!-- Reminders -->
+    <string name="reminder_scheduled">Recordatorio programado.</string>
+    <string name="reminder_permission_missing">Permite las alarmas en los ajustes para recibir recordatorios</string>
+    <string name="reminder_schedule_error">No se pudo programar el recordatorio. Inténtalo de nuevo</string>
 </resources>

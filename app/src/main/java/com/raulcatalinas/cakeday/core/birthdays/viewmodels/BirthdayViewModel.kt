@@ -172,14 +172,15 @@ class BirthdayViewModel @Inject constructor(
                             )
                         }
 
-                        UiResult.Success(
-                            SaveBirthdayData(
-                                birthdayId = birthdayId,
-                                reminderScheduled =
-                                    reminderResult is UiResult.Success
-                                            && reminderResult.data
+                        when (reminderResult) {
+                            is UiResult.Error -> UiResult.Error(reminderResult.messageRes)
+                            is UiResult.Success -> UiResult.Success(
+                                SaveBirthdayData(
+                                    birthdayId = birthdayId,
+                                    reminderScheduled = reminderResult.data
+                                )
                             )
-                        )
+                        }
                     }
 
                     is UiResult.Error -> saveResult
@@ -249,6 +250,36 @@ class BirthdayViewModel @Inject constructor(
             } finally {
                 _isSaving.value = false
             }
+        }
+    }
+
+    fun scheduleReminder(
+        id: Int,
+        birthday: LocalDate,
+        notificationTime: LocalTime,
+        onResult: (UiResult<Unit>) -> Unit
+    ) {
+        viewModelScope.launch {
+            val result = attempt(R.string.reminder_schedule_error) {
+                reminderRepository.scheduleReminder(
+                    id = id,
+                    date = birthday,
+                    time = notificationTime.toJavaLocalTime(),
+                    advanceNotice = settingsRepoistory.getSettings().first().advanceNotice
+                )
+            }
+
+            onResult(
+                when (result) {
+                    is UiResult.Success ->
+                        if (result.data) UiResult.Success(Unit)
+                        else UiResult.Error(R.string.reminder_permission_missing)
+
+                    is UiResult.Error -> result
+                }
+            )
+
+            if (result is UiResult.Success && result.data) refresh()
         }
     }
 

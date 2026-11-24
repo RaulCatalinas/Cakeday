@@ -566,7 +566,8 @@ private fun BirthdayForm(
                             is UiResult.Success -> {
                                 snackbar.show(
                                     resources.getString(
-                                        R.string.birthday_saved_with_reminder
+                                        if (it.data.reminderScheduled) R.string.birthday_saved_with_reminder
+                                        else R.string.birthday_saved_without_reminder
                                     )
                                 )
 
