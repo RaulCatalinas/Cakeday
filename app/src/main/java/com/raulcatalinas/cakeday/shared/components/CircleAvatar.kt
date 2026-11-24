@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -21,21 +22,19 @@ fun CircleAvatar(
     nameInitialChar: Char?,
     modifier: Modifier = Modifier,
     size: Dp = 96.dp,
+    contentColor: Color = MaterialTheme.colorScheme.outline
 ) {
-    val color = MaterialTheme.colorScheme.outline
-
     Box(
         contentAlignment = Alignment.Center,
-        modifier =
-            modifier
-                .size(size)
-                .border(2.dp, color, CircleShape)
+        modifier = modifier
+            .size(size)
+            .border(2.dp, contentColor, CircleShape)
     ) {
         if (nameInitialChar == null) {
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = null,
-                tint = color,
+                tint = contentColor,
                 modifier = Modifier.size(size * 0.5f)
             )
 
@@ -48,7 +47,7 @@ fun CircleAvatar(
 
         Text(
             text = nameInitialChar.toString(),
-            color = color,
+            color = contentColor,
             fontSize = fontSize
         )
     }

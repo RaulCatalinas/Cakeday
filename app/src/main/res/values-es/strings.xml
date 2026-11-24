@@ -87,6 +87,7 @@
     <string name="time_until_birthday_in_months">en %1$d mes/es</string>
     <string name="years_old">%1$d años</string>
     <string name="birthday_updated_with_reminder">Cumpleaños actualizado correctamente. ¡Tu recordatorio está listo!</string>
+    <string name="upcoming_birthdays_load_error">No se han podido cargar los próximos cumpleaños. Inténtalo de nuevo</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Cumpleaños</string>
@@ -100,4 +101,8 @@
     <string name="reminder_scheduled">Recordatorio programado.</string>
     <string name="reminder_permission_missing">Permite las alarmas en los ajustes para recibir recordatorios</string>
     <string name="reminder_schedule_error">No se pudo programar el recordatorio. Inténtalo de nuevo</string>
+
+    <!-- HomeScreen -->
+    <string name="upcoming_birthdays">Proximos cumpleaños</string>
+    <string name="next_birthday">Siguiente cumpleaños</string>
 </resources>

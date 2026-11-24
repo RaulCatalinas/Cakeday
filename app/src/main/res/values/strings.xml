@@ -88,6 +88,7 @@
     <string name="time_until_birthday_in_months">in %1$d month(s)</string>
     <string name="years_old">%1$d years</string>
     <string name="birthday_updated_with_reminder">Birthday updated successfully. Your reminder is ready!</string>
+    <string name="upcoming_birthdays_load_error">Couldn\'t load upcoming birthdays. Please try again</string>
 
     <!-- Alarm receiver -->
     <string name="birthday_notification_title">Birthday</string>
@@ -101,4 +102,8 @@
     <string name="reminder_scheduled">Reminder scheduled.</string>
     <string name="reminder_permission_missing">Allow alarms in app settings to set reminders</string>
     <string name="reminder_schedule_error">Couldn\'t schedule the reminder. Try again</string>
+
+    <!-- HomeScreen -->
+    <string name="upcoming_birthdays">Upcoming birthdays</string>
+    <string name="next_birthday">Next birthday</string>
 </resources>

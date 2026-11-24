@@ -5,7 +5,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raulcatalinas.cakeday.R
+import com.raulcatalinas.cakeday.backend.mappers.toDomain
 import com.raulcatalinas.cakeday.core.birthdays.constants.BIRTHDAY_VIEW_MODEL_TAG
+import com.raulcatalinas.cakeday.core.birthdays.constants.UPCOMING_BIRTHDAYS_LIMIT
 import com.raulcatalinas.cakeday.core.birthdays.models.SaveBirthdayData
 import com.raulcatalinas.cakeday.core.birthdays.repositories.BirthdayRepository
 import com.raulcatalinas.cakeday.core.birthdays.types.UiResult
@@ -42,6 +44,7 @@ class BirthdayViewModel @Inject constructor(
     private val settingsRepoistory: SettingsRepository
 ) : ViewModel() {
     private val refreshTrigger = MutableStateFlow(0)
+    private val refreshUpcomingTrigger = MutableStateFlow(0)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val birthdays: StateFlow<UiState<List<BirthdayModel>>> =
@@ -67,6 +70,64 @@ class BirthdayViewModel @Inject constructor(
                     emit(
                         UiState.Error(
                             R.string.error_loading_birthdays
+                        )
+                    )
+                }
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(0),
+                initialValue = UiState.Loading
+            )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val upcomingBirthdays: StateFlow<UiState<List<BirthdayModel>>> =
+        refreshUpcomingTrigger
+            .flatMapLatest {
+                flow {
+                    if (upcomingBirthdays.value is UiState.Error) {
+                        emit(UiState.Loading)
+                    }
+
+                    val today = LocalDate.now()
+
+                    val result = attempt(R.string.upcoming_birthdays_load_error) {
+                        repository.getUpcomingBirthdays(
+                            currentMonth = today.monthValue,
+                            currentDay = today.dayOfMonth,
+                            limit = UPCOMING_BIRTHDAYS_LIMIT
+                        )
+                    }
+
+                    when (result) {
+                        is UiResult.Error -> {
+                            emit(
+                                UiState.Error(
+                                    result.messageRes
+                                )
+                            )
+                        }
+
+                        is UiResult.Success -> {
+                            emit(
+                                UiState.Success(
+                                    result.data.map { it.toDomain() }
+                                )
+                            )
+                        }
+                    }
+                }.catch { e ->
+                    if (e is CancellationException) throw e
+
+                    Log.e(
+                        BIRTHDAY_VIEW_MODEL_TAG,
+                        "Error loading upcoming birthdays: ${e.message}",
+                        e
+                    )
+
+                    emit(
+                        UiState.Error(
+                            R.string.upcoming_birthdays_load_error
                         )
                     )
                 }
@@ -285,6 +346,10 @@ class BirthdayViewModel @Inject constructor(
 
     fun refresh() {
         refreshTrigger.update { it + 1 }
+    }
+
+    fun refreshUpcomingBirthdays() {
+        refreshUpcomingTrigger.update { it + 1 }
     }
 
     private suspend fun <T> attempt(

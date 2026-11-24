@@ -95,4 +95,26 @@ interface BirthdayDao {
         note: String?,
         updatedAt: Long = System.currentTimeMillis()
     ): Int
+
+    @Query(
+        """
+    SELECT * FROM birthdays
+    ORDER BY
+        CASE
+            WHEN month > :currentMonth
+                OR (month = :currentMonth AND day >= :currentDay)
+            THEN 0
+            ELSE 1
+        END,
+        month ASC,
+        day ASC,
+        name ASC
+    LIMIT :limit
+    """
+    )
+    suspend fun getUpcomingBirthdays(
+        currentMonth: Int,
+        currentDay: Int,
+        limit: Int
+    ): List<BirthdayEntity>
 }

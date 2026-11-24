@@ -1,5 +1,6 @@
 package com.raulcatalinas.cakeday.core.birthdays.repositories
 
+import com.raulcatalinas.cakeday.backend.entities.BirthdayEntity
 import com.raulcatalinas.cakeday.backend.repotories.DbRepository
 import com.raulcatalinas.cakeday.shared.models.BirthdayModel
 import com.raulcatalinas.cakeday.shared.types.ContactInfo
@@ -94,6 +95,18 @@ class BirthdayRepository @Inject constructor(
             year = year,
             personalisedMessage = personalisedMessage,
             note = note
+        )
+    }
+
+    suspend fun getUpcomingBirthdays(
+        currentMonth: Int,
+        currentDay: Int,
+        limit: Int
+    ): List<BirthdayEntity> {
+        return dbRepository.getUpcomingBirthdays(
+            currentMonth = currentMonth,
+            currentDay = currentDay,
+            limit = limit
         )
     }
 }

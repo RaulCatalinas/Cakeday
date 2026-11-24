@@ -72,8 +72,12 @@ fun CakedayApp() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     // While the create screen is open, the tab it was opened from stays marked.
+    val isBirthdayFormRoute =
+        currentRoute == CREATE_BIRTHDAY_ROUTE
+                || currentRoute?.startsWith("$CREATE_BIRTHDAY_ROUTE/") == true
+
     val selectedRoute =
-        if (currentRoute == CREATE_BIRTHDAY_ROUTE) {
+        if (isBirthdayFormRoute) {
             navController.previousBackStackEntry?.destination?.route
         } else {
             currentRoute
@@ -167,9 +171,16 @@ enum class AppDestinations(
         labelRes = R.string.home_route,
         icon = Icons.Default.Cake,
         content = {
-            HomeScreen {
-                it.navigate(CREATE_BIRTHDAY_ROUTE) { launchSingleTop = true }
-            }
+            HomeScreen(
+                onEditBirthday = { id ->
+                    it.navigate("$CREATE_BIRTHDAY_ROUTE/$id") {
+                        launchSingleTop = true
+                    }
+                },
+                onCreateBirthday = {
+                    it.navigate(CREATE_BIRTHDAY_ROUTE) { launchSingleTop = true }
+                }
+            )
         }
     ),
     ALL_BIRTHDAYS(

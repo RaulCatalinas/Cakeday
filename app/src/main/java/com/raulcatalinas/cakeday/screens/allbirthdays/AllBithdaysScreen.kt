@@ -52,10 +52,12 @@ import com.raulcatalinas.cakeday.screens.allbirthdays.types.HeaderItem
 import com.raulcatalinas.cakeday.shared.components.AppFloatingActionButton
 import com.raulcatalinas.cakeday.shared.components.AppScaffold
 import com.raulcatalinas.cakeday.shared.components.AppSearchBar
+import com.raulcatalinas.cakeday.shared.components.CenteredMessage
 import com.raulcatalinas.cakeday.shared.components.CircleAvatar
 import com.raulcatalinas.cakeday.shared.components.ConfirmDialog
 import com.raulcatalinas.cakeday.shared.components.ContactCard
 import com.raulcatalinas.cakeday.shared.components.EditDeleteMenu
+import com.raulcatalinas.cakeday.shared.components.ErrorMessage
 import com.raulcatalinas.cakeday.shared.components.StatusPill
 import com.raulcatalinas.cakeday.shared.extensions.normalized
 import com.raulcatalinas.cakeday.shared.extensions.normalizedInitial
@@ -85,10 +87,9 @@ fun AllBirthdaysScreen(
     AppScaffold(
         floatingActionButton = {
             AppFloatingActionButton(
-                contentDescription = stringResource(R.string.add_birthday)
-            ) {
-                onCreateBirthday()
-            }
+                contentDescription = stringResource(R.string.add_birthday),
+                onClick = onCreateBirthday
+            )
         }
     ) { paddingValues ->
         Box(
@@ -162,7 +163,8 @@ fun AllBirthdaysScreen(
                                 birthday = birthday.birthday,
                                 notificationTime = LocalTime(
                                     birthday.notificationHour,
-                                    birthday.notificationMinute
+                                    birthday.notificationMinute,
+                                    0
                                 )
                             ) { result ->
                                 when (result) {
@@ -449,7 +451,7 @@ private fun BirthdaysList(
                                             StatusPill(
                                                 text = statusText,
                                                 color =
-                                                    if (daysUntilBirthday <= 3) Color.Red
+                                                    if (daysUntilBirthday <= 3) Color(0xFFE53935)
                                                     else MaterialTheme.colorScheme.onSurfaceVariant
                                             )
 
@@ -482,44 +484,6 @@ private fun BirthdaysList(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun CenteredMessage(text: String) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-private fun ErrorMessage(text: String, onRetry: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            16.dp,
-            Alignment.CenterVertically
-        )
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-
-        Button(onClick = onRetry) {
-            Text(stringResource(R.string.retry))
         }
     }
 }
