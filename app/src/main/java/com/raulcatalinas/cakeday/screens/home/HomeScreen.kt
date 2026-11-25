@@ -5,14 +5,12 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -70,154 +68,140 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
                 .padding(paddingValues)
-                .imePadding()
                 .padding(horizontal = 20.dp, vertical = 16.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxSize()
         ) {
             when (val state = upcomingBirthdaysState) {
-                UiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(24.dp),
-                            strokeWidth = 2.dp
-                        )
-                    }
-                }
+                UiState.Loading -> CircularProgressIndicator(
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center)
+                            .size(48.dp),
+                    strokeWidth = 2.dp
+                )
 
-                is UiState.Error -> {
-                    ErrorMessage(
-                        text = stringResource(state.messageRes),
-                        onRetry = viewModel::refreshUpcomingBirthdays
-                    )
-                }
+                is UiState.Error -> ErrorMessage(
+                    text = stringResource(state.messageRes),
+                    onRetry = viewModel::refreshUpcomingBirthdays
+                )
 
                 is UiState.Success -> {
                     if (state.data.isEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CenteredMessage(
-                                stringResource(
-                                    R.string.no_birthdays_yet
-                                )
+                        CenteredMessage(
+                            stringResource(
+                                R.string.no_birthdays_yet
                             )
-                        }
+                        )
 
-                        return@Column
+                        return@Box
                     }
-
-                    val closestBirthday = state.data.first()
-
-                    Subtitle(
-                        stringResource(
-                            R.string.next_birthday
-                        )
-                    )
-
-                    BirthdayItem(
-                        birthday = closestBirthday,
-                        gradientEnabled = true,
-                        onEditBirthday = onEditBirthday,
-                        onDeleteBirthday = { id ->
-                            viewModel.deleteBirthday(id) { result ->
-                                when (result) {
-                                    is UiResult.Error -> {
-                                        snackbar.show(
-                                            resources.getString(
-                                                result.messageRes
-                                            )
-                                        )
-                                    }
-
-                                    is UiResult.Success -> {
-                                        viewModel.refreshUpcomingBirthdays()
-
-                                        snackbar.show(
-                                            resources.getString(
-                                                R.string.deleted_birthday
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        },
-                        onRetrySchedule = { birthday ->
-                            viewModel.scheduleReminder(
-                                id = birthday.id,
-                                birthday = birthday.birthday,
-                                notificationTime = LocalTime(
-                                    birthday.notificationHour,
-                                    birthday.notificationMinute,
-                                    0
-                                )
-                            ) { result ->
-                                when (result) {
-                                    is UiResult.Error -> {
-                                        snackbar.show(
-                                            message = resources.getString(
-                                                result.messageRes
-                                            ),
-                                            actionLabel = resources.getString(
-                                                R.string.open_settings
-                                            ),
-                                            onAction = {
-                                                val intent = Intent(
-                                                    Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                                                    Uri
-                                                        .Builder()
-                                                        .scheme("package")
-                                                        .authority(context.packageName)
-                                                        .build()
-                                                )
-
-                                                context.startActivity(intent)
-                                            }
-                                        )
-                                    }
-
-                                    is UiResult.Success -> {
-                                        snackbar.show(
-                                            resources.getString(
-                                                R.string.reminder_scheduled
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Subtitle(
-                        stringResource(
-                            R.string.upcoming_birthdays
-                        )
-                    )
 
                     LazyColumn(
                         modifier =
                             Modifier
-                                .weight(1f)
                                 .verticalScrollbar(listState)
-                                .fillMaxWidth(),
+                                .fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         state = listState,
                         contentPadding = PaddingValues(bottom = 88.dp)
                     ) {
+                        item(key = "next_birthday") {
+                            val closestBirthday = state.data.first()
+
+                            Subtitle(
+                                stringResource(
+                                    R.string.next_birthday
+                                )
+                            )
+
+                            BirthdayItem(
+                                birthday = closestBirthday,
+                                gradientEnabled = true,
+                                onEditBirthday = onEditBirthday,
+                                onDeleteBirthday = { id ->
+                                    viewModel.deleteBirthday(id) { result ->
+                                        when (result) {
+                                            is UiResult.Error -> {
+                                                snackbar.show(
+                                                    resources.getString(
+                                                        result.messageRes
+                                                    )
+                                                )
+                                            }
+
+                                            is UiResult.Success -> {
+                                                viewModel.refreshUpcomingBirthdays()
+
+                                                snackbar.show(
+                                                    resources.getString(
+                                                        R.string.deleted_birthday
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                },
+                                onRetrySchedule = { birthday ->
+                                    viewModel.scheduleReminder(
+                                        id = birthday.id,
+                                        birthday = birthday.birthday,
+                                        notificationTime = LocalTime(
+                                            birthday.notificationHour,
+                                            birthday.notificationMinute,
+                                            0
+                                        )
+                                    ) { result ->
+                                        when (result) {
+                                            is UiResult.Error -> {
+                                                snackbar.show(
+                                                    message = resources.getString(
+                                                        result.messageRes
+                                                    ),
+                                                    actionLabel = resources.getString(
+                                                        R.string.open_settings
+                                                    ),
+                                                    onAction = {
+                                                        val intent = Intent(
+                                                            Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                                            Uri
+                                                                .Builder()
+                                                                .scheme("package")
+                                                                .authority(context.packageName)
+                                                                .build()
+                                                        )
+
+                                                        context.startActivity(intent)
+                                                    }
+                                                )
+                                            }
+
+                                            is UiResult.Success -> {
+                                                snackbar.show(
+                                                    resources.getString(
+                                                        R.string.reminder_scheduled
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            )
+                        }
+
+                        item(key = "upcoming_birthdays") {
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Subtitle(
+                                stringResource(
+                                    R.string.upcoming_birthdays
+                                )
+                            )
+                        }
+
                         items(
                             items = state.data.drop(1),
                             key = { birthday -> birthday.id }
